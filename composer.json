@@ -3,12 +3,12 @@
     "description": "Convert a webpage to an image",
     "keywords":
         [
+            "convert",
+            "webpage",
+            "image",
             "screenshot",
             "browser",
-            "convert",
-            "image",
             "phantomjs",
-            "website",
             "laravel"
         ],
     "license": "MIT",
@@ -24,7 +24,7 @@
         "intervention/image": "1.*"
     },
     "bin": [
-        "src/Spatie/Browsershot/bin/phantomjs"
+        "bin/phantomjs"
     ],
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev"
