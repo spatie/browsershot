@@ -8,7 +8,7 @@ The package can convert a webpage to an image. To accomplish this conversion [Ph
 
 ## Installation
 
-You can install this package through Composer.
+This package can be installed through Composer.
 
 ```js
 {
