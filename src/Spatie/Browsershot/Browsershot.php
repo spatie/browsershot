@@ -114,6 +114,10 @@ class Browsershot {
             throw new Exception('targetfile not set');
         }
 
+        if (! in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png'])) {
+            throw new Exception('targetfile extension not valid');
+        }
+
         if ($this->URL == '') {
             throw new Exception('url not set');
         }
