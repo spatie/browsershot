@@ -1,0 +1,37 @@
+{
+    "name": "spatie/browsershot",
+    "description": "Convert a webpage to an image",
+    "keywords":
+        [
+            "screenshot",
+            "browser",
+            "convert",
+            "image",
+            "phantomjs",
+            "website",
+            "laravel"
+        ],
+    "authors": [
+        {
+            "name": "Freek Van der Herten",
+            "email": "freek@spatie.be"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.1.*",
+        "intervention/image": "1.*"
+    },
+    "bin": [
+        "src/Spatie/Browsershot/bin/phantomjs"
+    ],
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Spatie\\Browsershot": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
