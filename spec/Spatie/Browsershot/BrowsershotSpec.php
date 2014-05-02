@@ -20,11 +20,6 @@ class BrowsershotSpec extends ObjectBehavior
         $this->shouldThrow(new \Exception('targetfile not set'))->during('save', ['']);
     }
 
-    function it_should_fail_if_url_is_not_set()
-    {
-        $this->shouldThrow(new \Exception('url not set'))->during('save', [$this->getTestPath()]);
-    }
-
     function it_should_fail_if_binary_does_not_exist()
     {
         $this

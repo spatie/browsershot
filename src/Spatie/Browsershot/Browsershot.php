@@ -33,10 +33,12 @@ class Browsershot {
     /**
      * @param string $binPath The path to the phantomjs binary
      */
-    public function __construct($binPath = 'vendor/bin/phantomjs', $width = 640, $height = 480)
+    public function __construct($binPath = '', $width = 640, $height = 480)
     {
+        if ($binPath == '') {
+            $this->binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
+        }
 
-        $this->binPath = $binPath;
         $this->width = $width;
         $this->height = $height;
 
@@ -112,10 +114,6 @@ class Browsershot {
             throw new Exception('targetfile not set');
         }
 
-        if (! file_exists($this->binPath)) {
-            throw new Exception('binary does not exist');
-        }
-
         if ($this->URL == '') {
             throw new Exception('url not set');
         }
@@ -123,6 +121,11 @@ class Browsershot {
         if (filter_var($this->URL, FILTER_VALIDATE_URL) === FALSE) {
             throw new Exception('url is invalid');
         }
+
+        if (! file_exists($this->binPath)) {
+            throw new Exception('binary does not exist');
+        }
+
 
         $tempJsFileHandle = tmpfile();
 
