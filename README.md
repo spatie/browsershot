@@ -4,7 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/spatie/browsershot/version.png)](https://packagist.org/packages/spatie/browsershot)
 [![License](https://poser.pugx.org/spatie/browsershot/license.png)](https://packagist.org/packages/spatie/browsershot)
 
-The package can convert a webpage to an image. To accomplish this [Phantomjs](http://phantomjs.org/) (included in the project) is used.
+The package can convert a webpage to an image. To accomplish this conversion [Phantomjs](http://phantomjs.org/) (included in the project) is used.
 
 ## Installation
 
