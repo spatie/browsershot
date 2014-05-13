@@ -6,6 +6,8 @@
 
 The package can convert a webpage to an image. To accomplish this conversion [Phantomjs](http://phantomjs.org/) (included in the project) is used.
 
+This package is used to generate the sitepreviews on the homepage of [spatie.be](http://spatie.be)
+
 ## Installation
 
 This package can be installed through Composer.
