@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.1.*",
+        "illuminate/support": "~4.1",
         "intervention/image": "1.*"
     },
     "bin": [
