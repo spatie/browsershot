@@ -37,6 +37,8 @@ class Browsershot {
     {
         if ($binPath == '') {
             $this->binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
+        } else {
+            $this->binPath = $binPath;
         }
 
         $this->width = $width;
