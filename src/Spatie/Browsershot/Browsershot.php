@@ -32,15 +32,16 @@ class Browsershot {
 
     /**
      * @param string $binPath The path to the phantomjs binary
+     * @param int $width
+     * @param int $height
      */
     public function __construct($binPath = '', $width = 640, $height = 480)
     {
         if ($binPath == '') {
-            $this->binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
-        } else {
-            $this->binPath = $binPath;
+            $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
         }
 
+        $this->binPath = $binPath;
         $this->width = $width;
         $this->height = $height;
 
