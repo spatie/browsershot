@@ -1,6 +1,7 @@
 # Convert a webpage to an image
 
 [![Build Status](https://secure.travis-ci.org/freekmurze/browsershot.png)](http://travis-ci.org/freekmurze/geocoder)
+[![Total Downloads](https://poser.pugx.org/spatie/browsershot/downloads.svg)](https://packagist.org/packages/spatie/browsershot)
 [![Latest Stable Version](https://poser.pugx.org/spatie/browsershot/version.png)](https://packagist.org/packages/spatie/browsershot)
 [![License](https://poser.pugx.org/spatie/browsershot/license.png)](https://packagist.org/packages/spatie/browsershot)
 
