@@ -13,12 +13,8 @@ This package is used to generate the sitepreviews on the homepage of [spatie.be]
 
 This package can be installed through Composer.
 
-```js
-{
-    "require": {
-		"spatie/browsershot": "dev-master"
-	}
-}
+```bash
+composer require spatie/browsershot
 ```
 
 When using Laravel there is a service provider that you can make use of.
