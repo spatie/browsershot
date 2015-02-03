@@ -3,7 +3,7 @@
 namespace Spatie\Browsershot;
 
 use Exception;
-use \Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 /**
  * Class Browsershot
@@ -160,7 +160,8 @@ class Browsershot {
             throw new Exception('could not create screenshot');
         }
 
-        Image::make($targetFile)
+        $imageManager = new ImageManager();
+        $imageManager->make($targetFile)
             ->crop($this->width, $this->height, 0, 0)
             ->save($targetFile, 60);
 
