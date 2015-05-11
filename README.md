@@ -47,6 +47,7 @@ These methods are provided:
 * `setBinPath()`: Specify the path to your own phantomjs-binary.
 * `setWidth()`: Set the width of the image (defaults to 640).
 * `setHeight()`: Set the height of the image (defaults to 480).
+* `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 

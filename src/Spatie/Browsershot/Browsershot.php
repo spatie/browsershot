@@ -33,7 +33,7 @@ class Browsershot {
     /**
      * @param string $binPath The path to the phantomjs binary
      * @param int $width
-     * @param int $height
+     * @param mixed $height
      */
     public function __construct($binPath = '', $width = 640, $height = 480)
     {
@@ -89,6 +89,18 @@ class Browsershot {
     }
 
     /**
+     * Set to height so the whole page will be rendered.
+     *
+     * @return $this
+     */
+    public function setHeightToRenderWholePage()
+    {
+        $this->height = 0;
+
+        return $this;
+    }
+
+    /**
      * @param string $url The website of which a screenshot should be make
      * @return $this
      * @throws \Exception
@@ -139,7 +151,7 @@ class Browsershot {
         $fileContent= "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
-            page.viewportSize = { width: " . $this->width . ", height: " . $this->height . " };
+            page.viewportSize = { width: " . $this->width . ($this->height == 0 ? '' : ", height: " . $this->height ) . " };
             page.open('" . $this->URL . "', function() {
                window.setTimeout(function(){
                 page.render('" . $targetFile . "');
