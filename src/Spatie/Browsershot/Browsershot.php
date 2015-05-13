@@ -172,10 +172,13 @@ class Browsershot {
             throw new Exception('could not create screenshot');
         }
 
-        $imageManager = new ImageManager();
-        $imageManager->make($targetFile)
-            ->crop($this->width, $this->height, 0, 0)
-            ->save($targetFile, 60);
+        if ($this->height > 0) {
+            $imageManager = new ImageManager();
+            $imageManager
+                ->make($targetFile)
+                ->crop($this->width, $this->height, 0, 0)
+                ->save($targetFile, 60);
+        }
 
         return true;
     }
