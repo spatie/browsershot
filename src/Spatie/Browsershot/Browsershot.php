@@ -161,7 +161,7 @@ class Browsershot {
 
         fwrite($tempJsFileHandle, $fileContent);
         $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
-        $cmd = escapeshellcmd("{$this->binPath} " . $tempFileName);
+        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any " . $tempFileName);
 
         shell_exec($cmd);
 
