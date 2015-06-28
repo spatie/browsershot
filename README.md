@@ -52,8 +52,9 @@ These methods are provided:
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations
+
 - [Node.js](https://github.com/brenden/node-webshot)
-- 
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
