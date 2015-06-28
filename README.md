@@ -51,3 +51,6 @@ These methods are provided:
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
+##Other implementations.
+- [Node.js](https://github.com/brenden/node-webshot)
+
