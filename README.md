@@ -32,6 +32,8 @@ When using Laravel there is a service provider that you can make use of.
 ];
 ```
 
+Please note that the provided binary is intented for use on Ubuntu.
+
 ## Usage
 
 Here is a sample call to create an image of a webpage:
