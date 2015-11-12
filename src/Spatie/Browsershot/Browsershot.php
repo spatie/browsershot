@@ -13,29 +13,38 @@ use Intervention\Image\ImageManager;
 class Browsershot {
 
     /**
-     * @var int
+     * @var int Required shot width
      */
     private $width;
+
     /**
-     * @var int
+     * @var int Required shot height
      */
     private $height;
+
     /**
-     * @var
+     * @var int Time require to process page javascript
+     */
+    private $timeout ;
+
+    /**
+     * @var Page URL
      */
     private $URL;
+
     /**
-     * @var string
+     * @var string Path to custom phamtomJS binary
      */
     private $binPath;
 
 
     /**
      * @param string $binPath The path to the phantomjs binary
-     * @param int $width
-     * @param mixed $height
+     * @param int    $width
+     * @param int    $height
+     * @param int    $timeout
      */
-    public function __construct($binPath = '', $width = 640, $height = 480)
+    public function __construct($binPath = '', $width = 640, $height = 480, $timeout=5000)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
@@ -44,6 +53,7 @@ class Browsershot {
         $this->binPath = $binPath;
         $this->width = $width;
         $this->height = $height;
+        $this->timeout = $timeout ;
 
         return $this;
     }
@@ -115,6 +125,22 @@ class Browsershot {
         return $this;
     }
 
+
+    /**
+     * @param $timeout Time require to process page javascript
+     * @return $this
+     * @throws Exception
+     */
+    public function setTimeout($timeout)
+    {
+        if (! is_numeric($timeout)) {
+            throw new Exception('Timeout must be numeric');
+        }
+
+        $this->timeout = $timeout;
+        return $this;
+    }
+
     /**
      *
      * Convert the webpage to an image
@@ -156,7 +182,7 @@ class Browsershot {
                window.setTimeout(function(){
                 page.render('" . $targetFile . "');
                 phantom.exit();
-            }, 5000); // give phantomjs 5 seconds to process all javascript
+            }, ". $this->timeout .");
         });";
 
         fwrite($tempJsFileHandle, $fileContent);
