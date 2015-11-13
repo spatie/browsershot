@@ -100,8 +100,11 @@ class Browsershot
 
     /**
      * Set the image quality.
+     *
      * @param $quality
+     *
      * @return $this
+     *
      * @throws \Exception
      */
     public function setQuality($quality)
@@ -194,7 +197,7 @@ class Browsershot
     }
 
     /**
-     * Take the screenshot
+     * Take the screenshot.
      * 
      * @param $targetFile
      */
@@ -204,7 +207,7 @@ class Browsershot
 
         fwrite($tempJsFileHandle, $this->getPhantomJsScript($targetFile));
         $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
-        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true " . $tempFileName);
+        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true ".$tempFileName);
 
         shell_exec($cmd);
 
@@ -215,6 +218,7 @@ class Browsershot
      * Get the script to be executed by phantomjs.
      *
      * @param string $targetFile
+     *
      * @return string
      */
     protected function getPhantomJsScript($targetFile)
@@ -222,14 +226,12 @@ class Browsershot
         return "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
-            page.viewportSize = { width: " . $this->width . ($this->height == 0 ? '' : ', height: ' . $this->height) . " };
-            page.open('" . $this->url . "', function() {
+            page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
+            page.open('".$this->url."', function() {
                window.setTimeout(function(){
-                page.render('" . $targetFile . "');
+                page.render('".$targetFile."');
                 phantom.exit();
             }, 5000); // give phantomjs 5 seconds to process all javascript
         });";
     }
-
-
 }
