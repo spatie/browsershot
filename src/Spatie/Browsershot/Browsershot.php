@@ -21,6 +21,10 @@ class Browsershot {
      */
     private $height;
     /**
+     * @var int
+     */
+    private $quality;
+    /**
      * @var
      */
     private $URL;
@@ -35,7 +39,7 @@ class Browsershot {
      * @param int $width
      * @param mixed $height
      */
-    public function __construct($binPath = '', $width = 640, $height = 480)
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
@@ -44,6 +48,7 @@ class Browsershot {
         $this->binPath = $binPath;
         $this->width = $width;
         $this->height = $height;
+        $this->quality = $quality;
 
         return $this;
     }
@@ -85,6 +90,23 @@ class Browsershot {
         }
 
         $this->height = $height;
+        return $this;
+    }
+
+    /**
+     * Set the image quality.
+     * 
+     * @param int $quality
+     * @return $this
+     * @throws \Excpetion
+     */
+    public function setQuality($quality)
+    {
+        if (! is_numeric($quality) || $quality < 1 || $quality > 100) {
+            throw new Exception('Quality must be a numeric value between 1 - 100');
+        }
+
+        $this->quality = $quality;
         return $this;
     }
 
@@ -177,7 +199,7 @@ class Browsershot {
             $imageManager
                 ->make($targetFile)
                 ->crop($this->width, $this->height, 0, 0)
-                ->save($targetFile, 60);
+                ->save($targetFile, $this->quality);
         }
 
         return true;
