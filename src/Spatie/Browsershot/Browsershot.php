@@ -17,19 +17,19 @@ class Browsershot
     /**
      * @var int
      */
-    private $height;
+    protected $height;
     /**
      * @var int
      */
-    private $quality;
+    protected $quality;
     /**
      * @var
      */
-    private $URL;
+    protected $url;
     /**
      * @var string
      */
-    private $binPath;
+    protected $binPath;
 
     /**
      * @param string $binPath The path to the phantomjs binary
@@ -100,12 +100,9 @@ class Browsershot
 
     /**
      * Set the image quality.
-     * 
-     * @param int $quality
-     *
+     * @param $quality
      * @return $this
-     *
-     * @throws \Excpetion
+     * @throws \Exception
      */
     public function setQuality($quality)
     {
@@ -131,19 +128,19 @@ class Browsershot
     }
 
     /**
-     * @param string $url The website of which a screenshot should be make
+     * @param string $url The website of which a screenshot should be made.
      *
      * @return $this
      *
      * @throws \Exception
      */
-    public function setURL($url)
+    public function setUrl($url)
     {
         if (!strlen($url) > 0) {
             throw new Exception('No url specified');
         }
 
-        $this->URL = $url;
+        $this->url = $url;
 
         return $this;
     }
@@ -167,11 +164,11 @@ class Browsershot
             throw new Exception('targetfile extension not valid');
         }
 
-        if ($this->URL == '') {
+        if ($this->url == '') {
             throw new Exception('url not set');
         }
 
-        if (filter_var($this->URL, FILTER_VALIDATE_URL) === false) {
+        if (filter_var($this->url, FILTER_VALIDATE_URL) === false) {
             throw new Exception('url is invalid');
         }
 
@@ -179,26 +176,7 @@ class Browsershot
             throw new Exception('binary does not exist');
         }
 
-        $tempJsFileHandle = tmpfile();
-
-        $fileContent = "
-            var page = require('webpage').create();
-            page.settings.javascriptEnabled = true;
-            page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
-            page.open('".$this->URL."', function() {
-               window.setTimeout(function(){
-                page.render('".$targetFile."');
-                phantom.exit();
-            }, 5000); // give phantomjs 5 seconds to process all javascript
-        });";
-
-        fwrite($tempJsFileHandle, $fileContent);
-        $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
-        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true ".$tempFileName);
-
-        shell_exec($cmd);
-
-        fclose($tempJsFileHandle);
+        $this->takeScreenShot($targetFile);
 
         if (!file_exists($targetFile) or filesize($targetFile) < 1024) {
             throw new Exception('could not create screenshot');
@@ -214,4 +192,44 @@ class Browsershot
 
         return true;
     }
+
+    /**
+     * Take the screenshot
+     * 
+     * @param $targetFile
+     */
+    protected function takeScreenShot($targetFile)
+    {
+        $tempJsFileHandle = tmpfile();
+
+        fwrite($tempJsFileHandle, $this->getPhantomJsScript($targetFile));
+        $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
+        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true " . $tempFileName);
+
+        shell_exec($cmd);
+
+        fclose($tempJsFileHandle);
+    }
+
+    /**
+     * Get the script to be executed by phantomjs.
+     *
+     * @param string $targetFile
+     * @return string
+     */
+    protected function getPhantomJsScript($targetFile)
+    {
+        return "
+            var page = require('webpage').create();
+            page.settings.javascriptEnabled = true;
+            page.viewportSize = { width: " . $this->width . ($this->height == 0 ? '' : ', height: ' . $this->height) . " };
+            page.open('" . $this->url . "', function() {
+               window.setTimeout(function(){
+                page.render('" . $targetFile . "');
+                phantom.exit();
+            }, 5000); // give phantomjs 5 seconds to process all javascript
+        });";
+    }
+
+
 }
