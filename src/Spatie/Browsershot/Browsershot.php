@@ -11,41 +11,53 @@ use Intervention\Image\ImageManager;
 class Browsershot
 {
     /**
-     * @var int
+     * @var int Required Browsershot width
      */
     private $width;
+
     /**
-     * @var int
+     * @var int Required Browsershot height
      */
     protected $height;
+
     /**
-     * @var int
+     * @var int Required Browsershot image quality
      */
     protected $quality;
+
     /**
-     * @var
+     * @var int URL to Browsershot
      */
     protected $url;
+
     /**
-     * @var string
+     * @var string Path to the phantomjs binary
      */
     protected $binPath;
 
     /**
-     * @param string $binPath The path to the phantomjs binary
-     * @param int    $width
-     * @param mixed  $height
+     * @var int Required Browsershot page timeout
      */
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60)
+    protected $timeout;
+
+    /**
+     * @param string $binPath The path to the phantomjs binary
+     * @param int    $width The required Browsershot width
+     * @param int    $height The required Browsershot height
+     * @param int    $quality The required Browsershot image quality
+     * @param int    $timeout The required Browsershot page timeout
+     */
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout=5000)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
         }
 
         $this->binPath = $binPath;
-        $this->width = $width;
-        $this->height = $height;
+        $this->width   = $width;
+        $this->height  = $height;
         $this->quality = $quality;
+        $this->timeout = $timeout;
 
         return $this;
     }
@@ -149,6 +161,24 @@ class Browsershot
     }
 
     /**
+     * @param int $timeout The required Browsershot page timeout
+     *
+     * @return $this
+     *
+     * @throws \Exception
+     */
+    public function setTimeout($timeout)
+    {
+        if (!is_numeric($timeout)) {
+            throw new Exception('Height must be numeric');
+        }
+
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    /**
      * Convert the webpage to an image.
      *
      * @param string $targetFile The path of the file where the screenshot should be saved
@@ -198,7 +228,7 @@ class Browsershot
 
     /**
      * Take the screenshot.
-     * 
+     *
      * @param $targetFile
      */
     protected function takeScreenShot($targetFile)
@@ -227,11 +257,11 @@ class Browsershot
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
             page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
-            page.open('".$this->url."', function() {
+            page.open('{$this->url}', function() {
                window.setTimeout(function(){
-                page.render('".$targetFile."');
+                page.render('{$targetFile}');
                 phantom.exit();
-            }, 5000); // give phantomjs 5 seconds to process all javascript
+            }, {$this->timeout});
         });";
     }
 }
