@@ -56,7 +56,7 @@ These methods are provided:
 * `setQuality()`: Set the quality of the image (defaults to 60).
 * `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
 * `setURL()`: Set the URL of the webpage which should be converted to an image
-* `setTimeout()`: Set the browsershot timeout duration (ms) required to fully load all page assets and scripts.
+* `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations
