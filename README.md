@@ -42,8 +42,9 @@ Here is a sample call to create an image of a webpage:
     $browsershot = new Spatie\Browsershot\Browsershot();
     $browsershot
         ->setURL('http://www.arstechnica.com')
-        ->setWidth('1024')
-        ->setHeight('768')
+        ->setWidth(1024)
+        ->setHeight(768)
+        ->setTimeout(5000)
         ->save('targetdirectory/arstechnica-browsershot.jpg');
 ```
 
@@ -52,8 +53,10 @@ These methods are provided:
 * `setBinPath()`: Specify the path to your own phantomjs-binary.
 * `setWidth()`: Set the width of the image (defaults to 640).
 * `setHeight()`: Set the height of the image (defaults to 480).
+* `setQuality()`: Set the quality of the image (defaults to 60).
 * `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
 * `setURL()`: Set the URL of the webpage which should be converted to an image
+* `setTimeout()`: Set the browsershot timeout duration (ms) required to fully load all page assets and scripts.
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations
