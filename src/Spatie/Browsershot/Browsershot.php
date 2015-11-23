@@ -11,51 +11,44 @@ use Intervention\Image\ImageManager;
 class Browsershot
 {
     /**
-     * @var int Required Browsershot width
+     * @var int
      */
     private $width;
 
     /**
-     * @var int Required Browsershot height
+     * @var int
      */
     protected $height;
 
     /**
-     * @var int Required Browsershot image quality
+     * @var int
      */
     protected $quality;
 
     /**
-     * @var int URL to Browsershot
+     * @var int
      */
     protected $url;
 
     /**
-     * @var string Path to the phantomjs binary
+     * @var string
      */
     protected $binPath;
 
     /**
-     * @var int Required Browsershot page timeout
+     * @var int
      */
     protected $timeout;
 
-    /**
-     * @param string $binPath The path to the phantomjs binary
-     * @param int    $width The required Browsershot width
-     * @param int    $height The required Browsershot height
-     * @param int    $quality The required Browsershot image quality
-     * @param int    $timeout The required Browsershot page timeout
-     */
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout=5000)
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
         }
 
         $this->binPath = $binPath;
-        $this->width   = $width;
-        $this->height  = $height;
+        $this->width = $width;
+        $this->height = $height;
         $this->quality = $quality;
         $this->timeout = $timeout;
 
@@ -63,7 +56,7 @@ class Browsershot
     }
 
     /**
-     * @param string $binPath The path to the phantomjs binary
+     * @param string $binPath
      *
      * @return $this
      */
@@ -75,7 +68,7 @@ class Browsershot
     }
 
     /**
-     * @param int $width The required with of the screenshot
+     * @param int $width
      *
      * @return $this
      *
@@ -93,7 +86,7 @@ class Browsershot
     }
 
     /**
-     * @param int $height The required height of the screenshot
+     * @param int $height
      *
      * @return $this
      *
@@ -143,7 +136,7 @@ class Browsershot
     }
 
     /**
-     * @param string $url The website of which a screenshot should be made.
+     * @param string $url
      *
      * @return $this
      *
@@ -161,7 +154,7 @@ class Browsershot
     }
 
     /**
-     * @param int $timeout The required Browsershot page timeout
+     * @param int $timeout
      *
      * @return $this
      *
