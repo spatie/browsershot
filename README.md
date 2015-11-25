@@ -48,6 +48,15 @@ Here is a sample call to create an image of a webpage:
         ->save('targetdirectory/arstechnica-browsershot.jpg');
 ```
 
+Here is a sample call to download an image of a webpage:
+
+```php
+    $browsershot = new Spatie\Browsershot\Browsershot();
+    $browsershot
+        ...
+        ->download('targetdirectory/tmp-file.jpg' , 'downlload-file-name.jpg');
+```
+
 These methods are provided:
 
 * `setBinPath()`: Specify the path to your own phantomjs-binary.
@@ -58,6 +67,7 @@ These methods are provided:
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `setTimeout()`: Set the browsershot timeout duration (ms) required to fully load all page assets and scripts.
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
+* `download($tmpTargetFile, $name)`: Get browsetshot's download reponse. The tmpTargetFile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations
 
