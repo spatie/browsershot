@@ -45,6 +45,7 @@ Here is a sample call to create an image of a webpage:
         ->setWidth(1024)
         ->setHeight(768)
         ->setTimeout(5000)
+        ->setPhantomJSOptions(["--debug=true" , "--ssl-protocol=any", "--ignore-ssl-errors=true"])
         ->save('targetdirectory/arstechnica-browsershot.jpg');
 ```
 
@@ -57,6 +58,7 @@ These methods are provided:
 * `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
+* `setPhantomJSOptions()`: Set options given to PhantomJS to take the Browsershot (You can list available options with "/path_to_phantomjs_binary/phantomjs -h").
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations

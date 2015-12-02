@@ -36,6 +36,14 @@ class Browsershot
     protected $binPath;
 
     /**
+     * @var array
+     */
+    protected $phantomJSOptions = [
+        "--ssl-protocol=any" ,
+        "--ignore-ssl-errors=true"
+    ];
+
+    /**
      * @var int
      */
     protected $timeout;
@@ -172,6 +180,24 @@ class Browsershot
     }
 
     /**
+     * @param array $options
+     *
+     * @return $this
+     *
+     * @throws \Exception
+     */
+    public function setPhantomJSOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new Exception('Options must be an array');
+        }
+
+        $this->phantomJSOptions = $options;
+
+        return $this;
+    }
+
+    /**
      * Convert the webpage to an image.
      *
      * @param string $targetFile The path of the file where the screenshot should be saved
@@ -227,14 +253,30 @@ class Browsershot
     protected function takeScreenShot($targetFile)
     {
         $tempJsFileHandle = tmpfile();
-
         fwrite($tempJsFileHandle, $this->getPhantomJsScript($targetFile));
-        $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
-        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true ".$tempFileName);
-
-        shell_exec($cmd);
-
+        shell_exec( $this->getShellCmd( stream_get_meta_data($tempJsFileHandle)['uri'] ) );
         fclose($tempJsFileHandle);
+    }
+
+
+    /**
+     * Generate Shell command line
+     * @param $tempFileName
+     * @return string
+     */
+    protected function getShellCmd( $tempFileName )
+    {
+        return escapeshellcmd("{$this->binPath} {$this->getPhantomJSOptions()} {$tempFileName}");
+    }
+
+
+    /**
+     * Get PhantomJS Options
+     * @return string
+     */
+    protected function getPhantomJSOptions()
+    {
+        return implode( " " , $this->phantomJSOptions ) ;
     }
 
     /**
