@@ -10,6 +10,7 @@ use Intervention\Image\ImageManager;
  */
 class Browsershot
 {
+
     /**
      * @var int
      */
@@ -36,24 +37,48 @@ class Browsershot
     protected $binPath;
 
     /**
+     * @var array
+     */
+    protected $phantomJSOptions = [
+        "--ssl-protocol=any",
+        "--ignore-ssl-errors=true"
+    ];
+
+    /**
+     * @var array
+     */
+    protected $paperSize = [
+        "format"      => "A4",
+        "orientation" => "portrait",
+        "margin"      => [
+            "left"   => "1cm",
+            "right"  => "1cm",
+            "top"    => "1cm",
+            "bottom" => "1cm",
+        ]
+    ];
+
+    /**
      * @var int
      */
     protected $timeout;
 
+
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000)
     {
         if ($binPath == '') {
-            $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
+            $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs');
         }
 
         $this->binPath = $binPath;
-        $this->width = $width;
-        $this->height = $height;
+        $this->width   = $width;
+        $this->height  = $height;
         $this->quality = $quality;
         $this->timeout = $timeout;
 
         return $this;
     }
+
 
     /**
      * @param string $binPath
@@ -67,6 +92,7 @@ class Browsershot
         return $this;
     }
 
+
     /**
      * @param int $width
      *
@@ -76,7 +102,7 @@ class Browsershot
      */
     public function setWidth($width)
     {
-        if (!is_numeric($width)) {
+        if ( ! is_numeric($width)) {
             throw new Exception('Width must be numeric');
         }
 
@@ -84,6 +110,7 @@ class Browsershot
 
         return $this;
     }
+
 
     /**
      * @param int $height
@@ -94,7 +121,7 @@ class Browsershot
      */
     public function setHeight($height)
     {
-        if (!is_numeric($height)) {
+        if ( ! is_numeric($height)) {
             throw new Exception('Height must be numeric');
         }
 
@@ -102,6 +129,7 @@ class Browsershot
 
         return $this;
     }
+
 
     /**
      * Set the image quality.
@@ -114,7 +142,7 @@ class Browsershot
      */
     public function setQuality($quality)
     {
-        if (!is_numeric($quality) || $quality < 1 || $quality > 100) {
+        if ( ! is_numeric($quality) || $quality < 1 || $quality > 100) {
             throw new Exception('Quality must be a numeric value between 1 - 100');
         }
 
@@ -122,6 +150,7 @@ class Browsershot
 
         return $this;
     }
+
 
     /**
      * Set to height so the whole page will be rendered.
@@ -135,6 +164,7 @@ class Browsershot
         return $this;
     }
 
+
     /**
      * @param string $url
      *
@@ -144,7 +174,7 @@ class Browsershot
      */
     public function setUrl($url)
     {
-        if (!strlen($url) > 0) {
+        if ( ! strlen($url) > 0) {
             throw new Exception('No url specified');
         }
 
@@ -152,6 +182,7 @@ class Browsershot
 
         return $this;
     }
+
 
     /**
      * @param int $timeout
@@ -162,7 +193,7 @@ class Browsershot
      */
     public function setTimeout($timeout)
     {
-        if (!is_numeric($timeout)) {
+        if ( ! is_numeric($timeout)) {
             throw new Exception('Height must be numeric');
         }
 
@@ -170,6 +201,45 @@ class Browsershot
 
         return $this;
     }
+
+
+    /**
+     * @param array $options
+     *
+     * @return $this
+     *
+     * @throws \Exception
+     */
+    public function setPhantomJSOptions($options)
+    {
+        if ( ! is_array($options)) {
+            throw new Exception('Options must be an array');
+        }
+
+        $this->phantomJSOptions = $options;
+
+        return $this;
+    }
+
+
+    /**
+     * @param $size
+     *
+     * @return $this
+     *
+     * @throws Exception
+     */
+    public function setPaperSize($size)
+    {
+        if ( ! is_array($size)) {
+            throw new Exception('Options must be an array');
+        }
+
+        $this->paperSize = $size;
+
+        return $this;
+    }
+
 
     /**
      * Convert the webpage to an image.
@@ -186,7 +256,7 @@ class Browsershot
             throw new Exception('targetfile not set');
         }
 
-        if (!in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png'])) {
+        if ( ! in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), [ 'jpeg', 'jpg', 'png', 'pdf' ])) {
             throw new Exception('targetfile extension not valid');
         }
 
@@ -198,63 +268,102 @@ class Browsershot
             throw new Exception('url is invalid');
         }
 
-        if (!file_exists($this->binPath)) {
+        if ( ! file_exists($this->binPath)) {
             throw new Exception('binary does not exist');
         }
 
-        $this->takeScreenShot($targetFile);
+        $pdf = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)) == 'pdf' ;
+        $this->takeScreenShot($targetFile, $pdf);
 
-        if (!file_exists($targetFile) or filesize($targetFile) < 1024) {
+        if ( ! file_exists($targetFile) or filesize($targetFile) < 1024) {
             throw new Exception('could not create screenshot');
         }
 
-        if ($this->height > 0) {
+        if ( ! $pdf && $this->height > 0) {
             $imageManager = new ImageManager();
-            $imageManager
-                ->make($targetFile)
-                ->crop($this->width, $this->height, 0, 0)
-                ->save($targetFile, $this->quality);
+            $imageManager->make($targetFile)
+                         ->crop($this->width, $this->height, 0, 0)
+                         ->save($targetFile, $this->quality);
         }
 
         return true;
     }
 
+
     /**
      * Take the screenshot.
      *
      * @param $targetFile
+     * @param $pdf
      */
-    protected function takeScreenShot($targetFile)
+    protected function takeScreenShot($targetFile, $pdf = false)
     {
         $tempJsFileHandle = tmpfile();
-
-        fwrite($tempJsFileHandle, $this->getPhantomJsScript($targetFile));
-        $tempFileName = stream_get_meta_data($tempJsFileHandle)['uri'];
-        $cmd = escapeshellcmd("{$this->binPath} --ssl-protocol=any --ignore-ssl-errors=true ".$tempFileName);
-
-        shell_exec($cmd);
-
+        fwrite($tempJsFileHandle, $this->getPhantomJsScript($targetFile, $pdf));
+        shell_exec($this->getShellCmd(stream_get_meta_data($tempJsFileHandle)['uri']));
         fclose($tempJsFileHandle);
     }
+
+
+    /**
+     * Generate Shell command line
+     * @param $tempFileName
+     * @return string
+     */
+    protected function getShellCmd($tempFileName)
+    {
+        return escapeshellcmd("{$this->binPath} {$this->getPhantomJSOptions()} {$tempFileName}");
+    }
+
+
+    /**
+     * Get PhantomJS Options
+     * @return string
+     */
+    protected function getPhantomJSOptions()
+    {
+        return implode(" ", $this->phantomJSOptions);
+    }
+
 
     /**
      * Get the script to be executed by phantomjs.
      *
-     * @param string $targetFile
+     * @param string  $targetFile
+     * @param boolean $pdf
      *
      * @return string
      */
-    protected function getPhantomJsScript($targetFile)
+    protected function getPhantomJsScript($targetFile, $pdf = false)
     {
         return "
             var page = require('webpage').create();
+            " . ($pdf ? $this->getPaperSizeScript() : '') . "
             page.settings.javascriptEnabled = true;
-            page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
+            " . ( ! $pdf ? $this->getViewPortScript() : '') . "
             page.open('{$this->url}', function() {
                window.setTimeout(function(){
                 page.render('{$targetFile}');
                 phantom.exit();
             }, {$this->timeout});
         });";
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getPaperSizeScript()
+    {
+        return "page.paperSize = ".json_encode($this->paperSize).";" ;
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getViewPortScript()
+    {
+        return "page.viewportSize = { width: " . $this->width . ( $this->height == 0 ? '' : ', height: ' . $this->height ) . " };" ;
     }
 }
