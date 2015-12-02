@@ -49,6 +49,31 @@ Here is a sample call to create an image of a webpage:
         ->save('targetdirectory/arstechnica-browsershot.jpg');
 ```
 
+Here is a sample call to create a pdf of a webpage:
+
+```php
+    $browsershot = new Spatie\Browsershot\Browsershot();
+    $browsershot
+        ->setURL('http://www.arstechnica.com')
+        ...
+        ->setPaperSize([
+            "format"      => "A4",
+            "orientation" => "portrait",
+            "margin"      => [
+                "left"   => "1cm",
+                "right"  => "1cm",
+                "top"    => "1cm",
+                "bottom" => "1cm",
+        ])
+        ->save('targetdirectory/arstechnica-browsershot.pdf');
+```
+
+Allowed Browsershot formats:
+
+* jpeg/jpg
+* png
+* pdf
+
 These methods are provided:
 
 * `setBinPath()`: Specify the path to your own phantomjs-binary.
@@ -59,6 +84,7 @@ These methods are provided:
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
 * `setPhantomJSOptions()`: Set options given to PhantomJS to take the Browsershot (You can list available options with "/path_to_phantomjs_binary/phantomjs -h").
+* `setPaperSize()`: Set paper size used to render pdf Browsershot. (see : http://phantomjs.org/api/webpage/property/paper-size.html)
 * `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
 
 ## Other implementations
