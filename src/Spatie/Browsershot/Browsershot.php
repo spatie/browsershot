@@ -26,6 +26,11 @@ class Browsershot
     protected $quality;
 
     /**
+     * @var string
+     */
+    protected $background;
+
+    /**
      * @var int
      */
     protected $url;
@@ -40,7 +45,7 @@ class Browsershot
      */
     protected $timeout;
 
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000)
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $background = null)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
@@ -50,6 +55,7 @@ class Browsershot
         $this->width = $width;
         $this->height = $height;
         $this->quality = $quality;
+        $this->background = $background;
         $this->timeout = $timeout;
 
         return $this;
@@ -119,6 +125,24 @@ class Browsershot
         }
 
         $this->quality = $quality;
+
+        return $this;
+    }
+
+    /**
+     * @param string $background
+     *
+     * @return $this
+     *
+     * @throws \Exception
+     */
+    public function setBackground($background)
+    {
+        if (!strlen($background) > 0) {
+            throw new Exception('No background specified');
+        }
+
+        $this->background = $background;
 
         return $this;
     }
@@ -251,13 +275,15 @@ class Browsershot
             page.settings.javascriptEnabled = true;
             page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
             page.open('{$this->url}', function() {
-                page.evaluate(function() {
-                    var style = document.createElement('style'),
-                        text = document.createTextNode('body { background: #fff }');
-                    style.setAttribute('type', 'text/css');
-                    style.appendChild(text);
-                    document.head.insertBefore(style, document.head.firstChild);
-                });
+                if (".($this->background ? 'true' : 'false').") {
+                    page.evaluate(function() {
+                        var style = document.createElement('style'),
+                            text = document.createTextNode('body { background: {$this->background} }');
+                        style.setAttribute('type', 'text/css');
+                        style.appendChild(text);
+                        document.head.insertBefore(style, document.head.firstChild);
+                    });
+                }
                 window.setTimeout(function(){
                     page.render('{$targetFile}');
                     phantom.exit();
