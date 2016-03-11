@@ -28,7 +28,7 @@ class Browsershot
     /**
      * @var string
      */
-    protected $background;
+    protected $backgroundColor;
 
     /**
      * @var int
@@ -45,7 +45,7 @@ class Browsershot
      */
     protected $timeout;
 
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $background = null)
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
@@ -55,7 +55,7 @@ class Browsershot
         $this->width = $width;
         $this->height = $height;
         $this->quality = $quality;
-        $this->background = $background;
+        $this->backgroundColor = $backgroundColor;
         $this->timeout = $timeout;
 
         return $this;
@@ -130,19 +130,21 @@ class Browsershot
     }
 
     /**
-     * @param string $background
+     * Set the background color.
+     *
+     * @param string $backgroundColor
      *
      * @return $this
      *
      * @throws \Exception
      */
-    public function setBackground($background)
+    public function setBackgroundColor($backgroundColor)
     {
-        if (!strlen($background) > 0) {
-            throw new Exception('No background specified');
+        if (!strlen($backgroundColor) > 0) {
+            throw new Exception('No background color specified');
         }
 
-        $this->background = $background;
+        $this->backgroundColor = $backgroundColor;
 
         return $this;
     }
@@ -275,10 +277,10 @@ class Browsershot
             page.settings.javascriptEnabled = true;
             page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
             page.open('{$this->url}', function() {
-                if (".($this->background ? 'true' : 'false').") {
+                if (".($this->backgroundColor ? 'true' : 'false').") {
                     page.evaluate(function() {
                         var style = document.createElement('style'),
-                            text = document.createTextNode('body { background: {$this->background} }');
+                            text = document.createTextNode('body { background: {$this->backgroundColor} }');
                         style.setAttribute('type', 'text/css');
                         style.appendChild(text);
                         document.head.insertBefore(style, document.head.firstChild);
