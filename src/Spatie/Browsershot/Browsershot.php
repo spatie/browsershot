@@ -249,19 +249,20 @@ class Browsershot
         return "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
-            page.evaluate(function() {
-                var style = document.createElement('style'),
-                    text = document.createTextNode('body { background: #fff }');
-                style.setAttribute('type', 'text/css');
-                style.appendChild(text);
-                document.head.insertBefore(style, document.head.firstChild);
-            });
             page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
             page.open('{$this->url}', function() {
-               window.setTimeout(function(){
-                page.render('{$targetFile}');
-                phantom.exit();
-            }, {$this->timeout});
-        });";
+                page.evaluate(function() {
+                    var style = document.createElement('style'),
+                        text = document.createTextNode('body { background: #fff }');
+                    style.setAttribute('type', 'text/css');
+                    style.appendChild(text);
+                    document.head.insertBefore(style, document.head.firstChild);
+                });
+                window.setTimeout(function(){
+                    page.render('{$targetFile}');
+                    phantom.exit();
+                }, {$this->timeout});
+            });
+        ";
     }
 }
