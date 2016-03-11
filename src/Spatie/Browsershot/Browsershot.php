@@ -275,7 +275,7 @@ class Browsershot
         return "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
-            page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
+            page.viewportSize = { width: ".$this->width.", height: ".($this->height == 0 ? 9999 : $this->height)." };
             page.open('{$this->url}', function() {
                 if (".($this->backgroundColor ? 'true' : 'false').") {
                     page.evaluate(function() {
