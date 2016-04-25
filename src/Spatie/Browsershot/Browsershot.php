@@ -275,6 +275,7 @@ class Browsershot
         return "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
+            page.settings.resourceTimeout = ".$this->timeout.";
             page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
             page.open('{$this->url}', function() {
                 if (".($this->backgroundColor ? 'true' : 'false').") {
