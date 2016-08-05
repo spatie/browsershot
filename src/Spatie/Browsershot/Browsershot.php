@@ -287,10 +287,14 @@ class Browsershot
                         document.head.insertBefore(style, document.head.firstChild);
                     });
                 }
-                window.setTimeout(function(){
+                
+                var renderOut = function() {
                     page.render('{$targetFile}');
                     phantom.exit();
-                }, {$this->timeout});
+                };
+                
+                page.onLoadFinished = renderOut.call();
+                page.onResourceTimeout = renderOut.call();
             });
         ";
     }
