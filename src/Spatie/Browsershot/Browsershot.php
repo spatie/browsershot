@@ -230,7 +230,7 @@ class Browsershot
 
         $this->takeScreenShot($targetFile);
 
-        if (!file_exists($targetFile) or filesize($targetFile) < 1024) {
+        if (!file_exists($targetFile) || filesize($targetFile) < 1024) {
             throw new Exception('could not create screenshot');
         }
 
