@@ -76,9 +76,9 @@ class Browsershot
     /**
      * @param int $width
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setWidth($width)
     {
@@ -94,9 +94,9 @@ class Browsershot
     /**
      * @param int $height
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setHeight($height)
     {
@@ -114,9 +114,9 @@ class Browsershot
      *
      * @param $quality
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setQuality($quality)
     {
@@ -134,9 +134,9 @@ class Browsershot
      *
      * @param string $backgroundColor
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setBackgroundColor($backgroundColor)
     {
@@ -164,9 +164,9 @@ class Browsershot
     /**
      * @param string $url
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setUrl($url)
     {
@@ -182,9 +182,9 @@ class Browsershot
     /**
      * @param int $timeout
      *
-     * @return $this
-     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function setTimeout($timeout)
     {
@@ -202,9 +202,9 @@ class Browsershot
      *
      * @param string $targetFile The path of the file where the screenshot should be saved
      *
-     * @return bool
-     *
      * @throws \Exception
+     *
+     * @return bool
      */
     public function save($targetFile)
     {
@@ -275,8 +275,8 @@ class Browsershot
         return "
             var page = require('webpage').create();
             page.settings.javascriptEnabled = true;
-            page.settings.resourceTimeout = ".$this->timeout.";
-            page.viewportSize = { width: ".$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
+            page.settings.resourceTimeout = ".$this->timeout.';
+            page.viewportSize = { width: '.$this->width.($this->height == 0 ? '' : ', height: '.$this->height)." };
             page.open('{$this->url}', function() {
                 if (".($this->backgroundColor ? 'true' : 'false').") {
                     page.evaluate(function() {
