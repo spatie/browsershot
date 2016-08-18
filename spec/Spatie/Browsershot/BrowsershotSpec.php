@@ -3,26 +3,20 @@
 namespace spec\Spatie\Browsershot;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-
 
 class BrowsershotSpec extends ObjectBehavior
 {
-
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Spatie\Browsershot\Browsershot');
     }
 
-    function it_should_fail_if_target_file_is_not_set()
+    public function it_should_fail_if_target_file_is_not_set()
     {
         $this->shouldThrow(new \Exception('targetfile not set'))->during('save', ['']);
     }
 
-
-
-    function it_should_fail_if_invalid_url_is_set()
+    public function it_should_fail_if_invalid_url_is_set()
     {
         $this
             ->setURL('gibberish')
@@ -30,15 +24,15 @@ class BrowsershotSpec extends ObjectBehavior
             ->during('save', [$this->getTestPath()]);
     }
 
-    function it_should_fail_if_target_file_not_is_image()
+    public function it_should_fail_if_target_file_not_is_image()
     {
         $this
             ->setURL($this->getTestURL())
             ->shouldThrow(new \Exception('targetfile extension not valid'))
-            ->during('save', [$this->getTestPath() . 'txt']);
+            ->during('save', [$this->getTestPath().'txt']);
     }
 
-    function it_should_fail_if_binary_does_not_exist()
+    public function it_should_fail_if_binary_does_not_exist()
     {
         $this
             ->setURL($this->getTestURL())
@@ -60,7 +54,6 @@ class BrowsershotSpec extends ObjectBehavior
     }
     */
 
-
     public function getTestPath()
     {
         return 'image.png';
@@ -71,15 +64,12 @@ class BrowsershotSpec extends ObjectBehavior
         return 'http://google.com';
     }
 
-
     public function getMatchers()
     {
         return [
-            'exist' => function($subject, $file) {
-                    return file_exists($file);
-                },
+            'exist' => function ($subject, $file) {
+                return file_exists($file);
+            },
         ];
     }
-
-
 }
