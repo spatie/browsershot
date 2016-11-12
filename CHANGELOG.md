@@ -2,6 +2,9 @@
 
 All Notable changes to `browsershot` will be documented in this file
 
+### 1.5.3 - 2016-11-12
+- Fix width issues
+
 ### 1.5.2 - 2016-08-18
 - Upgrade `phantomjs` binary
 
