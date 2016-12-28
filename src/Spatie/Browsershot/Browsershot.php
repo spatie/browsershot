@@ -16,10 +16,10 @@ class Browsershot
     /** @var int */
     protected $quality;
 
-    /**  @var string */
+    /** @var string */
     protected $backgroundColor;
 
-    /**  @var string */
+    /** @var string */
     protected $url;
 
     /** @var string */
@@ -65,7 +65,7 @@ class Browsershot
      */
     public function setWidth($width)
     {
-        if (!is_numeric($width)) {
+        if (! is_numeric($width)) {
             throw new Exception('Width must be numeric');
         }
 
@@ -83,7 +83,7 @@ class Browsershot
      */
     public function setHeight($height)
     {
-        if (!is_numeric($height)) {
+        if (! is_numeric($height)) {
             throw new Exception('Height must be numeric');
         }
 
@@ -103,7 +103,7 @@ class Browsershot
      */
     public function setQuality($quality)
     {
-        if (!is_numeric($quality) || $quality < 1 || $quality > 100) {
+        if (! is_numeric($quality) || $quality < 1 || $quality > 100) {
             throw new Exception('Quality must be a numeric value between 1 - 100');
         }
 
@@ -123,7 +123,7 @@ class Browsershot
      */
     public function setBackgroundColor($backgroundColor)
     {
-        if (!strlen($backgroundColor) > 0) {
+        if (! strlen($backgroundColor) > 0) {
             throw new Exception('No background color specified');
         }
 
@@ -153,7 +153,7 @@ class Browsershot
      */
     public function setUrl($url)
     {
-        if (!strlen($url) > 0) {
+        if (! strlen($url) > 0) {
             throw new Exception('No url specified');
         }
 
@@ -171,7 +171,7 @@ class Browsershot
      */
     public function setTimeout($timeout)
     {
-        if (!is_numeric($timeout)) {
+        if (! is_numeric($timeout)) {
             throw new Exception('Height must be numeric');
         }
 
@@ -195,7 +195,7 @@ class Browsershot
             throw new Exception('targetfile not set');
         }
 
-        if (!in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png'])) {
+        if (! in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png'])) {
             throw new Exception('targetfile extension not valid');
         }
 
@@ -207,13 +207,13 @@ class Browsershot
             throw new Exception('url is invalid');
         }
 
-        if (!file_exists($this->binPath)) {
+        if (! file_exists($this->binPath)) {
             throw new Exception('binary does not exist');
         }
 
         $this->takeScreenShot($targetFile);
 
-        if (!file_exists($targetFile) || filesize($targetFile) < 1024) {
+        if (! file_exists($targetFile) || filesize($targetFile) < 1024) {
             throw new Exception('could not create screenshot');
         }
 
