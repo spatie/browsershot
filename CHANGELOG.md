@@ -2,6 +2,9 @@
 
 All Notable changes to `browsershot` will be documented in this file
 
+### 1.5.4 - 2016-12-17
+- make `width` protected
+
 ### 1.5.3 - 2016-11-12
 - Fix width issues
 

@@ -5,44 +5,27 @@ namespace Spatie\Browsershot;
 use Exception;
 use Intervention\Image\ImageManager;
 
-/**
- * Class Browsershot.
- */
 class Browsershot
 {
-    /**
-     * @var int
-     */
-    private $width;
+    /** @var int */
+    protected $width;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $height;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $quality;
 
-    /**
-     * @var string
-     */
+    /**  @var string */
     protected $backgroundColor;
 
-    /**
-     * @var int
-     */
+    /**  @var string */
     protected $url;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $binPath;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $timeout;
 
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
@@ -112,7 +95,7 @@ class Browsershot
     /**
      * Set the image quality.
      *
-     * @param $quality
+     * @param int $quality
      *
      * @throws \Exception
      *
