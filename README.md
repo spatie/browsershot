@@ -49,7 +49,7 @@ Please note that the provided binary is intented for use on Ubuntu.
 Here is a sample call to create an image of a webpage:
 
 ```php
-    $browsershot = new Spatie\Browsershot\Browsershot();
+    $browsershot = new \Spatie\Browsershot\Browsershot();
     $browsershot
         ->setURL('http://www.arstechnica.com')
         ->setWidth(1024)
