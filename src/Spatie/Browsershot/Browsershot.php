@@ -229,6 +229,24 @@ class Browsershot
     }
 
     /**
+     * Download browsershot
+     * @param      $tmpTargetFile tmp file used to store image
+     * @param null $name name of the download file
+     * @return Response download response
+     * @throws Exception
+     */
+    public function download($tmpTargetFile, $name = null)
+    {
+        if ($this->save($tmpTargetFile)) {
+            if ($name == null) {
+                $name = basename($tmpTargetFile);
+            }
+
+            return response()->download($tmpTargetFile, $name);
+        }
+    }
+
+    /**
      * Take the screenshot.
      *
      * @param $targetFile
