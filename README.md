@@ -68,7 +68,7 @@ These methods are provided:
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
 * `setBackgroundColor($hexValueOrColorName)`: Set the background color of the html document prior to taking a screenshot.
-* `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg.
+* `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg, ppm, bmp, pdf, gif.
 
 ## Other implementations
 
