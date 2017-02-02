@@ -195,7 +195,7 @@ class Browsershot
             throw new Exception('targetfile not set');
         }
 
-        if (! in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png'])) {
+        if (! in_array(strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)), ['jpeg', 'jpg', 'png', 'ppm', 'bmp', 'pdf', 'gif'])) {
             throw new Exception('targetfile extension not valid');
         }
 
