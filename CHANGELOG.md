@@ -2,6 +2,9 @@
 
 All Notable changes to `browsershot` will be documented in this file
 
+### 1.6.0 - 2017-01-02
+- added support for some more extensions
+
 ### 1.5.4 - 2016-12-17
 - make `width` protected
 
