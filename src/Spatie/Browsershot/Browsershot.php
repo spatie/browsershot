@@ -31,7 +31,11 @@ class Browsershot
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
     {
         if ($binPath == '') {
-            $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
+            if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+                $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs.exe');
+            } else {
+                $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
+            }
         }
 
         $this->binPath = $binPath;
