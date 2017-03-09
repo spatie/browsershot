@@ -32,7 +32,7 @@ class Browsershot
     {
         if ($binPath == '') {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-                $binPath = realpath(dirname(__FILE__) . '/../../../bin/phantomjs.exe');
+                $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs.exe');
             } else {
                 $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
             }
