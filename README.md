@@ -64,6 +64,7 @@ These methods are provided:
 * `setWidth()`: Set the width of the image (defaults to 640).
 * `setHeight()`: Set the height of the image (defaults to 480).
 * `setQuality()`: Set the quality of the image (defaults to 60).
+* `setUserAgent()`: Set the User Agent header instead of PhantomJS default one.
 * `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
 * `setURL()`: Set the URL of the webpage which should be converted to an image
 * `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).

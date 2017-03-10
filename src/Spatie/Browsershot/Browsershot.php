@@ -28,7 +28,10 @@ class Browsershot
     /** @var int */
     protected $timeout;
 
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
+    /** @var string  */
+    protected $userAgent;
+
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null, $userAgent)
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
@@ -40,6 +43,7 @@ class Browsershot
         $this->quality = $quality;
         $this->backgroundColor = $backgroundColor;
         $this->timeout = $timeout;
+        $this->userAgent = $userAgent;
 
         return $this;
     }
@@ -180,6 +184,23 @@ class Browsershot
         return $this;
     }
 
+     /**
+     * @param string $userAgent
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function setUserAgent( $userAgent )
+    {
+    	if(! strlen( $userAgent ) > 0){
+    		throw new Exception( 'User Agent not specified' );
+	    }
+
+	    $this->userAgent = "page.settings.userAgent = '" . $userAgent ."';";
+
+    	return $this;
+    }
+
     /**
      * Convert the webpage to an image.
      *
@@ -257,6 +278,7 @@ class Browsershot
     {
         return "
             var page = require('webpage').create();
+            {$this->userAgent}
             page.settings.javascriptEnabled = true;
             page.settings.resourceTimeout = ".$this->timeout.';
             page.viewportSize = { width: '.$this->width.', height: '.($this->height == 0 ? 1 : $this->height)." };
