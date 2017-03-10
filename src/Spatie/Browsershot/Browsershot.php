@@ -28,8 +28,8 @@ class Browsershot
     /** @var int */
     protected $timeout;
 
-	/** @var string */
-	protected $userAgent;
+    /** @var string */
+    protected $userAgent;
 
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null, $userAgent = '')
     {
@@ -43,7 +43,7 @@ class Browsershot
         $this->quality = $quality;
         $this->backgroundColor = $backgroundColor;
         $this->timeout = $timeout;
-	    $this->userAgent = $userAgent;
+        $this->userAgent = $userAgent;
 
         return $this;
     }
@@ -184,20 +184,21 @@ class Browsershot
         return $this;
     }
 
-	/**
-	 * @param string $userAgent
-	 *
-	 * @return $this
-	 * @throws \Exception
-	 */
-	public function setUserAgent( $userAgent ) {
-		if ( ! strlen( $userAgent ) > 0 ) {
-			throw new Exception( 'No User Agent specified' );
-		}
-		$this->userAgent = "page.settings.userAgent = '" . $userAgent . "';";
+     /**
+     * @param string $userAgent
+     *
+     * @return $this
+     * @throws \Exception
+     */
+	public function setUserAgent( $userAgent )
+    {
+        if ( ! strlen( $userAgent ) > 0 ) {
+            throw new Exception( 'No User Agent specified' );
+        }
+        $this->userAgent = "page.settings.userAgent = '" . $userAgent . "';";
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      * Convert the webpage to an image.
