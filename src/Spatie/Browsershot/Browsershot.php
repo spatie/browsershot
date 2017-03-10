@@ -190,9 +190,9 @@ class Browsershot
      * @return $this
      * @throws \Exception
      */
-    public function setUserAgent( $userAgent )
+    public function setUserAgent($userAgent)
     {
-        if(! strlen($userAgent) > 0) {
+        if (! strlen($userAgent) > 0) {
             throw new Exception('User Agent not specified');
         }
 
