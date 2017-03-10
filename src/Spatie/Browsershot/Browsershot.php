@@ -184,7 +184,7 @@ class Browsershot
         return $this;
     }
 
-     /**
+    /**
      * @param string $userAgent
      *
      * @return $this
@@ -192,11 +192,11 @@ class Browsershot
      */
     public function setUserAgent( $userAgent )
     {
-        if(! strlen( $userAgent ) > 0){
+        if(! strlen($userAgent) > 0) {
             throw new Exception('User Agent not specified');
         }
 
-        $this->userAgent = "page.settings.userAgent = '" . $userAgent . "';";
+        $this->userAgent = "page.settings.userAgent = '".$userAgent."';";
 
         return $this;
     }
