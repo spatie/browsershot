@@ -28,7 +28,7 @@ class Browsershot
     /** @var int */
     protected $timeout;
 
-    /** @var string  */
+    /** @var string */
     protected $userAgent;
 
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null, $userAgent = '')
@@ -192,13 +192,13 @@ class Browsershot
      */
     public function setUserAgent( $userAgent )
     {
-    	if(! strlen( $userAgent ) > 0){
-    		throw new Exception( 'User Agent not specified' );
-	    }
+        if(! strlen( $userAgent ) > 0){
+            throw new Exception('User Agent not specified');
+        }
 
-	    $this->userAgent = "page.settings.userAgent = '" . $userAgent ."';";
+        $this->userAgent = "page.settings.userAgent = '" . $userAgent . "';";
 
-    	return $this;
+        return $this;
     }
 
     /**
