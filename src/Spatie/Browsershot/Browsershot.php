@@ -31,7 +31,7 @@ class Browsershot
     /** @var string  */
     protected $userAgent;
 
-    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null, $userAgent)
+    public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null, $userAgent = '')
     {
         if ($binPath == '') {
             $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
