@@ -57,10 +57,10 @@ class Browsershot
     }
 
     /**
-      * Get PhantomJS binary Path.
-      *
-      * @return string
-      */
+     * Get PhantomJS binary Path.
+     *
+     * @return string
+     */
     public function getBinPath()
     {
         $binFile = 'phantomjs';
