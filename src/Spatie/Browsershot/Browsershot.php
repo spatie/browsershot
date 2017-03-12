@@ -55,16 +55,16 @@ class Browsershot
 
         return $this;
     }
-    
+
     /**
-      * Get PhantomJS binary Path
+      * Get PhantomJS binary Path.
       *
       * @return string
       */
     public function getBinPath()
     {
         $binFile = 'phantomjs';
-        
+
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $binFile = 'phantomjs.exe';
         }
