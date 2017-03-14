@@ -30,7 +30,7 @@ class Browsershot
 
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
     {
-        if ($binPath == '') {
+        if ($binPath === '') {
             $binPath = $this->getBinPath();
         }
 
