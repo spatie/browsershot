@@ -2,6 +2,9 @@
 
 All Notable changes to `browsershot` will be documented in this file
 
+### 1.7.0 - 2017-03-14
+- added support for W w w windows
+
 ### 1.6.0 - 2017-01-02
 - added support for some more extensions
 
