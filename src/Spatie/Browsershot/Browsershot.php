@@ -31,7 +31,7 @@ class Browsershot
     public function __construct($binPath = '', $width = 640, $height = 480, $quality = 60, $timeout = 5000, $backgroundColor = null)
     {
         if ($binPath == '') {
-            $binPath = realpath(dirname(__FILE__).'/../../../bin/phantomjs');
+            $binPath = $this->getBinPath();
         }
 
         $this->binPath = $binPath;
@@ -54,6 +54,22 @@ class Browsershot
         $this->binPath = $binPath;
 
         return $this;
+    }
+
+    /**
+     * Get PhantomJS binary Path.
+     *
+     * @return string
+     */
+    public function getBinPath()
+    {
+        $binFile = 'phantomjs';
+
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $binFile = 'phantomjs.exe';
+        }
+
+        return realpath(dirname(__FILE__).'/../../../bin/'.$binFile);
     }
 
     /**
