@@ -2,6 +2,9 @@
 
 All Notable changes to `browsershot` will be documented in this file
 
+### 1.8.0 - 2017-04-27
+- added support for setting a custom user agent
+
 ### 1.7.0 - 2017-03-14
 - added support for W w w windows
 
