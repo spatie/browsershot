@@ -73,6 +73,10 @@ class Browsershot
             $binFile = 'phantomjs.exe';
         }
 
+        if (defined('PHP_OS') && PHP_OS == 'Darwin') {
+            $binFile = 'phantomjs_macosx';
+        }
+
         return realpath(dirname(__FILE__).'/../../../bin/'.$binFile);
     }
 
