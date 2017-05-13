@@ -25,7 +25,8 @@
         "intervention/image": "2.*"
     },
     "bin": [
-        "bin/phantomjs"
+        "bin/phantomjs",
+        "bin/phantomjs_macosx"
     ],
     "require-dev": {
         "phpspec/phpspec": "~2.1"
