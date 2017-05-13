@@ -1,6 +1,9 @@
-#Changelog
+## Changelog
 
-All Notable changes to `browsershot` will be documented in this file
+All notable changes to `browsershot` will be documented in this file
+
+### 1.7.0 - 2017-05-13
+- added support MacOS
 
 ### 1.7.0 - 2017-03-14
 - added support for W w w windows
