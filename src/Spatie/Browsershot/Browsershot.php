@@ -196,7 +196,7 @@ class Browsershot
     public function setTimeout($timeout)
     {
         if (! is_numeric($timeout)) {
-            throw new Exception('Height must be numeric');
+            throw new Exception('Timeout must be numeric');
         }
 
         $this->timeout = $timeout;
