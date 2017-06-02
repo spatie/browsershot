@@ -2,7 +2,7 @@
 
 All notable changes to `browsershot` will be documented in this file
 
-### 1.7.1 - 2017-06-02
+### 1.9.1 - 2017-06-02
 - fix error message
 
 ### 1.7.0 - 2017-05-13
