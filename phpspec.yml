@@ -1,5 +1,0 @@
-suites:
-  spatie_suite:
-    namespace: Spatie
-    src_path: src
-    spec_prefix: spec
