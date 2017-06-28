@@ -23,7 +23,8 @@
     ],
     "require": {
         "php": "^7.0",
-        "spatie/image": "~1.0.0"
+        "spatie/image": "~1.0.0",
+        "symfony/process": "^3.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1"
