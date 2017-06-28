@@ -4,5 +4,4 @@ namespace Spatie\Browsershot;
 
 class Browsershot
 {
-
 }
