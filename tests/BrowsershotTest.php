@@ -11,6 +11,7 @@ class BrowsershotTest extends TestCase
     public function it_can_take_a_screenshot()
     {
         Browsershot::url('https://spatie.be')
+            ->windowsize(100, 200)
             ->save('tests/my_screenshot.png');
     }
 }

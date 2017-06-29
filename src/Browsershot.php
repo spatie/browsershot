@@ -13,6 +13,15 @@ class Browsershot
 
     protected $pathToChrome = '';
 
+    /** @var int */
+    protected $windowWidth = 0;
+
+    /** @var int */
+    protected $windowHeight = 0;
+
+    /** @var bool */
+    protected $disableGpu = true;
+
     public static function url(string $url)
     {
         return new static($url);
@@ -21,6 +30,14 @@ class Browsershot
     public function __construct(string $url)
     {
         $this->url = $url;
+    }
+
+    public function windowsize(int $width, int $height)
+    {
+        $this->windowWidth = $width;
+        $this->windowHeight = $height;
+
+        return $this;
     }
 
     public function save(string $targetPath)
@@ -53,7 +70,15 @@ class Browsershot
 
     protected function buildScreenshotProcess(string $workingDirectory): Process
     {
-        $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --disable-gpu --screenshot {$this->url}";
+        $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
+
+        if ($this->disableGpu) {
+            $command .= ' --disable-gpu';
+        }
+
+        if ($this->windowWidth > 0) {
+            $command .= " --window-size={$this->windowWidth},{$this->windowHeight}";
+        }
 
         return new Process($command);
     }
