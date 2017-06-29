@@ -19,14 +19,12 @@ class Browsershot
 
     protected $windowWidth = 0;
     protected $windowHeight = 0;
-
     protected $disableGpu = true;
-
     protected $hideScrollbars = true;
+    protected $userAgent = '';
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
-    /** @var int */
 
     protected $timeout = 60;
 
@@ -59,6 +57,13 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    public function userAgent(string $userAgent)
+    {
+        $this->userAgent = $userAgent;
 
         return $this;
     }
@@ -147,6 +152,10 @@ class Browsershot
 
         if ($this->hideScrollbars) {
             $command .= ' --hide-scrollbars';
+        }
+
+        if (! empty($this->userAgent)) {
+            $command .= " --user-agent={$this->userAgent}";
         }
 
         return (new Process($command))->setTimeout($this->timeout);

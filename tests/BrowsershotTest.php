@@ -14,7 +14,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_be_instanciated()
     {
-        $browsershot = new Browsershot('https://spatie.be');
+        $browsershot = new Browsershot('spatie.be');
 
         $this->assertInstanceOf(Browsershot::class, $browsershot);
     }
