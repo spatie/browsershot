@@ -11,10 +11,19 @@ class CouldNotTakeBrowsershot extends Exception
         return new static("The current os `{$os}` is not supported");
     }
 
-    public static function chromeNotFound(array $locations)
+    /**
+     * @param array|string $locations
+     *
+     * @return static
+     */
+    public static function chromeNotFound($locations)
     {
+        if (! is_array($locations)) {
+            $locations = [$locations];
+        }
+
         $locations = implode(', ', $locations);
 
-        return new static("Did not find Chrome at these locations: {$locations}");
+        return new static("Did not find Chrome at: {$locations}");
     }
 }
