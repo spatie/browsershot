@@ -23,20 +23,21 @@ class Browsershot
         $this->url = $url;
     }
 
-    public function save(string $path)
+    public function save(string $targetPath)
     {
-        $temporaryDirectory = (new TemporaryDirectory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . rand()))
-            ->create();
+        $temporaryDirectory = (new TemporaryDirectory())->create();
 
         $process = $this->buildScreenshotProcess($temporaryDirectory->path());
 
         $process->run();
 
-        var_dump($process->getOutput(), $process->getExitCodeText(), $process->getErrorOutput());
-
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
+
+        $screenShotPath = $temporaryDirectory->path('screenshot.png');
+
+        rename($screenShotPath, $targetPath);
 
         $temporaryDirectory->delete();
     }
