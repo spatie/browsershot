@@ -3,6 +3,7 @@
 namespace Spatie\Browsershot\Exceptions;
 
 use Exception;
+use Symfony\Component\Process\Process;
 
 class CouldNotTakeBrowsershot extends Exception
 {
@@ -25,5 +26,12 @@ class CouldNotTakeBrowsershot extends Exception
         $locations = implode(', ', $locations);
 
         return new static("Did not find Chrome at: {$locations}");
+    }
+
+    public static function chromeOutputEmpty(string $screenShotPath, Process $process)
+    {
+        $errorOutput = $process->getErrorOutput();
+
+        return new static("For some reason Chrome did not write a file at `{$screenShotPath}`. Error output: `{$errorOutput}`");
     }
 }

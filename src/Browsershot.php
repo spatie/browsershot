@@ -3,10 +3,14 @@
 namespace Spatie\Browsershot;
 
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Spatie\Image\Image;
+use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+
+/** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
     protected $url = '';
@@ -22,6 +26,9 @@ class Browsershot
     /** @var bool */
     protected $disableGpu = true;
 
+    /** @var \Spatie\Image\Manipulations */
+    protected $imageManipulations;
+
     public static function url(string $url)
     {
         return new static($url);
@@ -30,12 +37,21 @@ class Browsershot
     public function __construct(string $url)
     {
         $this->url = $url;
+
+        $this->imageManipulations = new Manipulations();
     }
 
-    public function windowsize(int $width, int $height)
+    public function windowSize(int $width, int $height)
     {
         $this->windowWidth = $width;
         $this->windowHeight = $height;
+
+        return $this;
+    }
+
+    public function __call($name, $arguments)
+    {
+        $this->imageManipulations->$name(...$arguments);
 
         return $this;
     }
@@ -54,9 +70,17 @@ class Browsershot
 
         $screenShotPath = $temporaryDirectory->path('screenshot.png');
 
+        if (! file_exists($screenShotPath)) {
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($screenShotPath, $process);
+        }
+
         rename($screenShotPath, $targetPath);
 
         $temporaryDirectory->delete();
+
+        if (! $this->imageManipulations->isEmpty()) {
+            $this->applyManipulations($targetPath);
+        }
     }
 
     public function setChromePath(string $pathToChrome)
@@ -68,8 +92,18 @@ class Browsershot
         $this->pathToChrome = $pathToChrome;
     }
 
+    public function applyManipulations(string $imagePath)
+    {
+        Image::load($imagePath)
+            ->manipulate($this->imageManipulations)
+            ->save();
+
+    }
+
     protected function buildScreenshotProcess(string $workingDirectory): Process
     {
+        var_dump("working dir", $workingDirectory);
+
         $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
 
         if ($this->disableGpu) {

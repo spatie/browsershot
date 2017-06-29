@@ -7,11 +7,27 @@ use Spatie\Browsershot\Browsershot;
 
 class BrowsershotTest extends TestCase
 {
+    public function setUp()
+    {
+        $this->emptyTempDirectory();
+    }
+
     /** @test */
     public function it_can_take_a_screenshot()
     {
         Browsershot::url('https://spatie.be')
-            ->windowsize(100, 200)
-            ->save('tests/my_screenshot.png');
+            ->windowSize(1024, 768)
+            ->save('temp/my_screenshot.png');
+    }
+
+    protected function emptyTempDirectory()
+    {
+        $files = scandir(__DIR__ . '/temp');
+
+        foreach($files as $file) {
+            if (! in_array($file, ['.', '..', '.gitignore'])) {
+                unlink($file);
+            }
+        }
     }
 }
