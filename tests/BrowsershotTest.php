@@ -17,16 +17,18 @@ class BrowsershotTest extends TestCase
     {
         Browsershot::url('https://spatie.be')
             ->windowSize(1024, 768)
-            ->save('temp/my_screenshot.png');
+            ->save('tests/temp/my_screenshot.png');
     }
 
     protected function emptyTempDirectory()
     {
-        $files = scandir(__DIR__ . '/temp');
+        $tempDirPath = __DIR__ . '/temp';
+
+        $files = scandir($tempDirPath);
 
         foreach($files as $file) {
             if (! in_array($file, ['.', '..', '.gitignore'])) {
-                unlink($file);
+                unlink("{$tempDirPath}/{$file}");
             }
         }
     }
