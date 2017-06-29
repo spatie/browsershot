@@ -8,10 +8,10 @@ class ChromeFinder
 {
     public $paths = [
         'Darwin' => [
-            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
         ],
         'Linux' => [
-            '/usr/bin/google-chrome'
+            '/usr/bin/google-chrome',
         ],
     ];
 
@@ -26,7 +26,7 @@ class ChromeFinder
             throw CouldNotTakeBrowsershot::osNotSupported($os);
         }
 
-        foreach($this->paths[$os] as $path) {
+        foreach ($this->paths[$os] as $path) {
             if (file_exists($path)) {
                 return $path;
             }
