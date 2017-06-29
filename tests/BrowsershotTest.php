@@ -20,13 +20,28 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_take_a_screenshot()
+    public function it_can_take_a_screenshot_on_macos()
     {
-        $this->skipIfNotRunningonMacOS();
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::url('https://spatie.be')
-            ->windowSize(50, 50)
-            ->save('tests/temp/my_screenshot.png');
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_screenshot_on_travis()
+    {
+        $this->skipIfNotRunningonTravis();
+        
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+
+        Browsershot::url('https://spatie.be')
+            ->setChromePath('google-chrome-stable')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
     }
 
     protected function emptyTempDirectory()
@@ -41,4 +56,6 @@ class BrowsershotTest extends TestCase
             }
         }
     }
+
+
 }

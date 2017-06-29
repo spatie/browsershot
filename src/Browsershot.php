@@ -111,11 +111,9 @@ class Browsershot
 
     public function setChromePath(string $pathToChrome)
     {
-        if (! file_exists($pathToChrome)) {
-            CouldNotTakeBrowsershot::chromeNotFound($pathToChrome);
-        }
-
         $this->pathToChrome = $pathToChrome;
+
+        return $this;
     }
 
     public function applyManipulations(string $imagePath)

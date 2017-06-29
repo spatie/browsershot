@@ -1,3 +1,7 @@
+dist: trusty
+addons:
+  chrome: stable
+
 language: php
 
 php:
