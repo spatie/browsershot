@@ -2,10 +2,10 @@
 
 namespace Spatie\Browsershot;
 
-use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Browsershot
 {
@@ -31,7 +31,7 @@ class Browsershot
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
