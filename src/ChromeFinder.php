@@ -26,7 +26,7 @@ class ChromeFinder
             throw CouldNotTakeBrowsershot::osNotSupported($os);
         }
 
-        foreach($this->paths[$os] as $path) {
+        foreach ($this->paths[$os] as $path) {
             if (file_exists($path)) {
                 return $path;
             }
