@@ -22,6 +22,8 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot_on_macos()
     {
+        $this->skipIfNotRunningonMacOS();
+
         $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::url('https://spatie.be')
