@@ -169,17 +169,4 @@ class Browsershot
 
         return ChromeFinder::forCurrentOs();
     }
-
-    protected function shouldPerformImageManipulations(): bool
-    {
-        if ($this->outputPdf) {
-            return false;
-        }
-
-        if ($this->imageManipulations->isEmpty()) {
-            return false;
-        }
-
-        return true;
-    }
 }
