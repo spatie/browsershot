@@ -17,14 +17,12 @@ class Browsershot
 
     protected $pathToChrome = '';
 
-    /** @var int */
     protected $windowWidth = 0;
-
-    /** @var int */
     protected $windowHeight = 0;
 
-    /** @var bool */
     protected $disableGpu = true;
+
+    protected $hideScrollbars = true;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -39,6 +37,34 @@ class Browsershot
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+    }
+
+    public function enableGpu()
+    {
+        $this->disableGpu = false;
+
+        return $this;
+    }
+
+    public function disableGpu()
+    {
+        $this->disableGpu = true;
+
+        return $this;
+    }
+
+    public function hideScrollbars()
+    {
+        $this->hideScrollbars = true;
+
+        return $this;
+    }
+
+    public function showScrollbars()
+    {
+        $this->hideScrollbars = false;
+
+        return $this;
     }
 
     public function windowSize(int $width, int $height)
@@ -112,6 +138,10 @@ class Browsershot
 
         if ($this->windowWidth > 0) {
             $command .= " --window-size={$this->windowWidth},{$this->windowHeight}";
+        }
+
+        if ($this->hideScrollbars) {
+            $command .= ' --hide-scrollbars';
         }
 
         return new Process($command);
