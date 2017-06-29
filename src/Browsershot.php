@@ -2,10 +2,10 @@
 
 namespace Spatie\Browsershot;
 
-use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Browsershot
 {
@@ -25,7 +25,7 @@ class Browsershot
 
     public function save(string $path)
     {
-        $temporaryDirectory = (new TemporaryDirectory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . rand()))
+        $temporaryDirectory = (new TemporaryDirectory(sys_get_temp_dir().DIRECTORY_SEPARATOR.rand()))
             ->create();
 
         $process = $this->buildScreenshotProcess($temporaryDirectory->path());
@@ -34,7 +34,7 @@ class Browsershot
 
         var_dump($process->getOutput(), $process->getExitCodeText(), $process->getErrorOutput());
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
