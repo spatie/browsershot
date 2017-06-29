@@ -2,13 +2,12 @@
 
 namespace Spatie\Browsershot;
 
-use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
@@ -27,7 +26,6 @@ class Browsershot
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
     /** @var int */
-
     protected $timeout = 60;
 
     public static function url(string $url)
@@ -100,7 +98,7 @@ class Browsershot
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 

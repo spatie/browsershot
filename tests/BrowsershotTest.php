@@ -22,7 +22,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot_on_macos()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::url('https://spatie.be')
             ->save($targetPath);
@@ -34,8 +34,8 @@ class BrowsershotTest extends TestCase
     public function it_can_take_a_screenshot_on_travis()
     {
         $this->skipIfNotRunningonTravis();
-        
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::url('https://spatie.be')
             ->setChromePath('google-chrome-stable')
@@ -46,16 +46,14 @@ class BrowsershotTest extends TestCase
 
     protected function emptyTempDirectory()
     {
-        $tempDirPath = __DIR__ . '/temp';
+        $tempDirPath = __DIR__.'/temp';
 
         $files = scandir($tempDirPath);
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (! in_array($file, ['.', '..', '.gitignore'])) {
                 unlink("{$tempDirPath}/{$file}");
             }
         }
     }
-
-
 }
