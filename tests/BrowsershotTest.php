@@ -22,11 +22,11 @@ class BrowsershotTest extends TestCase
 
     protected function emptyTempDirectory()
     {
-        $tempDirPath = __DIR__ . '/temp';
+        $tempDirPath = __DIR__.'/temp';
 
         $files = scandir($tempDirPath);
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (! in_array($file, ['.', '..', '.gitignore'])) {
                 unlink("{$tempDirPath}/{$file}");
             }
