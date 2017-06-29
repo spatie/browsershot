@@ -26,6 +26,9 @@ class Browsershot
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
+    /** @var int */
+
+    protected $timeout = 60;
 
     public static function url(string $url)
     {
@@ -49,6 +52,13 @@ class Browsershot
     public function disableGpu()
     {
         $this->disableGpu = true;
+
+        return $this;
+    }
+
+    public function timeout(int $timeout)
+    {
+        $this->timeout = $timeout;
 
         return $this;
     }
@@ -139,7 +149,7 @@ class Browsershot
             $command .= ' --hide-scrollbars';
         }
 
-        return new Process($command);
+        return (new Process($command))->setTimeout($this->timeout);
     }
 
     protected function findChrome(): string
