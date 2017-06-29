@@ -22,9 +22,9 @@ class BrowsershotTest extends TestCase
 
     protected function emptyTempDirectory()
     {
-        $files = scandir(__DIR__ . '/temp');
+        $files = scandir(__DIR__.'/temp');
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (! in_array($file, ['.', '..', '.gitignore'])) {
                 unlink($file);
             }
