@@ -2,13 +2,12 @@
 
 namespace Spatie\Browsershot;
 
-use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
@@ -90,7 +89,7 @@ class Browsershot
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
@@ -123,12 +122,11 @@ class Browsershot
         Image::load($imagePath)
             ->manipulate($this->imageManipulations)
             ->save();
-
     }
 
     protected function buildScreenshotProcess(string $workingDirectory): Process
     {
-        var_dump("working dir", $workingDirectory);
+        var_dump('working dir', $workingDirectory);
 
         $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
 
