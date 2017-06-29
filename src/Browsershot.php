@@ -86,7 +86,7 @@ class Browsershot
     {
         $temporaryDirectory = (new TemporaryDirectory())->create();
 
-        $process = $this->buildScreenshotProcess($temporaryDirectory->path());
+        $process = $this->createScreenshotProcess($temporaryDirectory->path());
 
         $process->run();
 
@@ -123,13 +123,10 @@ class Browsershot
         Image::load($imagePath)
             ->manipulate($this->imageManipulations)
             ->save();
-
     }
 
-    protected function buildScreenshotProcess(string $workingDirectory): Process
+    public function createScreenshotProcess(string $workingDirectory): Process
     {
-        var_dump("working dir", $workingDirectory);
-
         $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
 
         if ($this->disableGpu) {

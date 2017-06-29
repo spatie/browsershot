@@ -8,10 +8,10 @@ class ChromeFinder
 {
     public $paths = [
         'Darwin' => [
-            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
         ],
         'Linux' => [
-            '/usr/bin/google-chrome'
+            '/usr/bin/google-chrome',
         ],
     ];
 
