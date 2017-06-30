@@ -15,6 +15,7 @@ class Browsershot
     protected $url = '';
 
     protected $pathToChrome = '';
+    protected $timeout = 60;
 
     protected $windowWidth = 0;
     protected $windowHeight = 0;
@@ -24,8 +25,6 @@ class Browsershot
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
-
-    protected $timeout = 60;
 
     public static function url(string $url)
     {
@@ -37,6 +36,13 @@ class Browsershot
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+    }
+
+    public function setChromePath(string $pathToChrome)
+    {
+        $this->pathToChrome = $pathToChrome;
+
+        return $this;
     }
 
     public function enableGpu()
@@ -67,16 +73,16 @@ class Browsershot
         return $this;
     }
 
-    public function hideScrollbars()
+    public function showScrollbars()
     {
-        $this->hideScrollbars = true;
+        $this->hideScrollbars = false;
 
         return $this;
     }
 
-    public function showScrollbars()
+    public function hideScrollbars()
     {
-        $this->hideScrollbars = false;
+        $this->hideScrollbars = true;
 
         return $this;
     }
@@ -125,13 +131,6 @@ class Browsershot
         if (! $this->imageManipulations->isEmpty()) {
             $this->applyManipulations($targetPath);
         }
-    }
-
-    public function setChromePath(string $pathToChrome)
-    {
-        $this->pathToChrome = $pathToChrome;
-
-        return $this;
     }
 
     public function applyManipulations(string $imagePath)
