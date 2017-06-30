@@ -101,23 +101,25 @@ class Browsershot
     {
         $temporaryDirectory = (new TemporaryDirectory())->create();
 
-        $process = $this->createScreenshotProcess($temporaryDirectory->path());
+        try {
+            $process = $this->createScreenshotProcess($temporaryDirectory->path());
 
-        $process->run();
+            $process->run();
 
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            $screenShotPath = $temporaryDirectory->path('screenshot.png');
+
+            if (! file_exists($screenShotPath)) {
+                throw CouldNotTakeBrowsershot::chromeOutputEmpty($screenShotPath, $process);
+            }
+
+            rename($screenShotPath, $targetPath);
+        } finally {
+            $temporaryDirectory->delete();
         }
-
-        $screenShotPath = $temporaryDirectory->path('screenshot.png');
-
-        if (! file_exists($screenShotPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($screenShotPath, $process);
-        }
-
-        rename($screenShotPath, $targetPath);
-
-        $temporaryDirectory->delete();
 
         if (! $this->imageManipulations->isEmpty()) {
             $this->applyManipulations($targetPath);
