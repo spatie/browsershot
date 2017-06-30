@@ -31,7 +31,7 @@ All postcards are published [on our website](https://spatie.be/en/opensource/pos
 
 This package has been tested on MacOS and Ubuntu 16.04. If you use another OS your mileage may vary. Chrome 59 or higher should be installed on your system.
 
-On a [Forge](https://forge.laravel.com) provisioned Ubuntu 16.04 server you can install Chrome 59 like this:
+On a [Forge](https://forge.laravel.com) provisioned Ubuntu 16.04 server you can install the latest stable version of Chrome like this:
 
 ```bash
 sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
