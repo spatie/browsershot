@@ -63,19 +63,27 @@ When using Laravel there is a service provider that you can make use of.
 
 ## Usage
 
-In all example it is assumed that you imported this namespace at the top of your file
+In all examples it is assumed that you imported this namespace at the top of your file
 
 ```php
 use Spatie\Browsershot\Browsershot;
 ```
 
-Here is a sample call to create an image of a webpage:
+Here's the easiest way to create an image of a webpage:
 
 ```php
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
-By default the size of the screenshot will match the resolution you use for your desktop. Want another size of screenshot? No problem!
+Browsershot will make an education guess where Google Chrome is located. If on you system Chrome can not be found you can manually set it's location:
+
+```php
+Browsershot::url('https://example.com')
+   ->setChromePath($pathToChrome)
+   ->save($pathToImage);
+```
+
+By default the screenshot will be a `png` and it's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
 
 ```php
 Browsershot::url('https://example.com')
@@ -83,7 +91,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-You can also set de size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and resize that down to something that fits inside 200x200.
+You can also set de size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
 
 ```php
 Browsershot::url('https://example.com')
@@ -92,7 +100,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-In fact, behind the screens you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+In fact, you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
 
 ```php
 Browsershot::url('https://example.com')
@@ -128,5 +136,3 @@ Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-
