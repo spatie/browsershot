@@ -8,14 +8,6 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 class ChromeFinderTest extends TestCase
 {
     /** @test */
-    public function it_can_be_instanciated()
-    {
-        $chromeFinder = new ChromeFinder();
-
-        $this->assertInstanceOf(ChromeFinder::class, $chromeFinder);
-    }
-
-    /** @test */
     public function it_can_determine_the_location_of_chrome_automatically()
     {
         $this->skipIfNotRunningonMacOS();

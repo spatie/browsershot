@@ -12,14 +12,6 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_be_instanciated()
-    {
-        $browsershot = new Browsershot('spatie.be');
-
-        $this->assertInstanceOf(Browsershot::class, $browsershot);
-    }
-
-    /** @test */
     public function it_can_take_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
