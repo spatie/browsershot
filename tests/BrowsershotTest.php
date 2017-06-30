@@ -20,44 +20,83 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_take_a_screenshot_on_macos()
+    public function it_can_take_a_screenshot()
     {
-        $this->skipIfNotRunningonMacOS();
-
         $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
-        Browsershot::url('https://spatie.be')
+        $this
+            ->getBrowsershotForCurrentEnvironment()
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
     }
 
     /** @test */
-    public function it_can_take_a_screenshot_on_travis()
+    public function it_can_use_the_methods_of_the_image_package()
     {
-        $this->skipIfNotRunningonTravis();
-        
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.jpg';
 
-        Browsershot::url('https://spatie.be')
-            ->setChromePath('google-chrome-stable')
+        $this
+            ->getBrowsershotForCurrentEnvironment()
+            ->format('jpg')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
+
+        $this->assertMimeType('image/jpeg', $targetPath);
     }
 
-    protected function emptyTempDirectory()
+    /** @test */
+    public function it_can_create_a_command_to_generate_a_screenshot()
     {
-        $tempDirPath = __DIR__ . '/temp';
+        $command = Browsershot::url('https://example.com')
+            ->setChromePath('chrome')
+            ->createScreenshotCommand('workingDir');
 
-        $files = scandir($tempDirPath);
-
-        foreach($files as $file) {
-            if (! in_array($file, ['.', '..', '.gitignore'])) {
-                unlink("{$tempDirPath}/{$file}");
-            }
-        }
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu --hide-scrollbars", $command);
     }
 
+    /** @test */
+    public function it_can_enable_the_usage_of_the_gpu()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setChromePath('chrome')
+            ->enableGpu()
+            ->createScreenshotCommand('workingDir');
 
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --hide-scrollbars", $command);
+    }
+
+    /** @test */
+    public function it_can_show_scrollbars()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setChromePath('chrome')
+            ->showScrollbars()
+            ->createScreenshotCommand('workingDir');
+
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu", $command);
+    }
+
+    /** @test */
+    public function it_can_use_given_user_agent()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setChromePath('chrome')
+            ->userAgent('my_special_snowflake')
+            ->createScreenshotCommand('workingDir');
+
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
+    }
+
+    protected function getBrowsershotForCurrentEnvironment(): Browsershot
+    {
+        $browsershot = Browsershot::url('https://example.com');
+
+        if (getenv('TRAVIS')) {
+            $browsershot->setChromePath('google-chrome-stable');
+        }
+
+        return $browsershot;
+    }
 }

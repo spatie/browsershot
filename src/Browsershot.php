@@ -102,7 +102,9 @@ class Browsershot
         $temporaryDirectory = (new TemporaryDirectory())->create();
 
         try {
-            $process = $this->createScreenshotProcess($temporaryDirectory->path());
+            $command = $this->createScreenshotCommand($temporaryDirectory->path());
+
+            $process = (new Process($command))->setTimeout($this->timeout);
 
             $process->run();
 
@@ -140,7 +142,7 @@ class Browsershot
             ->save();
     }
 
-    public function createScreenshotProcess(string $workingDirectory): Process
+    public function createScreenshotCommand(string $workingDirectory): string
     {
         $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
 
@@ -157,10 +159,10 @@ class Browsershot
         }
 
         if (! empty($this->userAgent)) {
-            $command .= " --user-agent={$this->userAgent}";
+            $command .= " --user-agent='{$this->userAgent}'";
         }
 
-        return (new Process($command))->setTimeout($this->timeout);
+        return $command;
     }
 
     protected function findChrome(): string
