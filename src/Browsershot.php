@@ -9,7 +9,6 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {

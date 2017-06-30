@@ -8,19 +8,25 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
 
-The package can convert a webpage to an image. To accomplish this conversion [Phantomjs](http://phantomjs.org/) (included in the project) is used.
+The package can convert a webpage to an image. The conversion is done behind the screens by Google Chrome.
 
-This package is used to generate the sitepreviews on the homepage of [spatie.be](https://spatie.be). It is also used by [Gordon Murray](https://twitter.com/murrion) to [add previews to shared content](http://www.murrion.com/2015/02/how-i-automate-sharing-content-to-linkedin-using-ayliens-content-analysis-api-and-browsershot/).
+Here's a quick example:
+
+```php
+use Spatie\Browsershot\Browsershot;
+
+Browsershot::url('https://example.com')->save($pathToImage);
+```
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
 ## Postcardware
 
-You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment you are required to send us a postcard from your hometown, mentioning which of our package(s) you are using.
+You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
 Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
 
-The best postcards will get published on the open source page on our website.
+All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
 
 ## Installation
 
@@ -42,34 +48,53 @@ When using Laravel there is a service provider that you can make use of.
 ];
 ```
 
-Please note that the provided binary is intented for use on Ubuntu.
-
 ## Usage
+
+In all example it is assumed that you imported this namespace at the top of your file
+
+```php
+use Spatie\Browsershot\Browsershot;
+```
 
 Here is a sample call to create an image of a webpage:
 
 ```php
-    $browsershot = new \Spatie\Browsershot\Browsershot();
-    $browsershot
-        ->setURL('http://www.arstechnica.com')
-        ->setWidth(1024)
-        ->setHeight(768)
-        ->setTimeout(5000)
-        ->save('targetdirectory/arstechnica-browsershot.jpg');
+Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
-These methods are provided:
+By default the size of the screenshot will match the resolution you use for your desktop. Want another size of screenshot? No problem!
 
-* `setBinPath()`: Specify the path to your own phantomjs-binary.
-* `setWidth()`: Set the width of the image (defaults to 640).
-* `setHeight()`: Set the height of the image (defaults to 480).
-* `setQuality()`: Set the quality of the image (defaults to 60).
-* `setUserAgent()`: Set the User Agent header instead of PhantomJS default one.
-* `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
-* `setURL()`: Set the URL of the webpage which should be converted to an image
-* `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
-* `setBackgroundColor($hexValueOrColorName)`: Set the background color of the html document prior to taking a screenshot.
-* `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg, ppm, bmp, pdf, gif.
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(640, 480)
+    ->save($pathToImage);
+```
+
+You can also set de size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and resize that down to something that fits inside 200x200.
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(1920, 1080)
+    ->fit(Manipulations::FIT_CONTAIN, 200, 200)
+    ->save($pathToImage);
+```
+
+In fact, behind the screens you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(640, 480)
+    ->greyscale()
+    ->save($pathToImage);
+```
+
+If for some reason you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
+
+```php
+Browsershot::url('https://example.com')
+    ->userAgent('My Special Snowflake Browser 1.0')
+    ->save($pathToImage);
+```
 
 ## Other implementations
 
