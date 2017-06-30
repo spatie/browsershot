@@ -22,7 +22,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         $this
             ->getBrowsershotForCurrentEnvironment()
@@ -34,7 +34,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_use_the_methods_of_the_image_package()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.jpg';
+        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
 
         $this
             ->getBrowsershotForCurrentEnvironment()
