@@ -117,6 +117,14 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+The default timeout of Browsershot is set to 60 secords. Of course, you can modify this timeout:
+
+```php
+Browsershot::url('https://example.com')
+    ->timeout(120)
+    ->save($pathToImage);
+```
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
