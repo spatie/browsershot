@@ -7,7 +7,6 @@
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9c1184fb-1edb-41d5-9d30-2620d99447c7.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9c1184fb-1edb-41d5-9d30-2620d99447c7)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
-
 The package can convert a webpage to an image. The conversion is done behind the screens by Google Chrome.
 
 Here's a quick example:
@@ -27,6 +26,20 @@ You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it mak
 Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
 
 All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
+
+## Requirements
+
+This package has been tested on MacOS and Ubuntu 16.04. If you use another OS your mileage may vary. Chrome 59 or higher should be installed on your system.
+
+On a Forge provisioned server you can install Chrome 59 like this:
+
+```bash
+sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+sudo apt-get update
+sudo apt-get -f install
+sudo apt-get install google-chrome-stable
+```
 
 ## Installation
 
@@ -95,10 +108,6 @@ Browsershot::url('https://example.com')
     ->userAgent('My Special Snowflake Browser 1.0')
     ->save($pathToImage);
 ```
-
-## Other implementations
-
-- [Node.js](https://github.com/brenden/node-webshot)
 
 ## Contributing
 
