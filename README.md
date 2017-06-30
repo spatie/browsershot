@@ -109,7 +109,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-If for some reason you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
+If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
 
 ```php
 Browsershot::url('https://example.com')
