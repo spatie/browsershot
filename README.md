@@ -63,7 +63,7 @@ Here's the easiest way to create an image of a webpage:
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
-Browsershot will make an education guess where Google Chrome is located. If on you system Chrome can not be found you can manually set it's location:
+Browsershot will make an education guess where Google Chrome is located. If on your system Chrome can not be found you can manually set it's location:
 
 ```php
 Browsershot::url('https://example.com')
@@ -79,7 +79,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-You can also set de size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
+You can also set the size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
 
 ```php
 Browsershot::url('https://example.com')
@@ -105,7 +105,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-The default timeout of Browsershot is set to 60 secords. Of course, you can modify this timeout:
+The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
 
 ```php
 Browsershot::url('https://example.com')
