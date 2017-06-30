@@ -49,18 +49,6 @@ This package can be installed through Composer.
 composer require spatie/browsershot
 ```
 
-When using Laravel there is a service provider that you can make use of.
-
-```php
-
-// app/config/app.php
-
-'providers' => [
-    '...',
-    'Spatie\Browsershot\BrowsershotServiceProvider'
-];
-```
-
 ## Usage
 
 In all examples it is assumed that you imported this namespace at the top of your file
