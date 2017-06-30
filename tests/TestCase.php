@@ -32,11 +32,4 @@ class TestCase extends BaseTestCase
             $this->markTestSkipped('Skipping because not running MacOS');
         }
     }
-
-    protected function skipIfNotRunningonTravis()
-    {
-        if (! getenv('TRAVIS')) {
-            $this->markTestSkipped('Skipping because not running Travis');
-        }
-    }
 }
