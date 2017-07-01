@@ -121,6 +121,10 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
 
+## Alternatives
+
+If you're not able to install Chrome 59 or higher, take a look at [v1 of browserhot](https://github.com/spatie/browsershot/tree/1.9.1), which uses PhanomJS to take a screenshot. `v1` is not maintained anymore, but should work pretty well
+
 ## Credits
 
 - [Freek Van der Herten](https://github.com/freekmurze)
