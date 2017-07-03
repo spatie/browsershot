@@ -1,6 +1,6 @@
 {
     "name": "spatie/browsershot",
-    "description": "Convert a webpage to an image",
+    "description": "Convert a webpage to an image using headless Chrome",
     "homepage": "https://github.com/spatie/browsershot",
     "keywords":
     [
