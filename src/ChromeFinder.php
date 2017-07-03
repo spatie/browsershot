@@ -6,7 +6,7 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 
 class ChromeFinder
 {
-    public $paths = [
+    protected $paths = [
         'Darwin' => [
             '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
         ],
