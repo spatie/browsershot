@@ -15,23 +15,23 @@ class ChromeFinder
         ],
     ];
 
-    public static function forCurrentOs()
+    public static function forCurrentOperatingSystem()
     {
-        return (new static)->getChromePathForOs(PHP_OS);
+        return (new static)->getChromePathForOperatingSystem(PHP_OS);
     }
 
-    public function getChromePathForOs(string $os)
+    public function getChromePathForOperatingSystem(string $operatingSystem)
     {
-        if (! array_key_exists($os, $this->paths)) {
-            throw CouldNotTakeBrowsershot::osNotSupported($os);
+        if (! array_key_exists($operatingSystem, $this->paths)) {
+            throw CouldNotTakeBrowsershot::operatingSystemNotSupported($operatingSystem);
         }
 
-        foreach ($this->paths[$os] as $path) {
+        foreach ($this->paths[$operatingSystem] as $path) {
             if (file_exists($path)) {
                 return $path;
             }
         }
 
-        throw CouldNotTakeBrowsershot::chromeNotFound($this->paths[$os]);
+        throw CouldNotTakeBrowsershot::chromeNotFound($this->paths[$operatingSystem]);
     }
 }

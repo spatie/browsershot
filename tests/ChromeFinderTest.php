@@ -12,7 +12,7 @@ class ChromeFinderTest extends TestCase
     {
         $this->skipIfNotRunningonMacOS();
 
-        $this->assertStringEndsWith('Chrome', ChromeFinder::forCurrentOs());
+        $this->assertStringEndsWith('Chrome', ChromeFinder::forCurrentOperatingSystem());
     }
 
     /** @test */
@@ -20,6 +20,6 @@ class ChromeFinderTest extends TestCase
     {
         $this->expectException(CouldNotTakeBrowsershot::class);
 
-        (new ChromeFinder())->getChromePathForOs('Windows');
+        (new ChromeFinder())->getChromePathForOperatingSystem('Windows');
     }
 }

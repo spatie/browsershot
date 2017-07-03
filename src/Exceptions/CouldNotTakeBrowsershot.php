@@ -7,9 +7,9 @@ use Symfony\Component\Process\Process;
 
 class CouldNotTakeBrowsershot extends Exception
 {
-    public static function osNotSupported(string $os)
+    public static function operatingSystemNotSupported(string $operatingSystem)
     {
-        return new static("The current os `{$os}` is not supported");
+        return new static("The current operating system `{$operatingSystem}` is not supported");
     }
 
     /**
