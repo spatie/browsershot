@@ -169,6 +169,6 @@ class Browsershot
             return $this->pathToChrome;
         }
 
-        return ChromeFinder::forCurrentOs();
+        return ChromeFinder::forCurrentOperatingSystem();
     }
 }
