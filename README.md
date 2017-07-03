@@ -7,20 +7,39 @@
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9c1184fb-1edb-41d5-9d30-2620d99447c7.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9c1184fb-1edb-41d5-9d30-2620d99447c7)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
+The package can convert a webpage to an image. The conversion is done behind the screens by Google Chrome.
 
-The package can convert a webpage to an image. To accomplish this conversion [Phantomjs](http://phantomjs.org/) (included in the project) is used.
+Here's a quick example:
 
-This package is used to generate the sitepreviews on the homepage of [spatie.be](https://spatie.be). It is also used by [Gordon Murray](https://twitter.com/murrion) to [add previews to shared content](http://www.murrion.com/2015/02/how-i-automate-sharing-content-to-linkedin-using-ayliens-content-analysis-api-and-browsershot/).
+```php
+use Spatie\Browsershot\Browsershot;
+
+Browsershot::url('https://example.com')->save($pathToImage);
+```
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
 ## Postcardware
 
-You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment you are required to send us a postcard from your hometown, mentioning which of our package(s) you are using.
+You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
 Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
 
-The best postcards will get published on the open source page on our website.
+All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
+
+## Requirements
+
+This package has been tested on MacOS and Ubuntu 16.04. If you use another OS your mileage may vary. Chrome 59 or higher should be installed on your system.
+
+On a [Forge](https://forge.laravel.com) provisioned Ubuntu 16.04 server you can install the latest stable version of Chrome like this:
+
+```bash
+sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+sudo apt-get update
+sudo apt-get -f install
+sudo apt-get install google-chrome-stable
+```
 
 ## Installation
 
@@ -30,50 +49,69 @@ This package can be installed through Composer.
 composer require spatie/browsershot
 ```
 
-When using Laravel there is a service provider that you can make use of.
-
-```php
-
-// app/config/app.php
-
-'providers' => [
-    '...',
-    'Spatie\Browsershot\BrowsershotServiceProvider'
-];
-```
-
-Please note that the provided binary is intented for use on Ubuntu.
-
 ## Usage
 
-Here is a sample call to create an image of a webpage:
+In all examples it is assumed that you imported this namespace at the top of your file
 
 ```php
-    $browsershot = new \Spatie\Browsershot\Browsershot();
-    $browsershot
-        ->setURL('http://www.arstechnica.com')
-        ->setWidth(1024)
-        ->setHeight(768)
-        ->setTimeout(5000)
-        ->save('targetdirectory/arstechnica-browsershot.jpg');
+use Spatie\Browsershot\Browsershot;
 ```
 
-These methods are provided:
+Here's the easiest way to create an image of a webpage:
 
-* `setBinPath()`: Specify the path to your own phantomjs-binary.
-* `setWidth()`: Set the width of the image (defaults to 640).
-* `setHeight()`: Set the height of the image (defaults to 480).
-* `setQuality()`: Set the quality of the image (defaults to 60).
-* `setUserAgent()`: Set the User Agent header instead of PhantomJS default one.
-* `setHeightToRenderWholePage()`: Calling this method will result in the entire webpage being rendered.
-* `setURL()`: Set the URL of the webpage which should be converted to an image
-* `setTimeout()`: Set the browsershot timeout duration in ms required to fully load all page assets and scripts (defaults to 5000).
-* `setBackgroundColor($hexValueOrColorName)`: Set the background color of the html document prior to taking a screenshot.
-* `save($targetFile)`: Starts the conversion-process. The targetfile should have one of these extensions: png, jpg, jpeg, ppm, bmp, pdf, gif.
+```php
+Browsershot::url('https://example.com')->save($pathToImage);
+```
 
-## Other implementations
+Browsershot will make an education guess where Google Chrome is located. If on your system Chrome can not be found you can manually set it's location:
 
-- [Node.js](https://github.com/brenden/node-webshot)
+```php
+Browsershot::url('https://example.com')
+   ->setChromePath($pathToChrome)
+   ->save($pathToImage);
+```
+
+By default the screenshot will be a `png` and it's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(640, 480)
+    ->save($pathToImage);
+```
+
+You can also set the size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(1920, 1080)
+    ->fit(Manipulations::FIT_CONTAIN, 200, 200)
+    ->save($pathToImage);
+```
+
+In fact, you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(640, 480)
+    ->greyscale()
+    ->save($pathToImage);
+```
+
+If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
+
+```php
+Browsershot::url('https://example.com')
+    ->userAgent('My Special Snowflake Browser 1.0')
+    ->save($pathToImage);
+```
+
+The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
+
+```php
+Browsershot::url('https://example.com')
+    ->timeout(120)
+    ->save($pathToImage);
+```
 
 ## Contributing
 
@@ -82,6 +120,10 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Security
 
 If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
+
+## Alternatives
+
+If you're not able to install Chrome 59 or higher, take a look at [v1 of browserhot](https://github.com/spatie/browsershot/tree/1.9.1), which uses PhanomJS to take a screenshot. `v1` is not maintained anymore, but should work pretty well
 
 ## Credits
 
@@ -94,5 +136,3 @@ Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-

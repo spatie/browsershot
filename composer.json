@@ -3,38 +3,48 @@
     "description": "Convert a webpage to an image",
     "homepage": "https://github.com/spatie/browsershot",
     "keywords":
-        [
-            "convert",
-            "webpage",
-            "image",
-            "screenshot",
-            "browser",
-            "phantomjs",
-            "laravel"
-        ],
+    [
+        "convert",
+        "webpage",
+        "image",
+        "screenshot",
+        "browser",
+        "phantomjs",
+        "laravel"
+    ],
     "license": "MIT",
     "authors": [
         {
             "name": "Freek Van der Herten",
-            "email": "freek@spatie.be"
+            "email": "freek@spatie.be",
+            "homepage": "https://github.com/freekmurze",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "4.*|5.*",
-        "intervention/image": "2.*"
+        "php": "^7.0",
+        "spatie/image": "~1.2.1",
+        "spatie/phpunit-snapshot-assertions": "^1.0",
+        "spatie/temporary-directory": "^1.1",
+        "symfony/process": "^3.3"
     },
-    "bin": [
-        "bin/phantomjs",
-        "bin/phantomjs_macosx"
-    ],
     "require-dev": {
-        "phpspec/phpspec": "~2.1"
+        "phpunit/phpunit": "^6.1"
     },
     "autoload": {
-        "psr-0": {
-            "Spatie\\Browsershot": "src/"
+        "psr-4": {
+            "Spatie\\Browsershot\\": "src"
         }
     },
-    "minimum-stability": "stable"
+    "autoload-dev": {
+        "psr-4": {
+            "Spatie\\Browsershot\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
 }
