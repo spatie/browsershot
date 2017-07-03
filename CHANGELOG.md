@@ -2,6 +2,10 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.0.0 - 2017-07-03
+- complete rewrite
+- ditch PhantomJS is favour of headless Chrome
+
 ### 1.9.1 - 2017-06-02
 - fix error message
 
