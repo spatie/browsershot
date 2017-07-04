@@ -73,6 +73,10 @@ class Browsershot
             $binFile = 'phantomjs.exe';
         }
 
+        if (defined('PHP_OS') && PHP_OS == 'Darwin') {
+            $binFile = 'phantomjs_macosx';
+        }
+
         return realpath(dirname(__FILE__).'/../../../bin/'.$binFile);
     }
 
@@ -192,7 +196,7 @@ class Browsershot
     public function setTimeout($timeout)
     {
         if (! is_numeric($timeout)) {
-            throw new Exception('Height must be numeric');
+            throw new Exception('Timeout must be numeric');
         }
 
         $this->timeout = $timeout;

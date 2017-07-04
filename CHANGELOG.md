@@ -1,6 +1,19 @@
-#Changelog
+## Changelog
 
-All Notable changes to `browsershot` will be documented in this file
+All notable changes to `browsershot` will be documented in this file
+
+### 2.0.0 - 2017-07-03
+- complete rewrite
+- ditch PhantomJS is favour of headless Chrome
+
+### 1.9.1 - 2017-06-02
+- fix error message
+
+### 1.7.0 - 2017-05-13
+- added support MacOS
+
+### 1.8.0 - 2017-04-27
+- added support for setting a custom user agent
 
 ### 1.8.0 - 2017-04-27
 - added support for setting a custom user agent
