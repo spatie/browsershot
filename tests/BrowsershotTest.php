@@ -45,7 +45,7 @@ class BrowsershotTest extends TestCase
             ->setChromePath('chrome')
             ->createScreenshotCommand('workingDir');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu --hide-scrollbars", $command);
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars", $command);
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class BrowsershotTest extends TestCase
             ->enableGpu()
             ->createScreenshotCommand('workingDir');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --hide-scrollbars", $command);
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --hide-scrollbars", $command);
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class BrowsershotTest extends TestCase
             ->showScrollbars()
             ->createScreenshotCommand('workingDir');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu", $command);
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu", $command);
     }
 
     /** @test */
@@ -78,7 +78,7 @@ class BrowsershotTest extends TestCase
             ->userAgent('my_special_snowflake')
             ->createScreenshotCommand('workingDir');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot https://example.com --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
     }
 
     protected function getBrowsershotForCurrentEnvironment(): Browsershot

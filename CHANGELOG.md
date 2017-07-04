@@ -2,6 +2,9 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.0.1 - 2017-07-04
+- add support for urls with special characters
+
 ### 2.0.0 - 2017-07-03
 - complete rewrite
 - ditch PhantomJS is favour of headless Chrome

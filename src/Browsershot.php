@@ -142,7 +142,7 @@ class Browsershot
 
     public function createScreenshotCommand(string $workingDirectory): string
     {
-        $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot {$this->url}";
+        $command = "cd '{$workingDirectory}';'{$this->findChrome()}' --headless --screenshot '{$this->url}'";
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
