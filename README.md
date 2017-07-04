@@ -63,7 +63,7 @@ Here's the easiest way to create an image of a webpage:
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
-Browsershot will make an education guess where Google Chrome is located. If on your system Chrome can not be found you can manually set it's location:
+Browsershot will make an educated guess where Google Chrome is located. If Chrome can not be found on your system you can manually set it's location:
 
 ```php
 Browsershot::url('https://example.com')
