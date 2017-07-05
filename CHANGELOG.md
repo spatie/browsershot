@@ -2,6 +2,10 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.0.2 - 2017-07-05
+- security improvements
+- clean up unneeded files
+
 ### 2.0.1 - 2017-07-04
 - add support for urls with special characters
 
