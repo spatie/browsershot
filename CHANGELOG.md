@@ -2,6 +2,9 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.0.3 - 2017-07-05
+- lower `symfony/process` requirement
+
 ### 2.0.2 - 2017-07-05
 - security improvements
 - clean up unneeded files
