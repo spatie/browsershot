@@ -142,30 +142,30 @@ class Browsershot
 
     public function createScreenshotCommand(string $workingDirectory): string
     {
-        $command = "cd "
-            . escapeshellarg($workingDirectory)
-            . ";"
-            . escapeshellarg($this->findChrome())
-            . " --headless --screenshot "
-            . escapeshellarg($this->url);
+        $command = 'cd '
+            .escapeshellarg($workingDirectory)
+            .';'
+            .escapeshellarg($this->findChrome())
+            .' --headless --screenshot '
+            .escapeshellarg($this->url);
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
         }
 
         if ($this->windowWidth > 0) {
-            $command .= " --window-size="
-                . escapeshellarg($this->windowWidth)
-                . ","
-                . escapeshellarg($this->windowHeight);
+            $command .= ' --window-size='
+                .escapeshellarg($this->windowWidth)
+                .','
+                .escapeshellarg($this->windowHeight);
         }
 
         if ($this->hideScrollbars) {
             $command .= ' --hide-scrollbars';
         }
 
-        if (!empty($this->userAgent)) {
-            $command .= " --user-agent=" . escapeshellarg($this->userAgent);
+        if (! empty($this->userAgent)) {
+            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
         }
 
         return $command;
