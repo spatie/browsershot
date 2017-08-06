@@ -2,6 +2,9 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.1.0 - 2017-08-06
+- add support for saving `pdf`s
+
 ### 2.0.3 - 2017-07-05
 - lower `symfony/process` requirement
 

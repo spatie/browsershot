@@ -1,4 +1,4 @@
-# Convert a webpage to an image using headless Chrome
+# Convert a webpage to an image or pdf using headless Chrome
 
 [![Latest Version](https://img.shields.io/github/release/spatie/browsershot.svg?style=flat-square)](https://github.com/spatie/browsershot/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -7,7 +7,7 @@
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9c1184fb-1edb-41d5-9d30-2620d99447c7.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9c1184fb-1edb-41d5-9d30-2620d99447c7)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
-The package can convert a webpage to an image. The conversion is done behind the screens by Google Chrome.
+The package can convert a webpage to an image or pdf. The conversion is done behind the screens by Google Chrome.
 
 Here's a quick example:
 
@@ -15,6 +15,13 @@ Here's a quick example:
 use Spatie\Browsershot\Browsershot;
 
 Browsershot::url('https://example.com')->save($pathToImage);
+```
+
+It will save a pdf if the path passed to the `save` method has a `pdf` extension.
+
+```php
+// a pdf will be saved
+Browsershot::url('https://example.com')->save('example.pdf');
 ```
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
@@ -111,6 +118,19 @@ The default timeout of Browsershot is set to 60 seconds. Of course, you can modi
 Browsershot::url('https://example.com')
     ->timeout(120)
     ->save($pathToImage);
+```
+
+Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
+
+```php
+// a pdf will be saved
+Browsershot::url('https://example.com')->save('example.pdf');
+```
+
+Alternatively you can explicitly use the `savePdf` method:
+
+```php
+Browsershot::url('https://example.com')->savePdf('example.pdf');
 ```
 
 ## Contributing

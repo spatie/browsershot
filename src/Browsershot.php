@@ -104,6 +104,10 @@ class Browsershot
 
     public function save(string $targetPath)
     {
+        if (strtolower(pathinfo($targetPath, PATHINFO_EXTENSION)) === 'pdf') {
+            return $this->savePdf($targetPath);
+        }
+
         $temporaryDirectory = (new TemporaryDirectory())->create();
 
         try {
@@ -131,6 +135,15 @@ class Browsershot
         if (! $this->imageManipulations->isEmpty()) {
             $this->applyManipulations($targetPath);
         }
+    }
+
+    public function savePdf(string $targetPath)
+    {
+        $command = $this->createPdfCommand($targetPath);
+
+        $process = (new Process($command))->setTimeout($this->timeout);
+
+        $process->run();
     }
 
     public function applyManipulations(string $imagePath)
@@ -169,6 +182,30 @@ class Browsershot
         }
 
         return $command;
+    }
+
+    protected function createPdfCommand($targetPath): string
+    {
+        $command =
+              escapeshellarg($this->findChrome())
+            . " --headless --print-to-pdf={$targetPath}";
+
+        if ($this->disableGpu) {
+            $command .= ' --disable-gpu';
+        }
+
+        if ($this->hideScrollbars) {
+            $command .= ' --hide-scrollbars';
+        }
+
+        if (! empty($this->userAgent)) {
+            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
+        }
+
+        $command .= ' ' .escapeshellarg($this->url);
+
+        return $command;
+
     }
 
     protected function findChrome(): string

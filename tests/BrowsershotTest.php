@@ -24,6 +24,20 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_save_a_pdf_by_using_the_pdf_extension()
+    {
+        $targetPath = __DIR__.'/temp/testPdf.pdf';
+
+        $this
+            ->getBrowsershotForCurrentEnvironment()
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    }
+
+    /** @test */
     public function it_can_use_the_methods_of_the_image_package()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.jpg';

@@ -1,16 +1,17 @@
 {
     "name": "spatie/browsershot",
-    "description": "Convert a webpage to an image using headless Chrome",
+    "description": "Convert a webpage to an image or pdf using headless Chrome",
     "homepage": "https://github.com/spatie/browsershot",
     "keywords":
     [
         "convert",
         "webpage",
         "image",
+        "pdf",
         "screenshot",
         "browser",
-        "phantomjs",
-        "laravel"
+        "chrome",
+        "headless"
     ],
     "license": "MIT",
     "authors": [
