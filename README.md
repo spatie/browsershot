@@ -14,6 +14,7 @@ Here's a quick example:
 ```php
 use Spatie\Browsershot\Browsershot;
 
+// an image will be saved
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
