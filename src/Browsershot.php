@@ -188,7 +188,7 @@ class Browsershot
     {
         $command =
               escapeshellarg($this->findChrome())
-            . " --headless --print-to-pdf={$targetPath}";
+            ." --headless --print-to-pdf={$targetPath}";
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
@@ -202,10 +202,9 @@ class Browsershot
             $command .= ' --user-agent='.escapeshellarg($this->userAgent);
         }
 
-        $command .= ' ' .escapeshellarg($this->url);
+        $command .= ' '.escapeshellarg($this->url);
 
         return $command;
-
     }
 
     protected function findChrome(): string
