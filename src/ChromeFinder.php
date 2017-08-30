@@ -9,6 +9,7 @@ class ChromeFinder
     protected $paths = [
         'Darwin' => [
             '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
         ],
         'Linux' => [
             '/usr/bin/google-chrome',
