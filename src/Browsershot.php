@@ -13,6 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class Browsershot
 {
     protected $url = '';
+    protected $html = '';
 
     protected $pathToChrome = '';
     protected $timeout = 60;
@@ -23,19 +24,42 @@ class Browsershot
     protected $hideScrollbars = true;
     protected $userAgent = '';
 
+    protected $temporaryHtmlDirectory;
+
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
 
     public static function url(string $url)
     {
-        return new static($url);
+        return (new static)->setUrl($url);
     }
 
-    public function __construct(string $url)
+    public static function html(string $html)
+    {
+        return (new static)->setHtml($html);
+    }
+
+    public function __construct(string $url = '')
     {
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+    }
+
+    public function setUrl(string $url)
+    {
+        $this->url = $url;
+        $this->html = '';
+
+        return $this;
+    }
+
+    public function setHtml(string $html)
+    {
+        $this->html = $html;
+        $this->url = '';
+
+        return $this;
     }
 
     public function setChromePath(string $pathToChrome)
@@ -117,6 +141,8 @@ class Browsershot
 
             $process->run();
 
+            $this->cleanupTemporaryHtmlFile();
+
             if (! $process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
@@ -144,6 +170,8 @@ class Browsershot
         $process = (new Process($command))->setTimeout($this->timeout);
 
         $process->run();
+
+        $this->cleanupTemporaryHtmlFile();
     }
 
     public function applyManipulations(string $imagePath)
@@ -155,12 +183,14 @@ class Browsershot
 
     public function createScreenshotCommand(string $workingDirectory): string
     {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
         $command = 'cd '
             .escapeshellarg($workingDirectory)
             .';'
             .escapeshellarg($this->findChrome())
             .' --headless --screenshot '
-            .escapeshellarg($this->url);
+            .escapeshellarg($url);
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
@@ -186,6 +216,8 @@ class Browsershot
 
     protected function createPdfCommand($targetPath): string
     {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
         $command =
               escapeshellarg($this->findChrome())
             ." --headless --print-to-pdf={$targetPath}";
@@ -202,9 +234,25 @@ class Browsershot
             $command .= ' --user-agent='.escapeshellarg($this->userAgent);
         }
 
-        $command .= ' '.escapeshellarg($this->url);
+        $command .= ' '.escapeshellarg($url);
 
         return $command;
+    }
+
+    protected function createTemporaryHtmlFile(): string
+    {
+        $this->temporaryHtmlDirectory = (new TemporaryDirectory())->create();
+
+        file_put_contents($temporaryHtmlFile = $this->temporaryHtmlDirectory->path('index.html'), $this->html);
+
+        return "file://{$temporaryHtmlFile}";
+    }
+
+    protected function cleanupTemporaryHtmlFile()
+    {
+        if ($this->temporaryHtmlDirectory) {
+            $this->temporaryHtmlDirectory->delete();
+        }
     }
 
     protected function findChrome(): string

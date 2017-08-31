@@ -24,6 +24,17 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_take_a_screenshot_of_arbitrary_html()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        $this->configureForCurrentEnvironment(Browsershot::html('<h1>Hello world!!</h1>'))
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
     public function it_can_save_a_pdf_by_using_the_pdf_extension()
     {
         $targetPath = __DIR__.'/temp/testPdf.pdf';
@@ -97,8 +108,11 @@ class BrowsershotTest extends TestCase
 
     protected function getBrowsershotForCurrentEnvironment(): Browsershot
     {
-        $browsershot = Browsershot::url('https://example.com');
+        return $this->configureForCurrentEnvironment(Browsershot::url('https://example.com'));
+    }
 
+    protected function configureForCurrentEnvironment(Browsershot $browsershot): Browsershot
+    {
         if (getenv('TRAVIS')) {
             $browsershot->setChromePath('google-chrome-stable');
         }

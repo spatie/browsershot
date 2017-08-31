@@ -12,7 +12,7 @@ class ChromeFinderTest extends TestCase
     {
         $this->skipIfNotRunningonMacOS();
 
-        $this->assertStringEndsWith('Chrome', ChromeFinder::forCurrentOperatingSystem());
+        $this->assertContains('Chrome', ChromeFinder::forCurrentOperatingSystem());
     }
 
     /** @test */
