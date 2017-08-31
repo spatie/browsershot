@@ -183,7 +183,7 @@ class Browsershot
 
     public function createScreenshotCommand(string $workingDirectory): string
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile($this->html) : $this->url;
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $command = 'cd '
             .escapeshellarg($workingDirectory)
@@ -216,7 +216,7 @@ class Browsershot
 
     protected function createPdfCommand($targetPath): string
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile($this->html) : $this->url;
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $command =
               escapeshellarg($this->findChrome())
