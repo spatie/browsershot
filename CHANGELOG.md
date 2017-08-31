@@ -2,6 +2,9 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.2.0 - 2017-08-31
+- add support for directly converting some html
+
 ### 2.1.0 - 2017-08-06
 - add support for saving `pdf`s
 
