@@ -25,7 +25,7 @@ It will save a pdf if the path passed to the `save` method has a `pdf` extension
 Browsershot::url('https://example.com')->save('example.pdf');
 ```
 
-You can also use arbitrary html input, simply replace the `url` method with `html`:
+You can also use an arbitrary html input, simply replace the `url` method with `html`:
 
 ```php
 Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
