@@ -102,6 +102,14 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+You can also capture the webpage at higher pixel densities by passing a device scale factor value of 2 or 3. This mimics how the webpage would be displayed on a retina/xhdpi display.
+
+```php
+Browsershot::url('https://example.com')
+    ->deviceScaleFactor(2)
+    ->save($pathToImage);
+```
+
 In fact, you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
 
 ```php
