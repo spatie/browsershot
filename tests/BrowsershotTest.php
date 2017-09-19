@@ -35,6 +35,19 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_take_a_high_density_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        $this
+            ->getBrowsershotForCurrentEnvironment()
+            ->deviceScaleFactor(2)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
     public function it_can_save_a_pdf_by_using_the_pdf_extension()
     {
         $targetPath = __DIR__.'/temp/testPdf.pdf';
