@@ -209,7 +209,7 @@ class Browsershot
 
         $command =
             escapeshellarg($this->findChrome())
-            . " --headless --dump-dom";
+            .' --headless --dump-dom';
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
@@ -219,11 +219,11 @@ class Browsershot
             $command .= ' --hide-scrollbars';
         }
 
-        if (!empty($this->userAgent)) {
-            $command .= ' --user-agent=' . escapeshellarg($this->userAgent);
+        if (! empty($this->userAgent)) {
+            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
         }
 
-        $command .= ' ' . escapeshellarg($url);
+        $command .= ' '.escapeshellarg($url);
 
         return $command;
     }
