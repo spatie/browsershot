@@ -23,6 +23,7 @@ class Browsershot
     protected $disableGpu = true;
     protected $hideScrollbars = true;
     protected $userAgent = '';
+    protected $deviceScaleFactor = 1;
 
     protected $temporaryHtmlDirectory;
 
@@ -115,6 +116,14 @@ class Browsershot
     {
         $this->windowWidth = $width;
         $this->windowHeight = $height;
+
+        return $this;
+    }
+
+    public function deviceScaleFactor(int $deviceScaleFactor)
+    {
+        // Google Chrome currently supports values of 1, 2, and 3.
+        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
 
         return $this;
     }
@@ -247,6 +256,10 @@ class Browsershot
 
         if (! empty($this->userAgent)) {
             $command .= ' --user-agent='.escapeshellarg($this->userAgent);
+        }
+
+        if ($this->deviceScaleFactor > 1) {
+            $command .= ' --force-device-scale-factor='.escapeshellarg($this->deviceScaleFactor);
         }
 
         return $command;
