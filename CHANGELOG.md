@@ -2,7 +2,7 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-### 2.3.0 - 2017-09-21
+### 2.4.0 - 2017-09-21
 - add `bodyHtml` method
 
 ### 2.3.0 - 2017-09-19
