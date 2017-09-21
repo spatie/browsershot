@@ -1,6 +1,6 @@
 ## Changelog
 
-All notable changes to `browsershot` will be documented in this file
+All notable changes to `Browsershot` will be documented in this file
 
 ### 2.3.0 - 2017-09-21
 - add `bodyHtml` method
