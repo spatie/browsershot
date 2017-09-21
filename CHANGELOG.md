@@ -2,6 +2,9 @@
 
 All notable changes to `browsershot` will be documented in this file
 
+### 2.3.0 - 2017-09-21
+- add `bodyHtml` method
+
 ### 2.2.0 - 2017-08-31
 - add support for directly converting some html
 

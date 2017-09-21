@@ -12,6 +12,16 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_body_html()
+    {
+        $html = $this
+            ->getBrowsershotForCurrentEnvironment()
+            ->bodyHtml();
+
+        $this->assertContains('<h1>Example Domain</h1>', $html);
+    }
+
+    /** @test */
     public function it_can_take_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
@@ -106,9 +116,9 @@ class BrowsershotTest extends TestCase
         $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
     }
 
-    protected function getBrowsershotForCurrentEnvironment(): Browsershot
+    protected function getBrowsershotForCurrentEnvironment($url = 'https://example.com'): Browsershot
     {
-        return $this->configureForCurrentEnvironment(Browsershot::url('https://example.com'));
+        return $this->configureForCurrentEnvironment(Browsershot::url($url));
     }
 
     protected function configureForCurrentEnvironment(Browsershot $browsershot): Browsershot

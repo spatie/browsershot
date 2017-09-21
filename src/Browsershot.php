@@ -163,6 +163,17 @@ class Browsershot
         }
     }
 
+    public function bodyHtml(): string
+    {
+        $command = $this->createBodyHtmlCommand();
+
+        $process = (new Process($command))->setTimeout($this->timeout);
+
+        $process->run();
+
+        return $process->getOutput();
+    }
+
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
@@ -179,6 +190,33 @@ class Browsershot
         Image::load($imagePath)
             ->manipulate($this->imageManipulations)
             ->save();
+    }
+
+    public function createBodyHtmlCommand(): string
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        $command =
+            escapeshellarg($this->findChrome())
+            . " --headless --dump-dom";
+
+        if ($this->disableGpu) {
+            $command .= ' --disable-gpu';
+        }
+
+        if ($this->hideScrollbars) {
+            $command .= ' --hide-scrollbars';
+        }
+
+        if (!empty($this->userAgent)) {
+            $command .= ' --user-agent=' . escapeshellarg($this->userAgent);
+        }
+
+        $command .= ' ' . escapeshellarg($url);
+
+        return $command;
     }
 
     public function createScreenshotCommand(string $workingDirectory): string

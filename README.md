@@ -31,6 +31,12 @@ You can also use an arbitrary html input, simply replace the `url` method with `
 Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 ```
 
+Browsershot also can get the body of an html page after JavaScript has been executed:
+
+```php
+Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
+```
+
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
 ## Postcardware
@@ -139,6 +145,13 @@ Alternatively you can explicitly use the `savePdf` method:
 ```php
 Browsershot::url('https://example.com')->savePdf('example.pdf');
 ```
+
+Browsershot also can get the body of an html page after JavaScript has been executed:
+
+```php
+Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
+```
+
 
 ## Contributing
 
