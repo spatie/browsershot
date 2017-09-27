@@ -12,8 +12,8 @@ class ChromeFinder
             '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary',
         ],
         'Linux' => [
-            '/usr/bin/chromium',
             '/usr/bin/google-chrome',
+            '/usr/bin/chromium',
         ],
     ];
 
