@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 2.4.1 - 2017-09-27
+- add the default path for linux Chromium users
+
 ### 2.4.0 - 2017-09-21
 - add `bodyHtml` method
 
