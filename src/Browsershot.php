@@ -15,13 +15,10 @@ class Browsershot
     protected $url = '';
     protected $html = '';
 
-    protected $pathToChrome = '';
     protected $timeout = 60;
 
-    protected $windowWidth = 0;
-    protected $windowHeight = 0;
-    protected $disableGpu = true;
-    protected $hideScrollbars = true;
+    protected $windowWidth = 800;
+    protected $windowHeight = 600;
     protected $userAgent = '';
     protected $deviceScaleFactor = 1;
 
@@ -63,27 +60,6 @@ class Browsershot
         return $this;
     }
 
-    public function setChromePath(string $pathToChrome)
-    {
-        $this->pathToChrome = $pathToChrome;
-
-        return $this;
-    }
-
-    public function enableGpu()
-    {
-        $this->disableGpu = false;
-
-        return $this;
-    }
-
-    public function disableGpu()
-    {
-        $this->disableGpu = true;
-
-        return $this;
-    }
-
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
@@ -94,20 +70,6 @@ class Browsershot
     public function userAgent(string $userAgent)
     {
         $this->userAgent = $userAgent;
-
-        return $this;
-    }
-
-    public function showScrollbars()
-    {
-        $this->hideScrollbars = false;
-
-        return $this;
-    }
-
-    public function hideScrollbars()
-    {
-        $this->hideScrollbars = true;
 
         return $this;
     }
@@ -141,30 +103,14 @@ class Browsershot
             return $this->savePdf($targetPath);
         }
 
-        $temporaryDirectory = (new TemporaryDirectory())->create();
+        $command = $this->createScreenshotCommand($targetPath);
 
-        try {
-            $command = $this->createScreenshotCommand($temporaryDirectory->path());
+        $this->callBrowser($command);
 
-            $process = (new Process($command))->setTimeout($this->timeout);
+        $this->cleanupTemporaryHtmlFile();
 
-            $process->run();
-
-            $this->cleanupTemporaryHtmlFile();
-
-            if (! $process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $screenShotPath = $temporaryDirectory->path('screenshot.png');
-
-            if (! file_exists($screenShotPath)) {
-                throw CouldNotTakeBrowsershot::chromeOutputEmpty($screenShotPath, $process);
-            }
-
-            rename($screenShotPath, $targetPath);
-        } finally {
-            $temporaryDirectory->delete();
+        if (! file_exists($targetPath)) {
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
         }
 
         if (! $this->imageManipulations->isEmpty()) {
@@ -176,22 +122,20 @@ class Browsershot
     {
         $command = $this->createBodyHtmlCommand();
 
-        $process = (new Process($command))->setTimeout($this->timeout);
-
-        $process->run();
-
-        return $process->getOutput();
+        return $this->callBrowser($command);
     }
 
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
 
-        $process = (new Process($command))->setTimeout($this->timeout);
-
-        $process->run();
+        $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
+
+        if (! file_exists($targetPath)) {
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
+        }
     }
 
     public function applyManipulations(string $imagePath)
@@ -201,91 +145,43 @@ class Browsershot
             ->save();
     }
 
-    public function createBodyHtmlCommand(): string
-    {
-        $url = $this->html
-            ? $this->createTemporaryHtmlFile()
-            : $this->url;
-
-        $command =
-            escapeshellarg($this->findChrome())
-            .' --headless --dump-dom';
-
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
-        }
-
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
-        }
-
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
-        }
-
-        $command .= ' '.escapeshellarg($url);
-
-        return $command;
-    }
-
-    public function createScreenshotCommand(string $workingDirectory): string
+    public function createBodyHtmlCommand(): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = 'cd '
-            .escapeshellarg($workingDirectory)
-            .';'
-            .escapeshellarg($this->findChrome())
-            .' --headless --screenshot '
-            .escapeshellarg($url);
+        return $this->createCommand($url, 'content');
+    }
 
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
-        }
+    public function createScreenshotCommand(string $targetPath): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        if ($this->windowWidth > 0) {
-            $command .= ' --window-size='
-                .escapeshellarg($this->windowWidth)
-                .','
-                .escapeshellarg($this->windowHeight);
-        }
+        return $this->createCommand($url, 'screenshot', [ 'path' => $targetPath ]);
+    }
 
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
-        }
+    protected function createPdfCommand($targetPath): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
+        return $this->createCommand($url, 'pdf', [ 'path' => $targetPath ]);
+    }
+
+    protected function createCommand(string $url, string $action, array $options = []): array
+    {
+        $command = compact('url', 'action', 'options');
+
+        $command['options']['viewport'] = [
+            'width' => $this->windowWidth,
+            'height' => $this->windowHeight
+        ];
+
+        if ($this->userAgent) {
+            $command['options']['userAgent'] = $this->userAgent;
         }
 
         if ($this->deviceScaleFactor > 1) {
-            $command .= ' --force-device-scale-factor='.escapeshellarg($this->deviceScaleFactor);
+            $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
         }
-
-        return $command;
-    }
-
-    protected function createPdfCommand($targetPath): string
-    {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
-
-        $command =
-              escapeshellarg($this->findChrome())
-            ." --headless --print-to-pdf={$targetPath}";
-
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
-        }
-
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
-        }
-
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
-        }
-
-        $command .= ' '.escapeshellarg($url);
 
         return $command;
     }
@@ -306,12 +202,21 @@ class Browsershot
         }
     }
 
-    protected function findChrome(): string
+    protected function callBrowser(array $command)
     {
-        if (! empty($this->pathToChrome)) {
-            return $this->pathToChrome;
+        $binPath = __DIR__ . '/../bin/browser.js';
+
+        $cli = 'NODE_PATH=`npm root -g` '
+            .escapeshellarg($binPath) . ' '
+            .escapeshellarg(json_encode($command));
+
+        $process = (new Process($cli))->setTimeout($this->timeout);
+        $process->run();
+
+        if (! $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
 
-        return ChromeFinder::forCurrentOperatingSystem();
+        return $process->getOutput();
     }
 }

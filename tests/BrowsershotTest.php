@@ -8,14 +8,13 @@ class BrowsershotTest extends TestCase
 {
     public function setUp()
     {
-        $this->emptyTempDirectory();
+        // $this->emptyTempDirectory();
     }
 
     /** @test */
     public function it_can_get_the_body_html()
     {
-        $html = $this
-            ->getBrowsershotForCurrentEnvironment()
+        $html = Browsershot::url('https://example.com')
             ->bodyHtml();
 
         $this->assertContains('<h1>Example Domain</h1>', $html);
@@ -26,8 +25,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -38,7 +36,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this->configureForCurrentEnvironment(Browsershot::html('<h1>Hello world!!</h1>'))
+        Browsershot::html('<h1>Hello world!!</h1>')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -49,8 +47,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->deviceScaleFactor(2)
             ->save($targetPath);
 
@@ -62,8 +59,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testPdf.pdf';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -76,8 +72,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.jpg';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->format('jpg')
             ->save($targetPath);
 
@@ -90,56 +85,39 @@ class BrowsershotTest extends TestCase
     public function it_can_create_a_command_to_generate_a_screenshot()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->createScreenshotCommand('workingDir');
+            ->createScreenshotCommand('screenshot.png');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars", $command);
-    }
-
-    /** @test */
-    public function it_can_enable_the_usage_of_the_gpu()
-    {
-        $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->enableGpu()
-            ->createScreenshotCommand('workingDir');
-
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --hide-scrollbars", $command);
-    }
-
-    /** @test */
-    public function it_can_show_scrollbars()
-    {
-        $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->showScrollbars()
-            ->createScreenshotCommand('workingDir');
-
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu", $command);
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600
+                ]
+            ]
+        ], $command);
     }
 
     /** @test */
     public function it_can_use_given_user_agent()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
             ->userAgent('my_special_snowflake')
-            ->createScreenshotCommand('workingDir');
+            ->createScreenshotCommand('screenshot.png');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
-    }
-
-    protected function getBrowsershotForCurrentEnvironment($url = 'https://example.com'): Browsershot
-    {
-        return $this->configureForCurrentEnvironment(Browsershot::url($url));
-    }
-
-    protected function configureForCurrentEnvironment(Browsershot $browsershot): Browsershot
-    {
-        if (getenv('TRAVIS')) {
-            $browsershot->setChromePath('google-chrome-stable');
-        }
-
-        return $browsershot;
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600
+                ],
+                'userAgent' => 'my_special_snowflake'
+            ]
+        ], $command);
     }
 }
