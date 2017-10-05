@@ -8,7 +8,7 @@ class BrowsershotTest extends TestCase
 {
     public function setUp()
     {
-        // $this->emptyTempDirectory();
+        $this->emptyTempDirectory();
     }
 
     /** @test */
@@ -55,12 +55,56 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_take_a_full_page_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
+
+        Browsershot::url('https://github.com/spatie/browsershot')
+            ->fullPage()
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_highly_customized_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/customScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->clip(290, 80, 700, 290)
+            ->deviceScaleFactor(2)
+            ->windowSize(1280, 800)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
     public function it_can_save_a_pdf_by_using_the_pdf_extension()
     {
         $targetPath = __DIR__.'/temp/testPdf.pdf';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    }
+
+    /** @test */
+    public function it_can_save_a_highly_customized_pdf()
+    {
+        $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+        Browsershot::url('https://example.com')
+            ->browserHeaderAndFooter(false)
+            ->includeBackground()
+            ->landscape()
+            ->margins(5, 25, 5, 25)
+            ->pages('1')
+            ->savePdf($targetPath);
 
         $this->assertFileExists($targetPath);
 
@@ -85,13 +129,51 @@ class BrowsershotTest extends TestCase
     public function it_can_create_a_command_to_generate_a_screenshot()
     {
         $command = Browsershot::url('https://example.com')
+            ->clip(100, 50, 600, 400)
+            ->deviceScaleFactor(2)
+            ->fullPage()
+            ->windowSize(1920, 1080)
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
             'url' => 'https://example.com',
             'action' => 'screenshot',
             'options' => [
+                'clip' => [ 'x' => 100, 'y' => 50, 'width' => 600, 'height' => 400 ],
                 'path' => 'screenshot.png',
+                'fullPage' => true,
+                'viewport' => [
+                    'deviceScaleFactor' => 2,
+                    'width' => 1920,
+                    'height' => 1080
+                ]
+            ]
+        ], $command);
+    }
+
+    /** @test */
+    public function it_can_create_a_command_to_generate_a_pdf()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->includeBackground()
+            ->landscape()
+            ->margins(10, 20, 30, 40)
+            ->pages('1-3')
+            ->paperSize(210, 148)
+            ->createPdfCommand('screenshot.pdf');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'pdf',
+            'options' => [
+                'path' => 'screenshot.pdf',
+                'displayHeaderFooter' => true,
+                'printBackground' => true,
+                'landscape' => true,
+                'margins' => [ 'top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm' ],
+                'pageRanges' => '1-3',
+                'width' => '210mm',
+                'height' => '148mm',
                 'viewport' => [
                     'width' => 800,
                     'height' => 600

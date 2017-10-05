@@ -17,10 +17,19 @@ class Browsershot
 
     protected $timeout = 60;
 
+    protected $browserHeaderAndFooter = true;
+    protected $clip = null;
+    protected $deviceScaleFactor = 1;
+    protected $fullPage = false;
+    protected $includeBackground = false;
+    protected $landscape = false;
+    protected $margins = null;
+    protected $pages = '';
+    protected $paperWidth = 0;
+    protected $paperHeight = 0;
+    protected $userAgent = '';
     protected $windowWidth = 800;
     protected $windowHeight = 600;
-    protected $userAgent = '';
-    protected $deviceScaleFactor = 1;
 
     protected $temporaryHtmlDirectory;
 
@@ -57,6 +66,77 @@ class Browsershot
         $this->html = $html;
         $this->url = '';
 
+        // default header and footer to false in this case as they will only show an ugly temporary filename
+        $this->browserHeaderAndFooter(false);
+
+        return $this;
+    }
+
+    public function clip(int $x, int $y, int $width, int $height)
+    {
+        $this->clip = compact('x', 'y', 'width', 'height');
+
+        return $this;
+    }
+
+    public function browserHeaderAndFooter(bool $browserHeaderAndFooter = true)
+    {
+        $this->browserHeaderAndFooter = $browserHeaderAndFooter;
+
+        return $this;
+    }
+
+    public function deviceScaleFactor(int $deviceScaleFactor)
+    {
+        // Google Chrome currently supports values of 1, 2, and 3.
+        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
+
+        return $this;
+    }
+
+    public function fullPage(bool $fullPage = true)
+    {
+        $this->fullPage = $fullPage;
+
+        return $this;
+    }
+
+    public function includeBackground(bool $includeBackground = true)
+    {
+        $this->includeBackground = $includeBackground;
+
+        return $this;
+    }
+
+    public function landscape(bool $landscape = true)
+    {
+        $this->landscape = $landscape;
+
+        return $this;
+    }
+
+    // margins in millimeters
+    public function margins(int $top, int $right, int $bottom, int $left)
+    {
+        $this->margins = compact('top', 'right', 'bottom', 'left');
+
+        return $this;
+    }
+
+    // page ranges to print, e.g. '1-5, 8, 11-13'
+    public function pages(string $pages)
+    {
+        $this->pages = $pages;
+
+        return $this;
+    }
+
+    // paper size in millimeters
+    public function paperSize(int $width, int $height)
+    {
+        $this->paperWidth = $width;
+        $this->paperHeight = $height;
+
         return $this;
     }
 
@@ -78,14 +158,6 @@ class Browsershot
     {
         $this->windowWidth = $width;
         $this->windowHeight = $height;
-
-        return $this;
-    }
-
-    public function deviceScaleFactor(int $deviceScaleFactor)
-    {
-        // Google Chrome currently supports values of 1, 2, and 3.
-        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
 
         return $this;
     }
@@ -156,14 +228,56 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        return $this->createCommand($url, 'screenshot', [ 'path' => $targetPath ]);
+        $command = $this->createCommand($url, 'screenshot', [ 'path' => $targetPath ]);
+
+        if ($this->fullPage) {
+            $command['options']['fullPage'] = true;
+        }
+
+        if ($this->clip) {
+            $command['options']['clip'] = $this->clip;
+        }
+
+        return $command;
     }
 
-    protected function createPdfCommand($targetPath): array
+    public function createPdfCommand($targetPath): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        return $this->createCommand($url, 'pdf', [ 'path' => $targetPath ]);
+        $command = $this->createCommand($url, 'pdf', [ 'path' => $targetPath ]);
+
+        if ($this->browserHeaderAndFooter) {
+            $command['options']['displayHeaderFooter'] = true;
+        }
+
+        if ($this->includeBackground) {
+            $command['options']['printBackground'] = true;
+        }
+
+        if ($this->landscape) {
+            $command['options']['landscape'] = true;
+        }
+
+        if ($this->margins) {
+            $command['options']['margins'] = [
+                'top' => $this->margins['top'].'mm',
+                'right' => $this->margins['right'].'mm',
+                'bottom' => $this->margins['bottom'].'mm',
+                'left' => $this->margins['left'].'mm'
+            ];
+        }
+
+        if ($this->pages) {
+            $command['options']['pageRanges'] = $this->pages;
+        }
+
+        if ($this->paperWidth > 0 && $this->paperHeight > 0) {
+            $command['options']['width'] = $this->paperWidth.'mm';
+            $command['options']['height'] = $this->paperHeight.'mm';
+        }
+
+        return $command;
     }
 
     protected function createCommand(string $url, string $action, array $options = []): array
