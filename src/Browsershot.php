@@ -228,7 +228,7 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'screenshot', [ 'path' => $targetPath ]);
+        $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
 
         if ($this->fullPage) {
             $command['options']['fullPage'] = true;
@@ -245,7 +245,7 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'pdf', [ 'path' => $targetPath ]);
+        $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
 
         if ($this->browserHeaderAndFooter) {
             $command['options']['displayHeaderFooter'] = true;
@@ -264,7 +264,7 @@ class Browsershot
                 'top' => $this->margins['top'].'mm',
                 'right' => $this->margins['right'].'mm',
                 'bottom' => $this->margins['bottom'].'mm',
-                'left' => $this->margins['left'].'mm'
+                'left' => $this->margins['left'].'mm',
             ];
         }
 
@@ -286,7 +286,7 @@ class Browsershot
 
         $command['options']['viewport'] = [
             'width' => $this->windowWidth,
-            'height' => $this->windowHeight
+            'height' => $this->windowHeight,
         ];
 
         if ($this->userAgent) {
@@ -318,10 +318,10 @@ class Browsershot
 
     protected function callBrowser(array $command)
     {
-        $binPath = __DIR__ . '/../bin/browser.js';
+        $binPath = __DIR__.'/../bin/browser.js';
 
         $cli = 'NODE_PATH=`npm root -g` '
-            .escapeshellarg($binPath) . ' '
+            .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
 
         $process = (new Process($cli))->setTimeout($this->timeout);

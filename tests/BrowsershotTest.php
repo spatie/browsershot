@@ -139,15 +139,15 @@ class BrowsershotTest extends TestCase
             'url' => 'https://example.com',
             'action' => 'screenshot',
             'options' => [
-                'clip' => [ 'x' => 100, 'y' => 50, 'width' => 600, 'height' => 400 ],
+                'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
                 'path' => 'screenshot.png',
                 'fullPage' => true,
                 'viewport' => [
                     'deviceScaleFactor' => 2,
                     'width' => 1920,
-                    'height' => 1080
-                ]
-            ]
+                    'height' => 1080,
+                ],
+            ],
         ], $command);
     }
 
@@ -170,15 +170,15 @@ class BrowsershotTest extends TestCase
                 'displayHeaderFooter' => true,
                 'printBackground' => true,
                 'landscape' => true,
-                'margins' => [ 'top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm' ],
+                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
                 'pageRanges' => '1-3',
                 'width' => '210mm',
                 'height' => '148mm',
                 'viewport' => [
                     'width' => 800,
-                    'height' => 600
-                ]
-            ]
+                    'height' => 600,
+                ],
+            ],
         ], $command);
     }
 
@@ -196,10 +196,10 @@ class BrowsershotTest extends TestCase
                 'path' => 'screenshot.png',
                 'viewport' => [
                     'width' => 800,
-                    'height' => 600
+                    'height' => 600,
                 ],
-                'userAgent' => 'my_special_snowflake'
-            ]
+                'userAgent' => 'my_special_snowflake',
+            ],
         ], $command);
     }
 }
