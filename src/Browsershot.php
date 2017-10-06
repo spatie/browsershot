@@ -15,15 +15,21 @@ class Browsershot
     protected $url = '';
     protected $html = '';
 
-    protected $pathToChrome = '';
     protected $timeout = 60;
 
-    protected $windowWidth = 0;
-    protected $windowHeight = 0;
-    protected $disableGpu = true;
-    protected $hideScrollbars = true;
-    protected $userAgent = '';
+    protected $browserHeaderAndFooter = true;
+    protected $clip = null;
     protected $deviceScaleFactor = 1;
+    protected $fullPage = false;
+    protected $includeBackground = false;
+    protected $landscape = false;
+    protected $margins = null;
+    protected $pages = '';
+    protected $paperWidth = 0;
+    protected $paperHeight = 0;
+    protected $userAgent = '';
+    protected $windowWidth = 800;
+    protected $windowHeight = 600;
 
     protected $temporaryHtmlDirectory;
 
@@ -60,26 +66,76 @@ class Browsershot
         $this->html = $html;
         $this->url = '';
 
-        return $this;
-    }
-
-    public function setChromePath(string $pathToChrome)
-    {
-        $this->pathToChrome = $pathToChrome;
+        // default header and footer to false in this case as they will only show an ugly temporary filename
+        $this->browserHeaderAndFooter(false);
 
         return $this;
     }
 
-    public function enableGpu()
+    public function clip(int $x, int $y, int $width, int $height)
     {
-        $this->disableGpu = false;
+        $this->clip = compact('x', 'y', 'width', 'height');
 
         return $this;
     }
 
-    public function disableGpu()
+    public function browserHeaderAndFooter(bool $browserHeaderAndFooter = true)
     {
-        $this->disableGpu = true;
+        $this->browserHeaderAndFooter = $browserHeaderAndFooter;
+
+        return $this;
+    }
+
+    public function deviceScaleFactor(int $deviceScaleFactor)
+    {
+        // Google Chrome currently supports values of 1, 2, and 3.
+        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
+
+        return $this;
+    }
+
+    public function fullPage(bool $fullPage = true)
+    {
+        $this->fullPage = $fullPage;
+
+        return $this;
+    }
+
+    public function includeBackground(bool $includeBackground = true)
+    {
+        $this->includeBackground = $includeBackground;
+
+        return $this;
+    }
+
+    public function landscape(bool $landscape = true)
+    {
+        $this->landscape = $landscape;
+
+        return $this;
+    }
+
+    // margins in millimeters
+    public function margins(int $top, int $right, int $bottom, int $left)
+    {
+        $this->margins = compact('top', 'right', 'bottom', 'left');
+
+        return $this;
+    }
+
+    // page ranges to print, e.g. '1-5, 8, 11-13'
+    public function pages(string $pages)
+    {
+        $this->pages = $pages;
+
+        return $this;
+    }
+
+    // paper size in millimeters
+    public function paperSize(int $width, int $height)
+    {
+        $this->paperWidth = $width;
+        $this->paperHeight = $height;
 
         return $this;
     }
@@ -98,32 +154,10 @@ class Browsershot
         return $this;
     }
 
-    public function showScrollbars()
-    {
-        $this->hideScrollbars = false;
-
-        return $this;
-    }
-
-    public function hideScrollbars()
-    {
-        $this->hideScrollbars = true;
-
-        return $this;
-    }
-
     public function windowSize(int $width, int $height)
     {
         $this->windowWidth = $width;
         $this->windowHeight = $height;
-
-        return $this;
-    }
-
-    public function deviceScaleFactor(int $deviceScaleFactor)
-    {
-        // Google Chrome currently supports values of 1, 2, and 3.
-        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
 
         return $this;
     }
@@ -141,30 +175,14 @@ class Browsershot
             return $this->savePdf($targetPath);
         }
 
-        $temporaryDirectory = (new TemporaryDirectory())->create();
+        $command = $this->createScreenshotCommand($targetPath);
 
-        try {
-            $command = $this->createScreenshotCommand($temporaryDirectory->path());
+        $this->callBrowser($command);
 
-            $process = (new Process($command))->setTimeout($this->timeout);
+        $this->cleanupTemporaryHtmlFile();
 
-            $process->run();
-
-            $this->cleanupTemporaryHtmlFile();
-
-            if (! $process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $screenShotPath = $temporaryDirectory->path('screenshot.png');
-
-            if (! file_exists($screenShotPath)) {
-                throw CouldNotTakeBrowsershot::chromeOutputEmpty($screenShotPath, $process);
-            }
-
-            rename($screenShotPath, $targetPath);
-        } finally {
-            $temporaryDirectory->delete();
+        if (! file_exists($targetPath)) {
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
         }
 
         if (! $this->imageManipulations->isEmpty()) {
@@ -176,22 +194,20 @@ class Browsershot
     {
         $command = $this->createBodyHtmlCommand();
 
-        $process = (new Process($command))->setTimeout($this->timeout);
-
-        $process->run();
-
-        return $process->getOutput();
+        return $this->callBrowser($command);
     }
 
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
 
-        $process = (new Process($command))->setTimeout($this->timeout);
-
-        $process->run();
+        $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
+
+        if (! file_exists($targetPath)) {
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
+        }
     }
 
     public function applyManipulations(string $imagePath)
@@ -201,91 +217,85 @@ class Browsershot
             ->save();
     }
 
-    public function createBodyHtmlCommand(): string
+    public function createBodyHtmlCommand(): array
     {
-        $url = $this->html
-            ? $this->createTemporaryHtmlFile()
-            : $this->url;
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command =
-            escapeshellarg($this->findChrome())
-            .' --headless --dump-dom';
+        return $this->createCommand($url, 'content');
+    }
 
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
+    public function createScreenshotCommand(string $targetPath): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
+
+        if ($this->fullPage) {
+            $command['options']['fullPage'] = true;
         }
 
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
+        if ($this->clip) {
+            $command['options']['clip'] = $this->clip;
         }
-
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
-        }
-
-        $command .= ' '.escapeshellarg($url);
 
         return $command;
     }
 
-    public function createScreenshotCommand(string $workingDirectory): string
+    public function createPdfCommand($targetPath): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = 'cd '
-            .escapeshellarg($workingDirectory)
-            .';'
-            .escapeshellarg($this->findChrome())
-            .' --headless --screenshot '
-            .escapeshellarg($url);
+        $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
 
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
+        if ($this->browserHeaderAndFooter) {
+            $command['options']['displayHeaderFooter'] = true;
         }
 
-        if ($this->windowWidth > 0) {
-            $command .= ' --window-size='
-                .escapeshellarg($this->windowWidth)
-                .','
-                .escapeshellarg($this->windowHeight);
+        if ($this->includeBackground) {
+            $command['options']['printBackground'] = true;
         }
 
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
+        if ($this->landscape) {
+            $command['options']['landscape'] = true;
         }
 
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
+        if ($this->margins) {
+            $command['options']['margins'] = [
+                'top' => $this->margins['top'].'mm',
+                'right' => $this->margins['right'].'mm',
+                'bottom' => $this->margins['bottom'].'mm',
+                'left' => $this->margins['left'].'mm',
+            ];
+        }
+
+        if ($this->pages) {
+            $command['options']['pageRanges'] = $this->pages;
+        }
+
+        if ($this->paperWidth > 0 && $this->paperHeight > 0) {
+            $command['options']['width'] = $this->paperWidth.'mm';
+            $command['options']['height'] = $this->paperHeight.'mm';
+        }
+
+        return $command;
+    }
+
+    protected function createCommand(string $url, string $action, array $options = []): array
+    {
+        $command = compact('url', 'action', 'options');
+
+        $command['options']['viewport'] = [
+            'width' => $this->windowWidth,
+            'height' => $this->windowHeight,
+        ];
+
+        if ($this->userAgent) {
+            $command['options']['userAgent'] = $this->userAgent;
         }
 
         if ($this->deviceScaleFactor > 1) {
-            $command .= ' --force-device-scale-factor='.escapeshellarg($this->deviceScaleFactor);
+            $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
         }
-
-        return $command;
-    }
-
-    protected function createPdfCommand($targetPath): string
-    {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
-
-        $command =
-              escapeshellarg($this->findChrome())
-            ." --headless --print-to-pdf={$targetPath}";
-
-        if ($this->disableGpu) {
-            $command .= ' --disable-gpu';
-        }
-
-        if ($this->hideScrollbars) {
-            $command .= ' --hide-scrollbars';
-        }
-
-        if (! empty($this->userAgent)) {
-            $command .= ' --user-agent='.escapeshellarg($this->userAgent);
-        }
-
-        $command .= ' '.escapeshellarg($url);
 
         return $command;
     }
@@ -306,12 +316,21 @@ class Browsershot
         }
     }
 
-    protected function findChrome(): string
+    protected function callBrowser(array $command)
     {
-        if (! empty($this->pathToChrome)) {
-            return $this->pathToChrome;
+        $binPath = __DIR__.'/../bin/browser.js';
+
+        $cli = 'NODE_PATH=`npm root -g` '
+            .escapeshellarg($binPath).' '
+            .escapeshellarg(json_encode($command));
+
+        $process = (new Process($cli))->setTimeout($this->timeout);
+        $process->run();
+
+        if (! $process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
 
-        return ChromeFinder::forCurrentOperatingSystem();
+        return $process->getOutput();
     }
 }

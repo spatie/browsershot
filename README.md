@@ -49,16 +49,14 @@ All postcards are published [on our website](https://spatie.be/en/opensource/pos
 
 ## Requirements
 
-This package has been tested on MacOS and Ubuntu 16.04. If you use another OS your mileage may vary. Chrome 59 or higher should be installed on your system.
+This package requires Node 7.6.0 or higher and the Puppeteer Node library installable via NPM.
 
 On a [Forge](https://forge.laravel.com) provisioned Ubuntu 16.04 server you can install the latest stable version of Chrome like this:
 
 ```bash
-sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-sudo apt-get update
-sudo apt-get -f install
-sudo apt-get install google-chrome-stable
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install --global puppeteer
 ```
 
 ## Installation
@@ -81,14 +79,6 @@ Here's the easiest way to create an image of a webpage:
 
 ```php
 Browsershot::url('https://example.com')->save($pathToImage);
-```
-
-Browsershot will make an educated guess where Google Chrome is located. If Chrome can not be found on your system you can manually set its location:
-
-```php
-Browsershot::url('https://example.com')
-   ->setChromePath($pathToChrome)
-   ->save($pathToImage);
 ```
 
 By default the screenshot will be a `png` and it's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
@@ -160,6 +150,21 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
+### Additional options supported by Browsershot
+
+#### Screenshots
+
+- `clip(int $x, int $y, int $width, int $height)` - clip a region of the page
+- `fullPage()` - takes screenshot of the full scrollable page
+
+#### PDFs
+
+- `browserHeaderAndFooter(bool $show = true)` - show/hide the browser header and footer
+- `includeBackground(bool $include = true)` - include/exclude backgrounds
+- `landscape()` - landscape page orientation
+- `pages(string $pages)` - printed page ranges, eg. `1-5, 8, 11-13`
+- `pageSize(int $width, int $height)` - page width/height in millimetres
+- `margins(int $top, int $right, int $bottom, int $left)` - page top/right/bottom/left margin in millimetres
 
 ## Contributing
 
@@ -171,7 +176,7 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 ## Alternatives
 
-If you're not able to install Chrome 59 or higher, take a look at [v1 of browserhot](https://github.com/spatie/browsershot/tree/1.9.1), which uses PhanomJS to take a screenshot. `v1` is not maintained anymore, but should work pretty well
+If you're not able to install Node and Puppeteer, take a look at [v2 of browserhot](https://github.com/spatie/browsershot/tree/2.4.1), which uses Chrome headless CLI to take a screenshot. `v2` is not maintained anymore, but should work pretty well
 
 ## Credits
 
