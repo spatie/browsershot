@@ -182,7 +182,7 @@ class Browsershot
         $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
         }
 
         if (! $this->imageManipulations->isEmpty()) {
@@ -206,7 +206,7 @@ class Browsershot
         $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $process);
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
         }
     }
 
