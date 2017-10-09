@@ -177,7 +177,7 @@ class Browsershot
 
         $command = $this->createScreenshotCommand($targetPath);
 
-        $this->callBrowser($command);
+        $process = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
@@ -194,14 +194,14 @@ class Browsershot
     {
         $command = $this->createBodyHtmlCommand();
 
-        return $this->callBrowser($command);
+        return $this->callBrowser($command)->getOutput();
     }
 
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
 
-        $this->callBrowser($command);
+        $process = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
@@ -331,6 +331,6 @@ class Browsershot
             throw new ProcessFailedException($process);
         }
 
-        return $process->getOutput();
+        return $process;
     }
 }
