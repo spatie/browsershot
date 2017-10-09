@@ -3,6 +3,7 @@
 namespace Spatie\Browsershot\Test;
 
 use Spatie\Browsershot\Browsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase
 {
@@ -109,6 +110,17 @@ class BrowsershotTest extends TestCase
         $this->assertFileExists($targetPath);
 
         $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    }
+
+    /** @test */
+    public function it_can_handle_a_permissions_error()
+    {
+        $targetPath = '/cantWriteThisPdf.png';
+
+        $this->expectException(ProcessFailedException::class);
+
+        Browsershot::url('https://example.com')
+            ->save($targetPath);
     }
 
     /** @test */
