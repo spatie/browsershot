@@ -195,6 +195,36 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_create_a_command_to_generate_a_pdf_with_paper_format()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->includeBackground()
+            ->landscape()
+            ->margins(10, 20, 30, 40)
+            ->pages('1-3')
+            ->format('a4')
+            ->createPdfCommand('screenshot.pdf');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'pdf',
+            'options' => [
+                'path' => 'screenshot.pdf',
+                'displayHeaderFooter' => true,
+                'printBackground' => true,
+                'landscape' => true,
+                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+                'pageRanges' => '1-3',
+                'format' => 'a4',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+            ],
+        ], $command);
+    }
+
+    /** @test */
     public function it_can_use_given_user_agent()
     {
         $command = Browsershot::url('https://example.com')
