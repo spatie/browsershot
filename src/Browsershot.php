@@ -27,6 +27,7 @@ class Browsershot
     protected $pages = '';
     protected $paperWidth = 0;
     protected $paperHeight = 0;
+    protected $format = null;
     protected $userAgent = '';
     protected $windowWidth = 800;
     protected $windowHeight = 600;
@@ -136,6 +137,14 @@ class Browsershot
     {
         $this->paperWidth = $width;
         $this->paperHeight = $height;
+
+        return $this;
+    }
+
+    // paper format
+    public function format(string $format)
+    {
+        $this->format = $format;
 
         return $this;
     }
@@ -275,6 +284,10 @@ class Browsershot
         if ($this->paperWidth > 0 && $this->paperHeight > 0) {
             $command['options']['width'] = $this->paperWidth.'mm';
             $command['options']['height'] = $this->paperHeight.'mm';
+        }
+
+        if ($this->format) {
+            $command['options']['format'] = $this->format;
         }
 
         return $command;
