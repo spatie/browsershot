@@ -25,6 +25,8 @@ class Browsershot
     protected $userAgent = '';
     protected $deviceScaleFactor = 1;
 
+    protected $sandbox = true;
+
     protected $temporaryHtmlDirectory;
 
     /** @var \Spatie\Image\Manipulations */
@@ -38,6 +40,24 @@ class Browsershot
     public static function html(string $html)
     {
         return (new static)->setHtml($html);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSandbox()
+    {
+        return $this->sandbox;
+    }
+
+    /**
+     * @param bool $sandbox
+     * @return Browsershot
+     */
+    public function setSandbox($sandbox)
+    {
+        $this->sandbox = $sandbox;
+        return $this;
     }
 
     public function __construct(string $url = '')
@@ -238,6 +258,10 @@ class Browsershot
             .escapeshellarg($this->findChrome())
             .' --headless --screenshot '
             .escapeshellarg($url);
+
+        if (!$this->isSandbox()) {
+            $command .= ' --no-sandbox';
+        }
 
         if ($this->disableGpu) {
             $command .= ' --disable-gpu';
