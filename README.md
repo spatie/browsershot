@@ -116,7 +116,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-### Manipulating the image
+#### Manipulating the image
 
 You can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
 
@@ -128,7 +128,7 @@ Browsershot::url('https://example.com')
 ```
 
 
-### Taking a full page screenshot
+#### Taking a full page screenshot
 
 You can take a screenshot of the full lenght of the pages by using `fullPage()`. The resulting can be quite long.
 
