@@ -11,7 +11,8 @@
         "screenshot",
         "browser",
         "chrome",
-        "headless"
+        "headless",
+        "puppeteer"
     ],
     "license": "MIT",
     "authors": [

@@ -14,14 +14,12 @@ class Browsershot
 {
     protected $url = '';
     protected $html = '';
-
     protected $timeout = 60;
-
-    protected $browserHeaderAndFooter = true;
+    protected $showBrowserHeaderAndFooter = true;
     protected $clip = null;
     protected $deviceScaleFactor = 1;
     protected $fullPage = false;
-    protected $includeBackground = false;
+    protected $showBackground = false;
     protected $landscape = false;
     protected $margins = null;
     protected $pages = '';
@@ -68,7 +66,7 @@ class Browsershot
         $this->url = '';
 
         // default header and footer to false in this case as they will only show an ugly temporary filename
-        $this->browserHeaderAndFooter(false);
+        $this->hideBrowserHeaderAndFooter();
 
         return $this;
     }
@@ -80,9 +78,9 @@ class Browsershot
         return $this;
     }
 
-    public function browserHeaderAndFooter(bool $browserHeaderAndFooter = true)
+    public function hideBrowserHeaderAndFooter()
     {
-        $this->browserHeaderAndFooter = $browserHeaderAndFooter;
+        $this->showBrowserHeaderAndFooter = false;
 
         return $this;
     }
@@ -95,16 +93,23 @@ class Browsershot
         return $this;
     }
 
-    public function fullPage(bool $fullPage = true)
+    public function fullPage()
     {
-        $this->fullPage = $fullPage;
+        $this->fullPage = true;
 
         return $this;
     }
 
-    public function includeBackground(bool $includeBackground = true)
+    public function showBackground()
     {
-        $this->includeBackground = $includeBackground;
+        $this->showBackground = true;
+
+        return $this;
+    }
+
+    public function hideBackground()
+    {
+        $this->showBackground = false;
 
         return $this;
     }
@@ -116,7 +121,6 @@ class Browsershot
         return $this;
     }
 
-    // margins in millimeters
     public function margins(int $top, int $right, int $bottom, int $left)
     {
         $this->margins = compact('top', 'right', 'bottom', 'left');
@@ -256,11 +260,11 @@ class Browsershot
 
         $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
 
-        if ($this->browserHeaderAndFooter) {
+        if ($this->showBrowserHeaderAndFooter) {
             $command['options']['displayHeaderFooter'] = true;
         }
 
-        if ($this->includeBackground) {
+        if ($this->showBackground) {
             $command['options']['printBackground'] = true;
         }
 

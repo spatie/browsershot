@@ -72,7 +72,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/customScreenshot.png';
 
-        Browsershot::url('https://example.com')
+        Browsershot::url('https://spatie.com')
             ->clip(290, 80, 700, 290)
             ->deviceScaleFactor(2)
             ->windowSize(1280, 800)
@@ -100,7 +100,7 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/customPdf.pdf';
 
         Browsershot::url('https://example.com')
-            ->browserHeaderAndFooter(false)
+            ->hideBrowserHeaderAndFooter()
             ->includeBackground()
             ->landscape()
             ->margins(5, 25, 5, 25)

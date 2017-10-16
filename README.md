@@ -7,7 +7,7 @@
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/9c1184fb-1edb-41d5-9d30-2620d99447c7.svg?style=flat-square)](https://insight.sensiolabs.com/projects/9c1184fb-1edb-41d5-9d30-2620d99447c7)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
-The package can convert a webpage to an image or pdf. The conversion is done behind the screens by Google Chrome.
+The package can convert a webpage to an image or pdf. The conversion is done behind the screens by [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless version of Google Chrome.
 
 Here's a quick example:
 
@@ -39,13 +39,6 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-## Postcardware
-
-You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
-
-Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
-
-All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
 
 ## Requirements
 
@@ -88,11 +81,15 @@ In all examples it is assumed that you imported this namespace at the top of you
 use Spatie\Browsershot\Browsershot;
 ```
 
+### Screenshots
+
 Here's the easiest way to create an image of a webpage:
 
 ```php
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
+
+#### Sizing the image
 
 By default the screenshot will be a `png` and it's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
 
@@ -111,6 +108,37 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+You can screenshot only a portion of the page by using `clip`.
+
+```php
+Browsershot::url('https://example.com')
+    ->clip($x, $y, $width, $height)
+    ->save($pathToImage);
+```
+
+### Manipulating the image
+
+You can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+
+```php
+Browsershot::url('https://example.com')
+    ->windowSize(640, 480)
+    ->greyscale()
+    ->save($pathToImage);
+```
+
+
+### Taking a full page screenshot
+
+You can take a screenshot of the full lenght of the pages by using `fullPage()`. The resulting can be quite long.
+
+```php
+Browsershot::url('https://example.com')
+    ->fullPage()
+    ->save($pathToImage);
+```
+
+### Setting the device scale
 You can also capture the webpage at higher pixel densities by passing a device scale factor value of 2 or 3. This mimics how the webpage would be displayed on a retina/xhdpi display.
 
 ```php
@@ -119,14 +147,91 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-In fact, you can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+
+### PDFs
+
+Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
+
+```php
+// a pdf will be saved
+Browsershot::url('https://example.com')->save('example.pdf');
+```
+
+Alternatively you can explicitly use the `savePdf` method:
+
+```php
+Browsershot::url('https://example.com')->savePdf('example.pdf');
+```
+
+#### Sizing the pdf
+
+You can specify the widht and the height in millimeters
 
 ```php
 Browsershot::url('https://example.com')
-    ->windowSize(640, 480)
-    ->greyscale()
-    ->save($pathToImage);
+   ->paperSize($width, $height)
+   ->save('example.pdf');
 ```
+
+### Setting margins
+
+Margins can be set in millimeters.
+
+```php
+Browsershot::url('https://example.com')
+   ->margins($top, $right, $bottom, $left)
+   ->save('example.pdf');
+```
+
+#### Headers and footers
+
+By default a PDF will show a header and a footer. You can hide them.
+
+```php
+Browsershot::url('https://example.com')
+   ->hideBrowserHeaderAndFooter()
+   ->save('example.pdf');
+```
+
+#### Backgrounds
+
+By default, the resulting PDF will not show the background of the html page. If you do want the background to be included you can call `showBackground`:
+
+```php
+Browsershot::url('https://example.com')
+   ->showBackground()
+   ->save('example.pdf');
+```
+
+#### Landscape orientation
+
+Call `landscape` if you want to resulting pdf to be landscape oriented.
+
+```php
+Browsershot::url('https://example.com')
+   ->landscape()
+   ->save('example.pdf');
+```
+
+#### Only export specific pages
+
+You can control which pages should be export by passing a print range to the `pages` method.  Here are some examples of valid print ranges: `1`, `1-3`,  `1-5, 8, 11-13`.
+
+```php
+Browsershot::url('https://example.com')
+   ->pages('1-5, 8, 11-13')
+   ->save('example.pdf');
+```
+
+### HTML
+
+Browsershot also can get the body of an html page after JavaScript has been executed:
+
+```php
+Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
+```
+
+### Misc
 
 If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
 
@@ -144,41 +249,6 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
-
-```php
-// a pdf will be saved
-Browsershot::url('https://example.com')->save('example.pdf');
-```
-
-Alternatively you can explicitly use the `savePdf` method:
-
-```php
-Browsershot::url('https://example.com')->savePdf('example.pdf');
-```
-
-Browsershot also can get the body of an html page after JavaScript has been executed:
-
-```php
-Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
-```
-
-### Additional options supported by Browsershot
-
-#### Screenshots
-
-- `clip(int $x, int $y, int $width, int $height)` - clip a region of the page
-- `fullPage()` - takes screenshot of the full scrollable page
-
-#### PDFs
-
-- `browserHeaderAndFooter(bool $show = true)` - show/hide the browser header and footer
-- `includeBackground(bool $include = true)` - include/exclude backgrounds
-- `landscape()` - landscape page orientation
-- `pages(string $pages)` - printed page ranges, eg. `1-5, 8, 11-13`
-- `pageSize(int $width, int $height)` - page width/height in millimetres
-- `margins(int $top, int $right, int $bottom, int $left)` - page top/right/bottom/left margin in millimetres
-
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
@@ -191,13 +261,25 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 If you're not able to install Node and Puppeteer, take a look at [v2 of browserhot](https://github.com/spatie/browsershot/tree/2.4.1), which uses Chrome headless CLI to take a screenshot. `v2` is not maintained anymore, but should work pretty well
 
+## Postcardware
+
+You're free to use this package (it's [MIT-licensed](LICENSE.md)), but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
+
+Our address is: Spatie, Samberstraat 69D, 2060 Antwerp, Belgium.
+
+All postcards are published [on our website](https://spatie.be/en/opensource/postcards).
+
 ## Credits
 
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
 
-## About Spatie
-Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
+## Support us
+
+Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
+
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License
 
