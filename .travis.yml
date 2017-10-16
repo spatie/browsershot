@@ -10,7 +10,7 @@ php:
   - 7.2
 
 node_js:
-  - "7"
+  - "8"
 
 env:
   matrix:
