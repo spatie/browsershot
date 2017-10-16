@@ -259,7 +259,9 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 ## Alternatives
 
-If you're not able to install Node and Puppeteer, take a look at [v2 of browserhot](https://github.com/spatie/browsershot/tree/2.4.1), which uses Chrome headless CLI to take a screenshot. `v2` is not maintained anymore, but should work pretty well
+If you're not able to install Node and Puppeteer, take a look at [v2 of browserhot](https://github.com/spatie/browsershot/tree/2.4.1), which uses Chrome headless CLI to take a screenshot. `v2` is not maintained anymore, but should work pretty well.
+
+If using headless Chrome does not work for you take a lookat at `v1` of this package which uses the abandoned `PhantomJS` binary.
 
 ## Postcardware
 
