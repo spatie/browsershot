@@ -9,9 +9,9 @@
         "image",
         "pdf",
         "screenshot",
-        "browser",
         "chrome",
-        "headless"
+        "headless",
+        "puppeteer"
     ],
     "license": "MIT",
     "authors": [

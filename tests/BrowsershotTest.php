@@ -3,6 +3,7 @@
 namespace Spatie\Browsershot\Test;
 
 use Spatie\Browsershot\Browsershot;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase
 {
@@ -14,8 +15,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_get_the_body_html()
     {
-        $html = $this
-            ->getBrowsershotForCurrentEnvironment()
+        $html = Browsershot::url('https://example.com')
             ->bodyHtml();
 
         $this->assertContains('<h1>Example Domain</h1>', $html);
@@ -26,8 +26,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -38,7 +37,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this->configureForCurrentEnvironment(Browsershot::html('<h1>Hello world!!</h1>'))
+        Browsershot::html('<h1>Hello world!!</h1>')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -49,9 +48,34 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->deviceScaleFactor(2)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_full_page_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
+
+        Browsershot::url('https://github.com/spatie/browsershot')
+            ->fullPage()
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_highly_customized_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/customScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->clip(290, 80, 700, 290)
+            ->deviceScaleFactor(2)
+            ->windowSize(1280, 800)
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -62,8 +86,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/testPdf.pdf';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -72,12 +95,40 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_save_a_highly_customized_pdf()
+    {
+        $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+        Browsershot::url('https://example.com')
+            ->hideBrowserHeaderAndFooter()
+            ->showBackground()
+            ->landscape()
+            ->margins(5, 25, 5, 25)
+            ->pages('1')
+            ->savePdf($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    }
+
+    /** @test */
+    public function it_can_handle_a_permissions_error()
+    {
+        $targetPath = '/cantWriteThisPdf.png';
+
+        $this->expectException(ProcessFailedException::class);
+
+        Browsershot::url('https://example.com')
+            ->save($targetPath);
+    }
+
+    /** @test */
     public function it_can_use_the_methods_of_the_image_package()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.jpg';
 
-        $this
-            ->getBrowsershotForCurrentEnvironment()
+        Browsershot::url('https://example.com')
             ->format('jpg')
             ->save($targetPath);
 
@@ -90,56 +141,107 @@ class BrowsershotTest extends TestCase
     public function it_can_create_a_command_to_generate_a_screenshot()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->createScreenshotCommand('workingDir');
+            ->clip(100, 50, 600, 400)
+            ->deviceScaleFactor(2)
+            ->fullPage()
+            ->windowSize(1920, 1080)
+            ->createScreenshotCommand('screenshot.png');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars", $command);
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
+                'path' => 'screenshot.png',
+                'fullPage' => true,
+                'viewport' => [
+                    'deviceScaleFactor' => 2,
+                    'width' => 1920,
+                    'height' => 1080,
+                ],
+            ],
+        ], $command);
     }
 
     /** @test */
-    public function it_can_enable_the_usage_of_the_gpu()
+    public function it_can_create_a_command_to_generate_a_pdf()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->enableGpu()
-            ->createScreenshotCommand('workingDir');
+            ->showBackground()
+            ->landscape()
+            ->margins(10, 20, 30, 40)
+            ->pages('1-3')
+            ->paperSize(210, 148)
+            ->createPdfCommand('screenshot.pdf');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --hide-scrollbars", $command);
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'pdf',
+            'options' => [
+                'path' => 'screenshot.pdf',
+                'displayHeaderFooter' => false,
+                'printBackground' => true,
+                'landscape' => true,
+                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+                'pageRanges' => '1-3',
+                'width' => '210mm',
+                'height' => '148mm',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+            ],
+        ], $command);
     }
 
     /** @test */
-    public function it_can_show_scrollbars()
+    public function it_can_create_a_command_to_generate_a_pdf_with_paper_format()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
-            ->showScrollbars()
-            ->createScreenshotCommand('workingDir');
+            ->showBackground()
+            ->landscape()
+            ->margins(10, 20, 30, 40)
+            ->pages('1-3')
+            ->format('a4')
+            ->createPdfCommand('screenshot.pdf');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu", $command);
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'pdf',
+            'options' => [
+                'path' => 'screenshot.pdf',
+                'displayHeaderFooter' => false,
+                'printBackground' => true,
+                'landscape' => true,
+                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+                'pageRanges' => '1-3',
+                'format' => 'a4',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+            ],
+        ], $command);
     }
 
     /** @test */
     public function it_can_use_given_user_agent()
     {
         $command = Browsershot::url('https://example.com')
-            ->setChromePath('chrome')
             ->userAgent('my_special_snowflake')
-            ->createScreenshotCommand('workingDir');
+            ->createScreenshotCommand('screenshot.png');
 
-        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
-    }
-
-    protected function getBrowsershotForCurrentEnvironment($url = 'https://example.com'): Browsershot
-    {
-        return $this->configureForCurrentEnvironment(Browsershot::url($url));
-    }
-
-    protected function configureForCurrentEnvironment(Browsershot $browsershot): Browsershot
-    {
-        if (getenv('TRAVIS')) {
-            $browsershot->setChromePath('google-chrome-stable');
-        }
-
-        return $browsershot;
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'userAgent' => 'my_special_snowflake',
+            ],
+        ], $command);
     }
 }
