@@ -23,7 +23,7 @@ class Browsershot
     protected $paperHeight = 0;
     protected $paperWidth = 0;
     protected $showBackground = false;
-    protected $showBrowserHeaderAndFooter = true;
+    protected $showBrowserHeaderAndFooter = false;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
@@ -72,6 +72,13 @@ class Browsershot
     public function clip(int $x, int $y, int $width, int $height)
     {
         $this->clip = compact('x', 'y', 'width', 'height');
+
+        return $this;
+    }
+
+    public function showBrowserHeaderAndFooter()
+    {
+        $this->showBrowserHeaderAndFooter = true;
 
         return $this;
     }
