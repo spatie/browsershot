@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.0.0 - 2017-10-16
+- use Puppeteer to call Chrome
+- add various options enabled by using Puppeteer
+
 ### 2.4.1 - 2017-09-27
 - add the default path for linux Chromium users
 
