@@ -173,7 +173,7 @@ Browsershot::url('https://example.com')
    ->save('example.pdf');
 ```
 
-### Setting margins
+#### Setting margins
 
 Margins can be set in millimeters.
 
