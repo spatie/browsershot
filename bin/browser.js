@@ -25,12 +25,12 @@ let fn = (async () => {
         console.log(await page[request.action](request.options));
 
         await browser.close();
-    } catch (e) {
+    } catch (exception) {
         if (browser) {
             await browser.close();
         }
 
-        console.error(e);
+        console.error(exception);
 
         process.exit(1);
     }
