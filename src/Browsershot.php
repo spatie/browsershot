@@ -12,23 +12,23 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
-    protected $url = '';
-    protected $html = '';
-    protected $timeout = 60;
-    protected $showBrowserHeaderAndFooter = true;
     protected $clip = null;
     protected $deviceScaleFactor = 1;
+    protected $format = null;
     protected $fullPage = false;
-    protected $showBackground = false;
+    protected $html = '';
     protected $landscape = false;
     protected $margins = null;
     protected $pages = '';
-    protected $paperWidth = 0;
     protected $paperHeight = 0;
-    protected $format = null;
+    protected $paperWidth = 0;
+    protected $showBackground = false;
+    protected $showBrowserHeaderAndFooter = true;
+    protected $timeout = 60;
+    protected $url = '';
     protected $userAgent = '';
-    protected $windowWidth = 800;
     protected $windowHeight = 600;
+    protected $windowWidth = 800;
 
     protected $temporaryHtmlDirectory;
 
