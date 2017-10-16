@@ -9,7 +9,6 @@
         "image",
         "pdf",
         "screenshot",
-        "browser",
         "chrome",
         "headless",
         "puppeteer"
