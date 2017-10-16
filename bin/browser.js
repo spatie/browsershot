@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer')
 
 const request = JSON.parse(process.argv[2])
 
-let fn = (async () => {
+const callChrome = async () => {
     let browser, page;
 
     try {
@@ -34,4 +34,6 @@ let fn = (async () => {
 
         process.exit(1);
     }
-})()
+};
+
+callChrome();
