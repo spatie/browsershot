@@ -9,6 +9,9 @@ php:
   - 7.1
   - 7.2
 
+node_js:
+  - "7"
+
 env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"

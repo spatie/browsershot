@@ -179,7 +179,7 @@ class BrowsershotTest extends TestCase
             'action' => 'pdf',
             'options' => [
                 'path' => 'screenshot.pdf',
-                'displayHeaderFooter' => true,
+                'displayHeaderFooter' => false,
                 'printBackground' => true,
                 'landscape' => true,
                 'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
@@ -210,7 +210,7 @@ class BrowsershotTest extends TestCase
             'action' => 'pdf',
             'options' => [
                 'path' => 'screenshot.pdf',
-                'displayHeaderFooter' => true,
+                'displayHeaderFooter' => false,
                 'printBackground' => true,
                 'landscape' => true,
                 'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
