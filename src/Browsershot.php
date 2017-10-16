@@ -24,13 +24,12 @@ class Browsershot
     protected $paperWidth = 0;
     protected $showBackground = false;
     protected $showBrowserHeaderAndFooter = true;
+    protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
     protected $userAgent = '';
     protected $windowHeight = 600;
     protected $windowWidth = 800;
-
-    protected $temporaryHtmlDirectory;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
