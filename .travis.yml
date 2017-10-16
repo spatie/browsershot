@@ -18,6 +18,7 @@ before_script:
   - . $HOME/.nvm/nvm.sh
   - nvm install stable
   - nvm use stable
+  - npm install puppeteer
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
