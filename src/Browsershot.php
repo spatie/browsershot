@@ -64,7 +64,6 @@ class Browsershot
         $this->html = $html;
         $this->url = '';
 
-        // default header and footer to false in this case as they will only show an ugly temporary filename
         $this->hideBrowserHeaderAndFooter();
 
         return $this;
