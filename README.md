@@ -49,7 +49,19 @@ All postcards are published [on our website](https://spatie.be/en/opensource/pos
 
 ## Requirements
 
-This package requires Node 7.6.0 or higher and the Puppeteer Node library installable via NPM.
+This package requires node 7.6.0 or higher and the Puppeteer Node library.
+
+On MacOS you can install Puppeteer in your project via NPM:
+
+```bash
+npm install puppeteer
+```
+
+Or you could opt to just install it globally
+
+```bash
+npm install puppeteer --global
+```
 
 On a [Forge](https://forge.laravel.com) provisioned Ubuntu 16.04 server you can install the latest stable version of Chrome like this:
 
