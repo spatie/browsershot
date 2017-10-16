@@ -9,15 +9,15 @@ php:
   - 7.1
   - 7.2
 
-node_js:
-  - "stable"
-
 env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
 
 before_script:
+  - . $HOME/.nvm/nvm.sh
+  - nvm install stable
+  - nvm use stable
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
