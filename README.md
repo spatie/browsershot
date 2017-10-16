@@ -138,7 +138,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-### Setting the device scale
+#### Setting the device scale
 You can also capture the webpage at higher pixel densities by passing a device scale factor value of 2 or 3. This mimics how the webpage would be displayed on a retina/xhdpi display.
 
 ```php
