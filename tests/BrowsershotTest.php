@@ -72,7 +72,7 @@ class BrowsershotTest extends TestCase
     {
         $targetPath = __DIR__.'/temp/customScreenshot.png';
 
-        Browsershot::url('https://spatie.com')
+        Browsershot::url('https://example.com')
             ->clip(290, 80, 700, 290)
             ->deviceScaleFactor(2)
             ->windowSize(1280, 800)
@@ -101,7 +101,7 @@ class BrowsershotTest extends TestCase
 
         Browsershot::url('https://example.com')
             ->hideBrowserHeaderAndFooter()
-            ->includeBackground()
+            ->showBackground()
             ->landscape()
             ->margins(5, 25, 5, 25)
             ->pages('1')
@@ -167,7 +167,7 @@ class BrowsershotTest extends TestCase
     public function it_can_create_a_command_to_generate_a_pdf()
     {
         $command = Browsershot::url('https://example.com')
-            ->includeBackground()
+            ->showBackground()
             ->landscape()
             ->margins(10, 20, 30, 40)
             ->pages('1-3')
@@ -198,7 +198,7 @@ class BrowsershotTest extends TestCase
     public function it_can_create_a_command_to_generate_a_pdf_with_paper_format()
     {
         $command = Browsershot::url('https://example.com')
-            ->includeBackground()
+            ->showBackground()
             ->landscape()
             ->margins(10, 20, 30, 40)
             ->pages('1-3')

@@ -5,31 +5,33 @@ const puppeteer = require('puppeteer')
 const request = JSON.parse(process.argv[2])
 
 let fn = (async () => {
-    let browser, page
+    let browser, page;
 
     try {
-        browser = await puppeteer.launch()
-        page = await browser.newPage()
+        browser = await puppeteer.launch();
+
+        page = await browser.newPage();
 
         if (request.options && request.options.userAgent) {
-            await page.setUserAgent(request.options.userAgent)
+            await page.setUserAgent(request.options.userAgent);
         }
 
         if (request.options && request.options.viewport) {
-            await page.setViewport(request.options.viewport)
+            await page.setViewport(request.options.viewport);
         }
 
-        await page.goto(request.url)
+        await page.goto(request.url);
 
-        console.log(await page[request.action](request.options))
+        console.log(await page[request.action](request.options));
 
-        await browser.close()
+        await browser.close();
     } catch (e) {
         if (browser) {
-            await browser.close()
+            await browser.close();
         }
 
-        console.error(e)
-        process.exit(1)
+        console.error(e);
+
+        process.exit(1);
     }
 })()

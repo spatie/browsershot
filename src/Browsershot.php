@@ -128,7 +128,6 @@ class Browsershot
         return $this;
     }
 
-    // page ranges to print, e.g. '1-5, 8, 11-13'
     public function pages(string $pages)
     {
         $this->pages = $pages;
@@ -136,7 +135,6 @@ class Browsershot
         return $this;
     }
 
-    // paper size in millimeters
     public function paperSize(int $width, int $height)
     {
         $this->paperWidth = $width;
