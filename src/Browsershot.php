@@ -12,6 +12,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
+    protected $nodeBinary = 'node';
     protected $clip = null;
     protected $deviceScaleFactor = 1;
     protected $format = null;
@@ -49,6 +50,13 @@ class Browsershot
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+    }
+
+    public function setNodeBinary(string $nodeBinary)
+    {
+        $this->nodeBinary = $nodeBinary;
+
+        return $this;
     }
 
     public function setUrl(string $url)
@@ -341,6 +349,7 @@ class Browsershot
         $binPath = __DIR__.'/../bin/browser.js';
 
         $cli = 'NODE_PATH=`npm root -g` '
+            .$this->nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
 
