@@ -340,7 +340,7 @@ class Browsershot
     {
         $binPath = __DIR__.'/../bin/browser.js';
 
-        $cli = 'NODE_PATH=`npm root -g` '
+        $cli = 'PATH=$PATH:/usr/local/bin NODE_PATH=`npm root -g` '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
 
