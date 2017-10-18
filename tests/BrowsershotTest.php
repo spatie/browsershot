@@ -266,4 +266,16 @@ class BrowsershotTest extends TestCase
 
         $this->assertFileExists($targetPath);
     }
+
+    /** @test */
+    public function it_can_take_a_request_idle_timeout()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::html('Foo')
+            ->setNetworkIdleTimeout(100)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
 }
