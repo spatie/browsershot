@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.1.0 - 2017-10-18
+- make node and npm paths configurable
+- improved out of the box experience for Laravel Valet users
+
 ### 3.0.0 - 2017-10-16
 - use Puppeteer to call Chrome
 - add various options enabled by using Puppeteer
