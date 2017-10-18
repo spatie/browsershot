@@ -19,7 +19,7 @@ const callChrome = async () => {
             await page.setViewport(request.options.viewport);
         }
 
-        let requestOptions = {};
+        const requestOptions = {};
 
         if (request.options && request.options.networkIdleTimeout) {
             requestOptions.waitUntil = 'networkidle';
