@@ -15,6 +15,7 @@ class Browsershot
     protected $nodeBinary = 'node';
     protected $npmBinary = 'npm';
     protected $includePath = '$PATH:/usr/local/bin';
+    protected $networkIdleTimeout = 0;
     protected $clip = null;
     protected $deviceScaleFactor = 1;
     protected $format = null;
@@ -71,6 +72,13 @@ class Browsershot
     public function setIncludePath(string $includePath)
     {
         $this->includePath = $includePath;
+
+        return $this;
+    }
+
+    public function setNetworkIdleTimeout(int $networkIdleTimeout)
+    {
+        $this->networkIdleTimeout = $networkIdleTimeout;
 
         return $this;
     }
@@ -339,6 +347,10 @@ class Browsershot
 
         if ($this->deviceScaleFactor > 1) {
             $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
+        }
+
+        if ($this->networkIdleTimeout > 0) {
+            $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
         }
 
         return $command;
