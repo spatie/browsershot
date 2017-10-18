@@ -254,4 +254,16 @@ class BrowsershotTest extends TestCase
             ->setNodeBinary('non-existant/bin/wich/causes/an/exception')
             ->save($targetPath);
     }
+
+    /** @test */
+    public function it_can_set_the_include_path_and_still_works()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::html('Foo')
+            ->setIncludePath('$PATH:/usr/local/bin:/mypath')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
 }

@@ -78,6 +78,18 @@ Browsershot::html('Foo')
 
 By default, Browsershot will use `node` and `npm` to execute commands.
 
+### Custom include path
+
+If you don't want to manually specify binary paths, but rather modify the include path in general,
+you can set it using the `setIncludePath` method.
+
+```php
+Browsershot::html('Foo')
+    ->setIncludePath('$PATH:/usr/local/bin')
+```
+
+Setting the include path can be useful in cases where `node` and `npm` can not be found automatically.
+
 ## Installation
 
 This package can be installed through Composer.

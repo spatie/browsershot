@@ -14,6 +14,7 @@ class Browsershot
 {
     protected $nodeBinary = 'node';
     protected $npmBinary = 'npm';
+    protected $includePath = '$PATH:/usr/local/bin';
     protected $clip = null;
     protected $deviceScaleFactor = 1;
     protected $format = null;
@@ -63,6 +64,13 @@ class Browsershot
     public function setNpmBinary(string $npmBinary)
     {
         $this->npmBinary = $npmBinary;
+
+        return $this;
+    }
+
+    public function setIncludePath(string $includePath)
+    {
+        $this->includePath = $includePath;
 
         return $this;
     }
@@ -354,10 +362,13 @@ class Browsershot
 
     protected function callBrowser(array $command)
     {
-        $binPath = __DIR__.'/../bin/browser.js';
+        $setIncludePathCommand = "PATH={$this->includePath}";
         $setNodePathCommand = "NODE_PATH=`{$this->nodeBinary} {$this->npmBinary} root -g`";
+        $binPath = __DIR__.'/../bin/browser.js';
 
-        $cli = $setNodePathCommand.' '
+        $cli =
+            $setIncludePathCommand.' '
+            .$setNodePathCommand.' '
             .$this->nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
