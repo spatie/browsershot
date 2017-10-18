@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const puppeteer = require('puppeteer')
 
 const request = JSON.parse(process.argv[2])
