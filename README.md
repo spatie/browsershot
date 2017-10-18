@@ -65,17 +65,18 @@ sudo npm install --global --unsafe-perm puppeteer
 sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 ```
 
-### Custom node binary path
+### Custom node and npm binaries
 
-Depending on your setup, node might be not directly available to Browsershot. 
-If you need to manually set the node binary path, you can do this by calling the `setNodeBinary` method.
+Depending on your setup, node or npm might be not directly available to Browsershot. 
+If you need to manually set these binary paths, you can do this by calling the `setNodeBinary` and `setNpmBinary` method.
 
 ```
 Browsershot::html('Foo')
-    ->setNodeBinary('/usr/local/bin/node');
+    ->setNodeBinary('/usr/local/bin/node')
+    ->setNodeBinary('/usr/local/bin/npm');
 ``` 
 
-By default, Browsershot will use `node` to execute commands.
+By default, Browsershot will use `node` and `npm` to execute commands.
 
 ## Installation
 

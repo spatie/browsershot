@@ -13,6 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class Browsershot
 {
     protected $nodeBinary = 'node';
+    protected $npmBinary = 'npm';
     protected $clip = null;
     protected $deviceScaleFactor = 1;
     protected $format = null;
@@ -55,6 +56,13 @@ class Browsershot
     public function setNodeBinary(string $nodeBinary)
     {
         $this->nodeBinary = $nodeBinary;
+
+        return $this;
+    }
+
+    public function setNpmBinary(string $npmBinary)
+    {
+        $this->npmBinary = $npmBinary;
 
         return $this;
     }
@@ -347,8 +355,9 @@ class Browsershot
     protected function callBrowser(array $command)
     {
         $binPath = __DIR__.'/../bin/browser.js';
+        $setNodePathCommand = "NODE_PATH=`{$this->nodeBinary} {$this->npmBinary} root -g`";
 
-        $cli = 'NODE_PATH=`npm root -g` '
+        $cli = $setNodePathCommand.' '
             .$this->nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
