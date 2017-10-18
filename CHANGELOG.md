@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.2.0 - 2017-10-18
+- add `setNetworkIdleTimeout`
+
 ### 3.1.0 - 2017-10-18
 - make node and npm paths configurable
 - improved out of the box experience for Laravel Valet users
