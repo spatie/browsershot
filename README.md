@@ -73,7 +73,7 @@ If you need to manually set these binary paths, you can do this by calling the `
 ```
 Browsershot::html('Foo')
     ->setNodeBinary('/usr/local/bin/node')
-    ->setNodeBinary('/usr/local/bin/npm');
+    ->setNpmBinary('/usr/local/bin/npm');
 ``` 
 
 By default, Browsershot will use `node` and `npm` to execute commands.
