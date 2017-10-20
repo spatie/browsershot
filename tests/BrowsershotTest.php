@@ -129,6 +129,28 @@ class BrowsershotTest extends TestCase
         $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --disable-gpu --hide-scrollbars --user-agent='my_special_snowflake'", $command);
     }
 
+    /** @test */
+    public function it_can_disable_sandbox_mode()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setChromePath('chrome')
+            ->setSandbox(false)
+            ->createScreenshotCommand('workingDir');
+
+        $this->assertEquals("cd 'workingDir';'chrome' --headless --screenshot 'https://example.com' --no-sandbox --disable-gpu --hide-scrollbars", $command);
+
+        $targetPath = __DIR__.'/temp/testScreenshotNoSandbox.jpg';
+
+        $this->getBrowsershotForCurrentEnvironment()
+            ->format('jpg')
+            ->setSandbox(false)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertMimeType('image/jpeg', $targetPath);
+    }
+
     protected function getBrowsershotForCurrentEnvironment($url = 'https://example.com'): Browsershot
     {
         return $this->configureForCurrentEnvironment(Browsershot::url($url));
