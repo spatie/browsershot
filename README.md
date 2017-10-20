@@ -160,6 +160,18 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
+If you're working on a docker machine it may happen that you get the following error:
+
+`Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted`
+
+After disabling the "sandbox" mode, it should work again:
+
+```php
+Browsershot::url('https://example.com')
+    ->setSandbox(false)
+    ->save($pathToImage);
+```
+
 
 ## Contributing
 
