@@ -282,12 +282,12 @@ Browsershot::url('https://example.com')
 
 #### Set a network idle timeout
 
-You can tell Browsershot to wait x-amount of milliseconds before saving the HTML page.
-This feature can be useful when you're using asynchronous fonts or images, and they require a bit more time to load.
+You can tell Browsershot to wait a bit before saving the HTML page.
+This can be useful when you're using asynchronous fonts or images, and they require a bit more time to load.
 
 ```php
 Browsershot::url('https://example.com')
-    ->setNetworkIdleTimeout(1000);
+    ->setNetworkIdleTimeout(1000) // wait time in milliseconds;
 ```
 
 ## Contributing
