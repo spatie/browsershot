@@ -196,7 +196,7 @@ Browsershot::html($someHtml)->savePdf('example.pdf');
 
 #### Sizing the pdf
 
-You can specify the widht and the height in millimeters
+You can specify the width and the height in millimeters
 
 ```php
 Browsershot::html($someHtml)
