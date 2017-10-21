@@ -155,7 +155,7 @@ Browsershot::url('https://example.com')
 
 #### Taking a full page screenshot
 
-You can take a screenshot of the full lenght of the pages by using `fullPage()`. The resulting can be quite long.
+You can take a screenshot of the full length of the page by using `fullPage()`.
 
 ```php
 Browsershot::url('https://example.com')
