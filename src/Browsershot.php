@@ -375,17 +375,20 @@ class Browsershot
     protected function callBrowser(array $command)
     {
         $setIncludePathCommand = "PATH={$this->includePath}";
+
         $setNodePathCommand = "NODE_PATH=`{$this->nodeBinary} {$this->npmBinary} root -g`";
+
         $binPath = __DIR__.'/../bin/browser.js';
 
-        $cli =
+        $fullCommand =
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
             .$this->nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
 
-        $process = (new Process($cli))->setTimeout($this->timeout);
+        $process = (new Process($fullCommand))->setTimeout($this->timeout);
+
         $process->run();
 
         if (! $process->isSuccessful()) {
