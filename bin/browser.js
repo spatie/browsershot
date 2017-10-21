@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
 
-const request = JSON.parse(process.argv[2])
+const request = JSON.parse(process.argv[2]);
 
 const callChrome = async () => {
     let browser;
