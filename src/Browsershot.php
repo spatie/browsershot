@@ -23,6 +23,7 @@ class Browsershot
     protected $html = '';
     protected $landscape = false;
     protected $margins = null;
+    protected $noSandbox = false;
     protected $pages = '';
     protected $paperHeight = 0;
     protected $paperWidth = 0;
@@ -161,6 +162,13 @@ class Browsershot
     public function margins(int $top, int $right, int $bottom, int $left)
     {
         $this->margins = compact('top', 'right', 'bottom', 'left');
+
+        return $this;
+    }
+
+    public function noSandbox()
+    {
+        $this->noSandbox = true;
 
         return $this;
     }
@@ -351,6 +359,10 @@ class Browsershot
 
         if ($this->networkIdleTimeout > 0) {
             $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
+        }
+
+        if ($this->noSandbox) {
+            $command['options']['args'] = [ '--no-sandbox' ];
         }
 
         return $command;
