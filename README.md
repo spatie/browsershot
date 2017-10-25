@@ -290,6 +290,15 @@ Browsershot::url('https://example.com')
     ->setNetworkIdleTimeout(1000) // wait time in milliseconds;
 ```
 
+#### Disable sandboxing
+
+When running Linux in certain virtualization enviroments it might need to disable sandboxing.
+
+```php
+Browsershot::url('https://example.com')
+   ->noSandbox()
+```
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
