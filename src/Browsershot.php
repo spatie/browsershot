@@ -362,7 +362,7 @@ class Browsershot
         }
 
         if ($this->noSandbox) {
-            $command['options']['args'] = [ '--no-sandbox' ];
+            $command['options']['args'] = ['--no-sandbox'];
         }
 
         return $command;

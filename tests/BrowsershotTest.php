@@ -296,8 +296,8 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [
-                    '--no-sandbox'
-                ]
+                    '--no-sandbox',
+                ],
             ],
         ], $command);
     }
