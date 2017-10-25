@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.3.0 - 2017-10-25
+- add `noSandbox`
+
 ### 3.2.1 - 2017-10-25
 - fix setting margins
 
