@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.2.1 - 2017-10-25
+- fix setting margins
+
 ### 3.2.0 - 2017-10-18
 - add `setNetworkIdleTimeout`
 
