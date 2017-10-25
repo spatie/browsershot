@@ -181,7 +181,7 @@ class BrowsershotTest extends TestCase
                 'path' => 'screenshot.pdf',
                 'printBackground' => true,
                 'landscape' => true,
-                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+                'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
                 'pageRanges' => '1-3',
                 'width' => '210mm',
                 'height' => '148mm',
@@ -211,7 +211,7 @@ class BrowsershotTest extends TestCase
                 'path' => 'screenshot.pdf',
                 'printBackground' => true,
                 'landscape' => true,
-                'margins' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+                'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
                 'pageRanges' => '1-3',
                 'format' => 'a4',
                 'viewport' => [
