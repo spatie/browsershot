@@ -278,4 +278,27 @@ class BrowsershotTest extends TestCase
 
         $this->assertFileExists($targetPath);
     }
+
+    /** @test */
+    public function it_can_run_without_sandbox()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->noSandbox()
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    '--no-sandbox'
+                ]
+            ],
+        ], $command);
+    }
 }
