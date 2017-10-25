@@ -393,7 +393,7 @@ class Browsershot
         if ($this->npmBinary) {
             $setNodePathCommand = "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
         } else {
-            $setNodePathCommand = "NODE_PATH=`npm root -g`";
+            $setNodePathCommand = 'NODE_PATH=`npm root -g`';
         }
 
         $binPath = __DIR__.'/../bin/browser.js';
