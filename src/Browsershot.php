@@ -308,7 +308,7 @@ class Browsershot
         }
 
         if ($this->margins) {
-            $command['options']['margins'] = [
+            $command['options']['margin'] = [
                 'top' => $this->margins['top'].'mm',
                 'right' => $this->margins['right'].'mm',
                 'bottom' => $this->margins['bottom'].'mm',
