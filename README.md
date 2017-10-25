@@ -288,6 +288,7 @@ This can be useful when you're using asynchronous fonts or images, and they requ
 ```php
 Browsershot::url('https://example.com')
     ->setNetworkIdleTimeout(1000) // wait time in milliseconds;
+    ...
 ```
 
 #### Disable sandboxing
@@ -297,6 +298,7 @@ When running Linux in certain virtualization enviroments it might need to disabl
 ```php
 Browsershot::url('https://example.com')
    ->noSandbox()
+   ...
 ```
 
 ## Contributing
