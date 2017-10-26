@@ -390,11 +390,7 @@ class Browsershot
 
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        if ($this->npmBinary) {
-            $setNodePathCommand = "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
-        } else {
-            $setNodePathCommand = 'NODE_PATH=`npm root -g`';
-        }
+        $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
         $binPath = __DIR__.'/../bin/browser.js';
 
@@ -414,5 +410,14 @@ class Browsershot
         }
 
         return $process->getOutput();
+    }
+
+    protected function getNodePathCommand(string $nodeBinary): string
+    {
+        if ($this->npmBinary) {
+            return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
+        }
+
+        return 'NODE_PATH=`npm root -g`';
     }
 }
