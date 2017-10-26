@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.3.1 - 2017-10-26
+- fix default npm path 
+
 ### 3.3.0 - 2017-10-25
 - add `noSandbox`
 
