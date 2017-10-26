@@ -12,8 +12,8 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
-    protected $nodeBinary = 'node';
-    protected $npmBinary = 'npm';
+    protected $nodeBinary = null;
+    protected $npmBinary = null;
     protected $includePath = '$PATH:/usr/local/bin';
     protected $networkIdleTimeout = 0;
     protected $clip = null;
@@ -388,14 +388,16 @@ class Browsershot
     {
         $setIncludePathCommand = "PATH={$this->includePath}";
 
-        $setNodePathCommand = "NODE_PATH=`{$this->nodeBinary} {$this->npmBinary} root -g`";
+        $nodeBinary = $this->nodeBinary ?: 'node';
+
+        $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
         $binPath = __DIR__.'/../bin/browser.js';
 
         $fullCommand =
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
-            .$this->nodeBinary.' '
+            .$nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
 
@@ -408,5 +410,14 @@ class Browsershot
         }
 
         return $process->getOutput();
+    }
+
+    protected function getNodePathCommand(string $nodeBinary): string
+    {
+        if ($this->npmBinary) {
+            return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
+        }
+
+        return 'NODE_PATH=`npm root -g`';
     }
 }
