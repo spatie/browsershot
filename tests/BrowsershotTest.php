@@ -301,4 +301,25 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_can_ignore_https_errors()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->ignoreHttpsErrors()
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'ignoreHttpsErrors' => true,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+            ],
+        ], $command);
+    }
 }

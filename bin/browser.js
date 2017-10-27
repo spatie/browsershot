@@ -7,7 +7,10 @@ const callChrome = async () => {
     let page;
 
     try {
-        browser = await puppeteer.launch({ args: request.options.args || [] });
+        browser = await puppeteer.launch({
+            ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
+            args: request.options.args || []
+        });
 
         page = await browser.newPage();
 
