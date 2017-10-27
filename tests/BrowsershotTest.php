@@ -75,6 +75,8 @@ class BrowsershotTest extends TestCase
         Browsershot::url('https://example.com')
             ->clip(290, 80, 700, 290)
             ->deviceScaleFactor(2)
+            ->mobile()
+            ->touch()
             ->windowSize(1280, 800)
             ->save($targetPath);
 

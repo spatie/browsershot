@@ -36,6 +36,8 @@ class Browsershot
     protected $userAgent = '';
     protected $windowHeight = 600;
     protected $windowWidth = 800;
+    protected $mobile = false;
+    protected $touch = false;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -156,6 +158,20 @@ class Browsershot
     public function ignoreHttpsErrors()
     {
         $this->ignoreHttpsErrors = true;
+
+        return $this;
+    }
+
+    public function mobile(bool $mobile = true)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    public function touch(bool $touch = true)
+    {
+        $this->touch = $touch;
 
         return $this;
     }
@@ -363,6 +379,14 @@ class Browsershot
 
         if ($this->deviceScaleFactor > 1) {
             $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
+        }
+
+        if ($this->touch) {
+            $command['options']['viewport']['hasTouch'] = true;
+        }
+
+        if ($this->mobile) {
+            $command['options']['viewport']['isMobile'] = true;
         }
 
         if ($this->networkIdleTimeout > 0) {
