@@ -67,14 +67,14 @@ sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 
 ### Custom node and npm binaries
 
-Depending on your setup, node or npm might be not directly available to Browsershot. 
+Depending on your setup, node or npm might be not directly available to Browsershot.
 If you need to manually set these binary paths, you can do this by calling the `setNodeBinary` and `setNpmBinary` method.
 
 ```
 Browsershot::html('Foo')
     ->setNodeBinary('/usr/local/bin/node')
     ->setNpmBinary('/usr/local/bin/npm');
-``` 
+```
 
 By default, Browsershot will use `node` and `npm` to execute commands.
 
@@ -301,6 +301,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Ignore HTTPS errors
+
+You can ignore HTTPS errors, if necessary.
+
+```php
+Browsershot::url('https://example.com')
+   ->ignoreHttpsErrors()
+   ...
+```
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
@@ -332,7 +342,7 @@ All postcards are published [on our website](https://spatie.be/en/opensource/pos
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License

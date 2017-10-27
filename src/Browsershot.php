@@ -21,6 +21,7 @@ class Browsershot
     protected $format = null;
     protected $fullPage = false;
     protected $html = '';
+    protected $ignoreHttpsErrors = false;
     protected $landscape = false;
     protected $margins = null;
     protected $noSandbox = false;
@@ -148,6 +149,13 @@ class Browsershot
     public function hideBackground()
     {
         $this->showBackground = false;
+
+        return $this;
+    }
+
+    public function ignoreHttpsErrors()
+    {
+        $this->ignoreHttpsErrors = true;
 
         return $this;
     }
@@ -359,6 +367,10 @@ class Browsershot
 
         if ($this->networkIdleTimeout > 0) {
             $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
+        }
+
+        if ($this->ignoreHttpsErrors) {
+            $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
         }
 
         if ($this->noSandbox) {
