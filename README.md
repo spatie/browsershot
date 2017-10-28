@@ -172,6 +172,21 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Mobile emulation
+
+You can emulate a mobile view with the `mobile` and `touch` methods.
+`mobile` will set the display to take into account the page's meta viewport, as Chrome mobile would. 
+`touch` will set the browser to emulate touch functionality, hence allowing spoofing for pages that check for touch. 
+Along with the `userAgent` method, these can be used to effectively take a mobile screenshot of the page.
+
+```php
+Browsershot::url('https://example.com')
+    ->userAgent('My Mobile Browser 1.0')
+    ->mobile()
+    ->touch()
+    ->save($pathToImage);
+```
+
 
 ### PDFs
 
