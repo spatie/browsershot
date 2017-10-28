@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.5.0 - 2017-10-28
+- add `mobile` and `touch` functions
+
 ### 3.4.0 - 2017-10-27
 - add `ignoreHttpsErrors`
 
