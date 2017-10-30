@@ -187,6 +187,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Backgrounds
+The screenshot command will ignore the website background by default. If you want to capture the
+background as part of your screenshot use the `showBackground` option.
+
+```php
+Browsershot::url('https://example.com')
+    ->showBackground()
+    ->save($pathToImage);
+```
 
 ### PDFs
 

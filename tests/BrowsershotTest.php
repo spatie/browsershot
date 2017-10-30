@@ -156,6 +156,32 @@ class BrowsershotTest extends TestCase
                 'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
                 'path' => 'screenshot.png',
                 'fullPage' => true,
+                'omitBackground' => true,
+                'viewport' => [
+                    'deviceScaleFactor' => 2,
+                    'width' => 1920,
+                    'height' => 1080,
+                ],
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_can_create_a_command_to_generate_a_screenshot_and_keep_the_background()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->clip(100, 50, 600, 400)
+            ->deviceScaleFactor(2)
+            ->showBackground()
+            ->windowSize(1920, 1080)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
+                'path' => 'screenshot.png',
                 'viewport' => [
                     'deviceScaleFactor' => 2,
                     'width' => 1920,
@@ -236,6 +262,7 @@ class BrowsershotTest extends TestCase
             'action' => 'screenshot',
             'options' => [
                 'path' => 'screenshot.png',
+                'omitBackground' => true,
                 'viewport' => [
                     'width' => 800,
                     'height' => 600,
@@ -293,6 +320,7 @@ class BrowsershotTest extends TestCase
             'action' => 'screenshot',
             'options' => [
                 'path' => 'screenshot.png',
+                'omitBackground' => true,
                 'viewport' => [
                     'width' => 800,
                     'height' => 600,
@@ -317,6 +345,7 @@ class BrowsershotTest extends TestCase
             'options' => [
                 'ignoreHttpsErrors' => true,
                 'path' => 'screenshot.png',
+                'omitBackground' => true,
                 'viewport' => [
                     'width' => 800,
                     'height' => 600,

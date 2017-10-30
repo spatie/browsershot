@@ -318,6 +318,10 @@ class Browsershot
             $command['options']['clip'] = $this->clip;
         }
 
+        if (! $this->showBackground) {
+            $command['options']['omitBackground'] = true;
+        }
+
         return $command;
     }
 
