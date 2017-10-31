@@ -42,11 +42,21 @@ class Browsershot
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
 
+    /**
+     * @param string $url
+     *
+     * @return static
+     */
     public static function url(string $url)
     {
         return (new static)->setUrl($url);
     }
 
+    /**
+     * @param string $html
+     *
+     * @return static
+     */
     public static function html(string $html)
     {
         return (new static)->setHtml($html);
