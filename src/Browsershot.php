@@ -204,7 +204,7 @@ class Browsershot
         return $this;
     }
 
-    public function paperSize(int $width, int $height)
+    public function paperSize(float $width, float $height)
     {
         $this->paperWidth = $width;
         $this->paperHeight = $height;

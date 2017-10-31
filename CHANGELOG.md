@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.6.0 - 2017-10-31
+
+- make `paperSize` use floats instead of integers, addressing US paper sizes
+
 ### 3.5.0 - 2017-10-28
 - add `mobile` and `touch` functions
 
