@@ -29,7 +29,7 @@ class Browsershot
     protected $paperHeight = 0;
     protected $paperWidth = 0;
     protected $showBackground = false;
-    protected $omitScreenshotBackground = false;
+    protected $showScreenshotBackground = true;
     protected $showBrowserHeaderAndFooter = false;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
@@ -145,7 +145,7 @@ class Browsershot
     public function showBackground()
     {
         $this->showBackground = true;
-        $this->omitScreenshotBackground = false;
+        $this->showScreenshotBackground = true;
 
         return $this;
     }
@@ -153,7 +153,7 @@ class Browsershot
     public function hideBackground()
     {
         $this->showBackground = false;
-        $this->omitScreenshotBackground = true;
+        $this->showScreenshotBackground = false;
 
         return $this;
     }
@@ -321,7 +321,7 @@ class Browsershot
             $command['options']['clip'] = $this->clip;
         }
 
-        if ($this->omitScreenshotBackground) {
+        if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
         }
 
