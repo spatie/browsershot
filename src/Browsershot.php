@@ -28,6 +28,7 @@ class Browsershot
     protected $pages = '';
     protected $paperHeight = 0;
     protected $paperWidth = 0;
+    protected $proxy = '';
     protected $showBackground = false;
     protected $showBrowserHeaderAndFooter = false;
     protected $temporaryHtmlDirectory;
@@ -101,6 +102,13 @@ class Browsershot
     {
         $this->url = $url;
         $this->html = '';
+
+        return $this;
+    }
+
+    public function setProxy(string $proxy)
+    {
+        $this->proxy = $proxy;
 
         return $this;
     }
@@ -409,6 +417,14 @@ class Browsershot
 
         if ($this->noSandbox) {
             $command['options']['args'] = ['--no-sandbox'];
+        }
+
+        if ($this->proxy) {
+            if (isset($command['options']['args'])) {
+                $command['options']['args'][] = ['--proxy-server='.$this->proxy];
+            } else {
+                $command['options']['args'] = ['--proxy-server='.$this->proxy];
+            }
         }
 
         return $command;
