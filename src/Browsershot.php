@@ -382,6 +382,21 @@ class Browsershot
         return $command;
     }
 
+    protected function getOptionArgs()
+    {
+        $args = [];
+
+        if ($this->noSandbox) {
+            $args[] = '--no-sandbox';
+        }
+
+        if ($this->proxy) {
+            $args[] = '--proxy-server='.$this->proxy;
+        }
+
+        return $args;
+    }
+
     protected function createCommand(string $url, string $action, array $options = []): array
     {
         $command = compact('url', 'action', 'options');
@@ -415,16 +430,8 @@ class Browsershot
             $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
         }
 
-        if ($this->noSandbox) {
-            $command['options']['args'] = ['--no-sandbox'];
-        }
-
-        if ($this->proxy) {
-            if (isset($command['options']['args'])) {
-                $command['options']['args'][] = ['--proxy-server='.$this->proxy];
-            } else {
-                $command['options']['args'] = ['--proxy-server='.$this->proxy];
-            }
+        if ($args = $this->getOptionArgs()) {
+            $command['options']['args'] = $args;
         }
 
         return $command;
