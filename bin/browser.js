@@ -14,6 +14,12 @@ const callChrome = async () => {
 
         page = await browser.newPage();
 
+        if (request.options && request.options.dismissDialogs) {
+            page.on('dialog', async dialog => {
+                await dialog.dismiss();
+            });
+        }
+
         if (request.options && request.options.userAgent) {
             await page.setUserAgent(request.options.userAgent);
         }

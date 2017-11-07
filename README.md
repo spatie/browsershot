@@ -196,6 +196,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Dismiss Dialogs
+Javascript dialog pop up such as alert, prompt, confirm cause rendering of the site to stop what leads to being unable to take a screenshot. `dismissDialogs()` method automatically close such popups allowing the  screenshot to be taken.
+
+```php
+Browsershot::url('https://example.com')
+    ->dismissDialogs()
+    ->save($pathToImage);
+```
+
 ### PDFs
 
 Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
