@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.8.0 - 2017-11-07
+
+- allow the use of the 'omitBackground' option when capturing screenshots
+
 ### 3.7.0 - 2017-10-31
 
 - add docblocks for static constructors to support IDE autocompletion
