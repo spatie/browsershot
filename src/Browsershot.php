@@ -213,9 +213,9 @@ class Browsershot
 
     public function dismissDialogs()
     {
-    	$this->dismissDialogs = true;
+        $this->dismissDialogs = true;
 
-    	return $this;
+        return $this;
     }
 
     public function pages(string $pages)
@@ -343,8 +343,8 @@ class Browsershot
             $command['options']['omitBackground'] = true;
         }
 
-        if($this->dismissDialogs) {
-	        $command['options']['dismissDialogs'] = true;
+        if ($this->dismissDialogs) {
+            $command['options']['dismissDialogs'] = true;
         }
 
         return $command;
