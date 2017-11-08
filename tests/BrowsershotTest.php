@@ -75,7 +75,7 @@ class BrowsershotTest extends TestCase
         Browsershot::url('https://example.com')
             ->clip(290, 80, 700, 290)
             ->deviceScaleFactor(2)
-	        ->dismissDialogs()
+            ->dismissDialogs()
             ->mobile()
             ->touch()
             ->windowSize(1280, 800)
@@ -147,7 +147,7 @@ class BrowsershotTest extends TestCase
             ->clip(100, 50, 600, 400)
             ->deviceScaleFactor(2)
             ->fullPage()
-	        ->dismissDialogs()
+            ->dismissDialogs()
             ->windowSize(1920, 1080)
             ->createScreenshotCommand('screenshot.png');
 
@@ -333,27 +333,26 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
-	/** @test */
-	public function it_can_dismiss_dialogs()
-	{
-		$command = Browsershot::url('https://example.com')
-		                      ->dismissDialogs()
-		                      ->createScreenshotCommand('screenshot.png');
+    /** @test */
+    public function it_can_dismiss_dialogs()
+    {
+        $command = Browsershot::url('https://example.com')
+                              ->dismissDialogs()
+                              ->createScreenshotCommand('screenshot.png');
 
-		$this->assertEquals([
-			'url' => 'https://example.com',
-			'action' => 'screenshot',
-			'options' => [
-				'dismissDialogs' => true,
-				'path' => 'screenshot.png',
-				'viewport' => [
-					'width' => 800,
-					'height' => 600,
-				],
-			],
-		], $command);
-	}
-
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'dismissDialogs' => true,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+            ],
+        ], $command);
+    }
 
     /** @test */
     public function it_can_ignore_https_errors()
