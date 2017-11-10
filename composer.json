@@ -25,12 +25,12 @@
     "require": {
         "php": "^7.0",
         "spatie/image": "~1.3.0",
-        "spatie/phpunit-snapshot-assertions": "^1.0",
         "spatie/temporary-directory": "^1.1",
         "symfony/process": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.1"
+        "phpunit/phpunit": "^6.1",
+        "spatie/phpunit-snapshot-assertions": "^1.0"
     },
     "autoload": {
         "psr-4": {
