@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.8.1 - 2017-11-10
+
+- move snapshot package to dev-deps
+
 ### 3.8.0 - 2017-11-07
 
 - allow the use of the 'omitBackground' option when capturing screenshots
