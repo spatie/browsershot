@@ -196,8 +196,8 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-#### Dismiss Dialogs
-Javascript dialog pop up such as alert, prompt, confirm cause rendering of the site to stop what leads to being unable to take a screenshot. `dismissDialogs()` method automatically close such popups allowing the  screenshot to be taken.
+#### Dismiss dialogs
+Javascript pop ups such as alerts, prompts and confirmations cause rendering of the site to stop what leads to an empty screenshot. Calling `dismissDialogs()` method automatically closes such popups allowing the  screenshot to be taken.
 
 ```php
 Browsershot::url('https://example.com')

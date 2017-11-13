@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.9.0 - 2017-11-13
+
+- add `dismissDialogs`
+
 ### 3.8.1 - 2017-11-10
 
 - move snapshot package to dev-deps
