@@ -24,7 +24,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
@@ -35,7 +35,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot_of_arbitrary_html()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('<h1>Hello world!!</h1>')
             ->save($targetPath);
@@ -46,7 +46,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_high_density_screenshot()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->deviceScaleFactor(2)
@@ -58,7 +58,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_full_page_screenshot()
     {
-        $targetPath = __DIR__ . '/temp/fullpageScreenshot.png';
+        $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
 
         Browsershot::url('https://github.com/spatie/browsershot')
             ->fullPage()
@@ -70,7 +70,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_highly_customized_screenshot()
     {
-        $targetPath = __DIR__ . '/temp/customScreenshot.png';
+        $targetPath = __DIR__.'/temp/customScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->clip(290, 80, 700, 290)
@@ -87,7 +87,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_a_pdf_by_using_the_pdf_extension()
     {
-        $targetPath = __DIR__ . '/temp/testPdf.pdf';
+        $targetPath = __DIR__.'/temp/testPdf.pdf';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
@@ -100,7 +100,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_a_highly_customized_pdf()
     {
-        $targetPath = __DIR__ . '/temp/customPdf.pdf';
+        $targetPath = __DIR__.'/temp/customPdf.pdf';
 
         Browsershot::url('https://example.com')
             ->hideBrowserHeaderAndFooter()
@@ -129,7 +129,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_use_the_methods_of_the_image_package()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.jpg';
+        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
 
         Browsershot::url('https://example.com')
             ->format('jpg')
@@ -284,7 +284,7 @@ class BrowsershotTest extends TestCase
     {
         $this->expectException(ProcessFailedException::class);
 
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
             ->setNodeBinary('non-existant/bin/wich/causes/an/exception')
@@ -294,7 +294,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_set_the_include_path_and_still_works()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
             ->setIncludePath('$PATH:/usr/local/bin:/mypath')
