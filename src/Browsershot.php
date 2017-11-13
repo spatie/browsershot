@@ -445,7 +445,7 @@ class Browsershot
             $command['options']['args'] = ['--no-sandbox'];
         }
 
-        if (!empty($this->additionalOptions)) {
+        if (! empty($this->additionalOptions)) {
             $command['options'] = array_merge($command['options'], $this->additionalOptions);
         }
 
