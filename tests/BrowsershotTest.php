@@ -410,7 +410,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'foo' => [
                     'bar' => 100,
-                    'baz' => 200
+                    'baz' => 200,
                 ],
             ],
         ], $command);
