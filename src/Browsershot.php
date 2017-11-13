@@ -485,6 +485,10 @@ class Browsershot
             $command['options'] = array_merge($command['options'], $this->additionalOptions);
         }
 
+        if (! empty($this->additionalOptions)) {
+            $command['options'] = array_merge($command['options'], $this->additionalOptions);
+        }
+
         return $command;
     }
 
