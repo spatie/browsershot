@@ -312,17 +312,6 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-#### Set a network idle timeout
-
-You can tell Browsershot to wait a bit before saving the HTML page.
-This can be useful when you're using asynchronous fonts or images, and they require a bit more time to load.
-
-```php
-Browsershot::url('https://example.com')
-    ->setNetworkIdleTimeout(1000) // wait time in milliseconds;
-    ...
-```
-
 #### Disable sandboxing
 
 When running Linux in certain virtualization enviroments it might need to disable sandboxing.
