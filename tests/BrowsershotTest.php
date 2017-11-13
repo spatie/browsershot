@@ -24,7 +24,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot()
     {
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
@@ -35,7 +35,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_screenshot_of_arbitrary_html()
     {
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::html('<h1>Hello world!!</h1>')
             ->save($targetPath);
@@ -46,7 +46,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_high_density_screenshot()
     {
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->deviceScaleFactor(2)
@@ -58,7 +58,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_full_page_screenshot()
     {
-        $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
+        $targetPath = __DIR__ . '/temp/fullpageScreenshot.png';
 
         Browsershot::url('https://github.com/spatie/browsershot')
             ->fullPage()
@@ -70,7 +70,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_take_a_highly_customized_screenshot()
     {
-        $targetPath = __DIR__.'/temp/customScreenshot.png';
+        $targetPath = __DIR__ . '/temp/customScreenshot.png';
 
         Browsershot::url('https://example.com')
             ->clip(290, 80, 700, 290)
@@ -87,7 +87,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_a_pdf_by_using_the_pdf_extension()
     {
-        $targetPath = __DIR__.'/temp/testPdf.pdf';
+        $targetPath = __DIR__ . '/temp/testPdf.pdf';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
@@ -100,7 +100,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_a_highly_customized_pdf()
     {
-        $targetPath = __DIR__.'/temp/customPdf.pdf';
+        $targetPath = __DIR__ . '/temp/customPdf.pdf';
 
         Browsershot::url('https://example.com')
             ->hideBrowserHeaderAndFooter()
@@ -129,7 +129,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_use_the_methods_of_the_image_package()
     {
-        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
+        $targetPath = __DIR__ . '/temp/testScreenshot.jpg';
 
         Browsershot::url('https://example.com')
             ->format('jpg')
@@ -164,6 +164,7 @@ class BrowsershotTest extends TestCase
                     'width' => 1920,
                     'height' => 1080,
                 ],
+                'args' => [],
             ],
         ], $command);
     }
@@ -190,6 +191,7 @@ class BrowsershotTest extends TestCase
                     'width' => 1920,
                     'height' => 1080,
                 ],
+                'args' => [],
             ],
         ], $command);
     }
@@ -220,6 +222,7 @@ class BrowsershotTest extends TestCase
                     'width' => 800,
                     'height' => 600,
                 ],
+                'args' => [],
             ],
         ], $command);
     }
@@ -249,6 +252,7 @@ class BrowsershotTest extends TestCase
                     'width' => 800,
                     'height' => 600,
                 ],
+                'args' => [],
             ],
         ], $command);
     }
@@ -270,6 +274,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'userAgent' => 'my_special_snowflake',
+                'args' => [],
             ],
         ], $command);
     }
@@ -279,7 +284,7 @@ class BrowsershotTest extends TestCase
     {
         $this->expectException(ProcessFailedException::class);
 
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
             ->setNodeBinary('non-existant/bin/wich/causes/an/exception')
@@ -289,22 +294,10 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_set_the_include_path_and_still_works()
     {
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
+        $targetPath = __DIR__ . '/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
             ->setIncludePath('$PATH:/usr/local/bin:/mypath')
-            ->save($targetPath);
-
-        $this->assertFileExists($targetPath);
-    }
-
-    /** @test */
-    public function it_can_take_a_request_idle_timeout()
-    {
-        $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-        Browsershot::html('Foo')
-            ->setNetworkIdleTimeout(100)
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -337,8 +330,8 @@ class BrowsershotTest extends TestCase
     public function it_can_dismiss_dialogs()
     {
         $command = Browsershot::url('https://example.com')
-                              ->dismissDialogs()
-                              ->createScreenshotCommand('screenshot.png');
+            ->dismissDialogs()
+            ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -350,6 +343,7 @@ class BrowsershotTest extends TestCase
                     'width' => 800,
                     'height' => 600,
                 ],
+                'args' => [],
             ],
         ], $command);
     }
@@ -371,6 +365,28 @@ class BrowsershotTest extends TestCase
                     'width' => 800,
                     'height' => 600,
                 ],
+                'args' => [],
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_can_use_a_proxy_server()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setProxyServer('1.2.3.4:8080')
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => ['--proxy-server=1.2.3.4:8080'],
             ],
         ], $command);
     }

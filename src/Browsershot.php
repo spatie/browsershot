@@ -28,7 +28,7 @@ class Browsershot
     protected $pages = '';
     protected $paperHeight = 0;
     protected $paperWidth = 0;
-    protected $proxy = '';
+    protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
     protected $showBrowserHeaderAndFooter = false;
@@ -93,6 +93,9 @@ class Browsershot
         return $this;
     }
 
+    /**
+     * @deprecated This option is no longer supported by modern versions of Puppeteer.
+     */
     public function setNetworkIdleTimeout(int $networkIdleTimeout)
     {
         $this->networkIdleTimeout = $networkIdleTimeout;
@@ -108,9 +111,9 @@ class Browsershot
         return $this;
     }
 
-    public function setProxy(string $proxy)
+    public function setProxyServer(string $proxyServer)
     {
-        $this->proxy = $proxy;
+        $this->proxyServer = $proxyServer;
 
         return $this;
     }
@@ -401,7 +404,7 @@ class Browsershot
         return $command;
     }
 
-    protected function getOptionArgs()
+    protected function getOptionArgs(): array
     {
         $args = [];
 
@@ -409,8 +412,8 @@ class Browsershot
             $args[] = '--no-sandbox';
         }
 
-        if ($this->proxy) {
-            $args[] = '--proxy-server='.$this->proxy;
+        if ($this->proxyServer) {
+            $args[] = '--proxy-server='.$this->proxyServer;
         }
 
         return $args;
@@ -449,9 +452,7 @@ class Browsershot
             $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
         }
 
-        if ($args = $this->getOptionArgs()) {
-            $command['options']['args'] = $args;
-        }
+        $command['options']['args'] = $this->getOptionArgs();
 
         return $command;
     }
