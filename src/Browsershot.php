@@ -39,6 +39,7 @@ class Browsershot
     protected $windowWidth = 800;
     protected $mobile = false;
     protected $touch = false;
+    protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -255,6 +256,32 @@ class Browsershot
         return $this;
     }
 
+    public function setOption($key, $value)
+    {
+        if (is_null($key)) {
+            return $this;
+        }
+
+        $keys = explode('.', $key);
+
+        $array = &$this->additionalOptions;
+
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+
+            if (! isset($array[$key]) || ! is_array($array[$key])) {
+                $array[$key] = [];
+            }
+
+            $array = &$array[$key];
+
+        }
+
+        $array[array_shift($keys)] = $value;
+
+        return $this;
+    }
+
     public function __call($name, $arguments)
     {
         $this->imageManipulations->$name(...$arguments);
@@ -418,6 +445,10 @@ class Browsershot
             $command['options']['args'] = ['--no-sandbox'];
         }
 
+        if (!empty($this->additionalOptions)) {
+            $command['options'] = array_merge($command['options'], $this->additionalOptions);
+        }
+
         return $command;
     }
 
@@ -473,4 +504,5 @@ class Browsershot
 
         return 'NODE_PATH=`npm root -g`';
     }
+
 }
