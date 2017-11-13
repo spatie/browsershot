@@ -39,6 +39,7 @@ class Browsershot
     protected $windowWidth = 800;
     protected $mobile = false;
     protected $touch = false;
+    protected $dismissDialogs = false;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -210,6 +211,13 @@ class Browsershot
         return $this;
     }
 
+    public function dismissDialogs()
+    {
+        $this->dismissDialogs = true;
+
+        return $this;
+    }
+
     public function pages(string $pages)
     {
         $this->pages = $pages;
@@ -333,6 +341,10 @@ class Browsershot
 
         if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
+        }
+
+        if ($this->dismissDialogs) {
+            $command['options']['dismissDialogs'] = true;
         }
 
         return $command;
