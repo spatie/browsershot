@@ -343,6 +343,17 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Specifying a Proxy Server
+
+You can specify a proxy server to use when connecting - this option will be passed to --proxy-server= option of Chromium as is - Read https://www.chromium.org/developers/design-documents/network-settings#TOC-Command-line-options-for-proxy-settings for more details.
+
+```php
+Browsershot::url('https://example.com')
+   ->setProxy("1.2.3.4:8080")->
+   ...
+```
+
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.

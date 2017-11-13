@@ -28,6 +28,7 @@ class Browsershot
     protected $pages = '';
     protected $paperHeight = 0;
     protected $paperWidth = 0;
+    protected $proxy = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
     protected $showBrowserHeaderAndFooter = false;
@@ -103,6 +104,13 @@ class Browsershot
     {
         $this->url = $url;
         $this->html = '';
+
+        return $this;
+    }
+
+    public function setProxy(string $proxy)
+    {
+        $this->proxy = $proxy;
 
         return $this;
     }
@@ -393,6 +401,21 @@ class Browsershot
         return $command;
     }
 
+    protected function getOptionArgs()
+    {
+        $args = [];
+
+        if ($this->noSandbox) {
+            $args[] = '--no-sandbox';
+        }
+
+        if ($this->proxy) {
+            $args[] = '--proxy-server='.$this->proxy;
+        }
+
+        return $args;
+    }
+
     protected function createCommand(string $url, string $action, array $options = []): array
     {
         $command = compact('url', 'action', 'options');
@@ -426,8 +449,8 @@ class Browsershot
             $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
         }
 
-        if ($this->noSandbox) {
-            $command['options']['args'] = ['--no-sandbox'];
+        if ($args = $this->getOptionArgs()) {
+            $command['options']['args'] = $args;
         }
 
         return $command;
