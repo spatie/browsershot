@@ -281,22 +281,16 @@ class Browsershot
             return $this;
         }
 
-        $keys = explode('.', $key);
+        $keys = array_reverse(explode('.', $key));
 
-        $array = &$this->additionalOptions;
-
-        while (count($keys) > 1) {
-            $key = array_shift($keys);
-
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
-                $array[$key] = [];
+        $array = array_reduce($keys, function($carry, $item) use ($value) {
+            if (empty($carry)) {
+                $carry = $value;
             }
+            return [$item => $carry];
+        }, []);
 
-            $array = &$array[$key];
-
-        }
-
-        $array[array_shift($keys)] = $value;
+        $this->additionalOptions = array_merge_recursive($this->additionalOptions, $array);
 
         return $this;
     }
@@ -480,10 +474,6 @@ class Browsershot
         }
 
         $command['options']['args'] = $this->getOptionArgs();
-
-        if (! empty($this->additionalOptions)) {
-            $command['options'] = array_merge($command['options'], $this->additionalOptions);
-        }
 
         if (! empty($this->additionalOptions)) {
             $command['options'] = array_merge($command['options'], $this->additionalOptions);
