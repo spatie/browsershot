@@ -283,10 +283,11 @@ class Browsershot
 
         $keys = array_reverse(explode('.', $key));
 
-        $array = array_reduce($keys, function($carry, $item) use ($value) {
+        $array = array_reduce($keys, function ($carry, $item) use ($value) {
             if (empty($carry)) {
                 $carry = $value;
             }
+
             return [$item => $carry];
         }, []);
 

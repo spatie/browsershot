@@ -416,5 +416,4 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
-
 }
