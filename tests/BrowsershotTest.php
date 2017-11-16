@@ -58,7 +58,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_to_file_without_extension()
     {
-        $targetPath = __DIR__ . '/temp/testScreenshot';
+        $targetPath = __DIR__.'/temp/testScreenshot';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
