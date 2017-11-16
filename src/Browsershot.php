@@ -15,25 +15,19 @@ class Browsershot
     protected $nodeBinary = null;
     protected $npmBinary = null;
     protected $includePath = '$PATH:/usr/local/bin';
-    protected $clip = null;
     protected $format = null;
     protected $html = '';
-    protected $landscape = false;
-    protected $margins = null;
     protected $noSandbox = false;
-    protected $pages = '';
     protected $paperHeight = 0;
     protected $paperWidth = 0;
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
-    protected $showBrowserHeaderAndFooter = false;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
     protected $windowHeight = 600;
     protected $windowWidth = 800;
-    protected $dismissDialogs = false;
     protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
@@ -124,23 +118,17 @@ class Browsershot
 
     public function clip(int $x, int $y, int $width, int $height)
     {
-        $this->clip = compact('x', 'y', 'width', 'height');
-
-        return $this;
+        return $this->setOption('clip', compact('x', 'y', 'width', 'height'));
     }
 
     public function showBrowserHeaderAndFooter()
     {
-        $this->showBrowserHeaderAndFooter = true;
-
-        return $this;
+        return $this->setOption('displayHeaderFooter', true);
     }
 
     public function hideBrowserHeaderAndFooter()
     {
-        $this->showBrowserHeaderAndFooter = false;
-
-        return $this;
+        return $this->setOption('displayHeaderFooter', false);
     }
 
     public function deviceScaleFactor(int $deviceScaleFactor)
@@ -193,16 +181,17 @@ class Browsershot
 
     public function landscape(bool $landscape = true)
     {
-        $this->landscape = $landscape;
-
-        return $this;
+        return $this->setOption('landscape', $landscape);
     }
 
     public function margins(int $top, int $right, int $bottom, int $left)
     {
-        $this->margins = compact('top', 'right', 'bottom', 'left');
-
-        return $this;
+        return $this->setOption('margin', [
+            'top' => $top.'mm',
+            'right' => $right.'mm',
+            'bottom' => $bottom.'mm',
+            'left' =>  $left.'mm',
+        ]);
     }
 
     public function noSandbox()
@@ -214,16 +203,12 @@ class Browsershot
 
     public function dismissDialogs()
     {
-        $this->dismissDialogs = true;
-
-        return $this;
+        return $this->setOption('dismissDialogs', true);
     }
 
     public function pages(string $pages)
     {
-        $this->pages = $pages;
-
-        return $this;
+        return $this->setOption('pageRanges', $pages);
     }
 
     public function paperSize(float $width, float $height)
@@ -339,16 +324,8 @@ class Browsershot
 
         $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
 
-        if ($this->clip) {
-            $command['options']['clip'] = $this->clip;
-        }
-
         if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
-        }
-
-        if ($this->dismissDialogs) {
-            $command['options']['dismissDialogs'] = true;
         }
 
         return $command;
@@ -360,29 +337,8 @@ class Browsershot
 
         $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
 
-        if ($this->showBrowserHeaderAndFooter) {
-            $command['options']['displayHeaderFooter'] = true;
-        }
-
         if ($this->showBackground) {
             $command['options']['printBackground'] = true;
-        }
-
-        if ($this->landscape) {
-            $command['options']['landscape'] = true;
-        }
-
-        if ($this->margins) {
-            $command['options']['margin'] = [
-                'top' => $this->margins['top'].'mm',
-                'right' => $this->margins['right'].'mm',
-                'bottom' => $this->margins['bottom'].'mm',
-                'left' => $this->margins['left'].'mm',
-            ];
-        }
-
-        if ($this->pages) {
-            $command['options']['pageRanges'] = $this->pages;
         }
 
         if ($this->paperWidth > 0 && $this->paperHeight > 0) {
