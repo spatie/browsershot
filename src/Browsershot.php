@@ -437,5 +437,4 @@ class Browsershot
 
         return $array;
     }
-
 }
