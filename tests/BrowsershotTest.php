@@ -396,6 +396,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->setOption('foo.bar', 100)
+            ->setOption('foo.bar', 150)
             ->setOption('foo.baz', 200)
             ->createScreenshotCommand('screenshot.png');
 
@@ -409,7 +410,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'foo' => [
-                    'bar' => 100,
+                    'bar' => 150,
                     'baz' => 200,
                 ],
                 'args' => [],
