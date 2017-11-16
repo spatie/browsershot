@@ -17,7 +17,6 @@ class Browsershot
     protected $includePath = '$PATH:/usr/local/bin';
     protected $networkIdleTimeout = 0;
     protected $clip = null;
-    protected $deviceScaleFactor = 1;
     protected $format = null;
     protected $fullPage = false;
     protected $html = '';
@@ -68,6 +67,8 @@ class Browsershot
     public function __construct(string $url = '')
     {
         $this->url = $url;
+
+        $this->setOption('viewport.deviceScaleFactor', 1);
 
         $this->imageManipulations = new Manipulations();
     }
@@ -434,10 +435,6 @@ class Browsershot
             'width' => $this->windowWidth,
             'height' => $this->windowHeight,
         ];
-
-        if ($this->deviceScaleFactor > 1) {
-            $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
-        }
 
         if ($this->touch) {
             $command['options']['viewport']['hasTouch'] = true;
