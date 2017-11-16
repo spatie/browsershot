@@ -15,19 +15,14 @@ class Browsershot
     protected $nodeBinary = null;
     protected $npmBinary = null;
     protected $includePath = '$PATH:/usr/local/bin';
-    protected $format = null;
     protected $html = '';
     protected $noSandbox = false;
-    protected $paperHeight = 0;
-    protected $paperWidth = 0;
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
-    protected $windowHeight = 600;
-    protected $windowWidth = 800;
     protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
@@ -58,6 +53,8 @@ class Browsershot
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+
+        $this->windowSize(800, 600);
     }
 
     public function setNodeBinary(string $nodeBinary)
@@ -133,14 +130,8 @@ class Browsershot
 
     public function deviceScaleFactor(int $deviceScaleFactor)
     {
-        if ($deviceScaleFactor < 1) {
-            return;
-        }
-
         // Google Chrome currently supports values of 1, 2, and 3.
-        $this->setOption('viewport.deviceScaleFactor', max(1, min(3, $deviceScaleFactor)));
-
-        return $this;
+        return $this->setOption('viewport.deviceScaleFactor', max(1, min(3, $deviceScaleFactor)));
     }
 
     public function fullPage()
@@ -213,18 +204,15 @@ class Browsershot
 
     public function paperSize(float $width, float $height)
     {
-        $this->paperWidth = $width;
-        $this->paperHeight = $height;
-
-        return $this;
+        return $this
+            ->setOption('width', $width.'mm')
+            ->setOption('height', $height.'mm');
     }
 
     // paper format
     public function format(string $format)
     {
-        $this->format = $format;
-
-        return $this;
+        return $this->setOption('format', $format);
     }
 
     public function timeout(int $timeout)
@@ -243,10 +231,9 @@ class Browsershot
 
     public function windowSize(int $width, int $height)
     {
-        $this->windowWidth = $width;
-        $this->windowHeight = $height;
-
-        return $this;
+        return $this
+            ->setOption('viewport.width', $width)
+            ->setOption('viewport.height', $height);
     }
 
     public function setOption($key, $value)
@@ -341,15 +328,6 @@ class Browsershot
             $command['options']['printBackground'] = true;
         }
 
-        if ($this->paperWidth > 0 && $this->paperHeight > 0) {
-            $command['options']['width'] = $this->paperWidth.'mm';
-            $command['options']['height'] = $this->paperHeight.'mm';
-        }
-
-        if ($this->format) {
-            $command['options']['format'] = $this->format;
-        }
-
         return $command;
     }
 
@@ -371,11 +349,6 @@ class Browsershot
     protected function createCommand(string $url, string $action, array $options = []): array
     {
         $command = compact('url', 'action', 'options');
-
-        $command['options']['viewport'] = [
-            'width' => $this->windowWidth,
-            'height' => $this->windowHeight,
-        ];
 
         $command['options']['args'] = $this->getOptionArgs();
 
@@ -439,7 +412,7 @@ class Browsershot
         return 'NODE_PATH=`npm root -g`';
     }
 
-    protected function arraySet(&$array, $key, $value)
+    protected function arraySet(array &$array, string $key, $value): array
     {
         if (is_null($key)) {
             return $array = $value;
