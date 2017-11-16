@@ -35,7 +35,6 @@ class Browsershot
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
-    protected $userAgent = '';
     protected $windowHeight = 600;
     protected $windowWidth = 800;
     protected $mobile = false;
@@ -262,7 +261,7 @@ class Browsershot
 
     public function userAgent(string $userAgent)
     {
-        $this->userAgent = $userAgent;
+        $this->setOption('userAgent', $userAgent);
 
         return $this;
     }
@@ -449,10 +448,6 @@ class Browsershot
             'width' => $this->windowWidth,
             'height' => $this->windowHeight,
         ];
-
-        if ($this->userAgent) {
-            $command['options']['userAgent'] = $this->userAgent;
-        }
 
         if ($this->deviceScaleFactor > 1) {
             $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
