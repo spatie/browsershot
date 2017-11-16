@@ -56,6 +56,17 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_save_to_file_without_extension()
+    {
+        $targetPath = __DIR__ . '/temp/testScreenshot';
+
+        Browsershot::url('https://example.com')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
     public function it_can_take_a_full_page_screenshot()
     {
         $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
