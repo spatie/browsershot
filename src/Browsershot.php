@@ -36,8 +36,6 @@ class Browsershot
     protected $url = '';
     protected $windowHeight = 600;
     protected $windowWidth = 800;
-    protected $mobile = false;
-    protected $touch = false;
     protected $dismissDialogs = false;
     protected $additionalOptions = [];
 
@@ -192,14 +190,14 @@ class Browsershot
 
     public function mobile(bool $mobile = true)
     {
-        $this->mobile = $mobile;
+        $this->setOption('viewport.isMobile', true);
 
         return $this;
     }
 
     public function touch(bool $touch = true)
     {
-        $this->touch = $touch;
+        $this->setOption('viewport.hasTouch', true);
 
         return $this;
     }
@@ -437,14 +435,6 @@ class Browsershot
             'width' => $this->windowWidth,
             'height' => $this->windowHeight,
         ];
-
-        if ($this->touch) {
-            $command['options']['viewport']['hasTouch'] = true;
-        }
-
-        if ($this->mobile) {
-            $command['options']['viewport']['isMobile'] = true;
-        }
 
         if ($this->networkIdleTimeout > 0) {
             $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
