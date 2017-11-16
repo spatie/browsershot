@@ -15,12 +15,9 @@ class Browsershot
     protected $nodeBinary = null;
     protected $npmBinary = null;
     protected $includePath = '$PATH:/usr/local/bin';
-    protected $networkIdleTimeout = 0;
     protected $clip = null;
     protected $format = null;
-    protected $fullPage = false;
     protected $html = '';
-    protected $ignoreHttpsErrors = false;
     protected $landscape = false;
     protected $margins = null;
     protected $noSandbox = false;
@@ -95,7 +92,7 @@ class Browsershot
      */
     public function setNetworkIdleTimeout(int $networkIdleTimeout)
     {
-        $this->networkIdleTimeout = $networkIdleTimeout;
+        $this->setOption('networkIdleTimeout');
 
         return $this;
     }
@@ -160,9 +157,7 @@ class Browsershot
 
     public function fullPage()
     {
-        $this->fullPage = true;
-
-        return $this;
+        return $this->setOption('fullPage', true);
     }
 
     public function showBackground()
@@ -183,23 +178,17 @@ class Browsershot
 
     public function ignoreHttpsErrors()
     {
-        $this->ignoreHttpsErrors = true;
-
-        return $this;
+        return $this->setOption('ignoreHttpsErrors', true);
     }
 
     public function mobile(bool $mobile = true)
     {
-        $this->setOption('viewport.isMobile', true);
-
-        return $this;
+        return $this->setOption('viewport.isMobile', true);
     }
 
     public function touch(bool $touch = true)
     {
-        $this->setOption('viewport.hasTouch', true);
-
-        return $this;
+        return $this->setOption('viewport.hasTouch', true);
     }
 
     public function landscape(bool $landscape = true)
@@ -350,10 +339,6 @@ class Browsershot
 
         $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
 
-        if ($this->fullPage) {
-            $command['options']['fullPage'] = true;
-        }
-
         if ($this->clip) {
             $command['options']['clip'] = $this->clip;
         }
@@ -435,14 +420,6 @@ class Browsershot
             'width' => $this->windowWidth,
             'height' => $this->windowHeight,
         ];
-
-        if ($this->networkIdleTimeout > 0) {
-            $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
-        }
-
-        if ($this->ignoreHttpsErrors) {
-            $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
-        }
 
         $command['options']['args'] = $this->getOptionArgs();
 
