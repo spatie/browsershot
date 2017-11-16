@@ -296,6 +296,20 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 ### Misc
 
+#### Setting an arbitrary option
+
+You can set any arbitrary options by calling `setOption`:
+
+```php
+Browsershot::url('https://example.com')
+   ->setOption('landscape', true)
+   ->save($pathToImage);
+```
+  
+
+#### Setting the user agent
+
+
 If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
 
 ```php
