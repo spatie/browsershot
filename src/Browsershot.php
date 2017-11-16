@@ -68,8 +68,6 @@ class Browsershot
     {
         $this->url = $url;
 
-        $this->setOption('viewport.deviceScaleFactor', 1);
-
         $this->imageManipulations = new Manipulations();
     }
 
@@ -152,8 +150,12 @@ class Browsershot
 
     public function deviceScaleFactor(int $deviceScaleFactor)
     {
+        if ($deviceScaleFactor < 1) {
+            return;
+        }
+
         // Google Chrome currently supports values of 1, 2, and 3.
-        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
+        $this->setOption('viewport.deviceScaleFactor', max(1, min(3, $deviceScaleFactor)));
 
         return $this;
     }
@@ -455,7 +457,7 @@ class Browsershot
         $command['options']['args'] = $this->getOptionArgs();
 
         if (! empty($this->additionalOptions)) {
-            $command['options'] = array_merge($command['options'], $this->additionalOptions);
+            $command['options'] = array_merge_recursive($command['options'], $this->additionalOptions);
         }
 
         return $command;
