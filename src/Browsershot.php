@@ -535,5 +535,4 @@ class Browsershot
 
         return 'NODE_PATH=`npm root -g`';
     }
-
 }
