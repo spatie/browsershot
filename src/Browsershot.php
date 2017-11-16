@@ -41,6 +41,7 @@ class Browsershot
     protected $mobile = false;
     protected $touch = false;
     protected $dismissDialogs = false;
+    protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -274,6 +275,27 @@ class Browsershot
         return $this;
     }
 
+    public function setOption($key, $value)
+    {
+        if (is_null($key)) {
+            return $this;
+        }
+
+        $keys = array_reverse(explode('.', $key));
+
+        $array = array_reduce($keys, function ($carry, $item) use ($value) {
+            if (empty($carry)) {
+                $carry = $value;
+            }
+
+            return [$item => $carry];
+        }, []);
+
+        $this->additionalOptions = array_merge_recursive($this->additionalOptions, $array);
+
+        return $this;
+    }
+
     public function __call($name, $arguments)
     {
         $this->imageManipulations->$name(...$arguments);
@@ -454,6 +476,10 @@ class Browsershot
 
         $command['options']['args'] = $this->getOptionArgs();
 
+        if (! empty($this->additionalOptions)) {
+            $command['options'] = array_merge($command['options'], $this->additionalOptions);
+        }
+
         return $command;
     }
 
@@ -509,4 +535,5 @@ class Browsershot
 
         return 'NODE_PATH=`npm root -g`';
     }
+
 }
