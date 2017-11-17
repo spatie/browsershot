@@ -58,7 +58,7 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_save_to_temp_dir_with_background()
     {
-        $targetPath = tempnam(sys_get_temp_dir(), 'bs_') . '.jpg';
+        $targetPath = tempnam(sys_get_temp_dir(), 'bs_').'.jpg';
         Browsershot::url('https://example.com')
             ->background('white')
             ->save($targetPath);
