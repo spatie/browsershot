@@ -252,7 +252,13 @@ class Browsershot
 
     public function save(string $targetPath)
     {
-        if (strtolower(pathinfo($targetPath, PATHINFO_EXTENSION)) === 'pdf') {
+        $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
+
+        if ($extension === '') {
+            throw CouldNotTakeBrowsershot::outputFileDidNotHaveAnExtension($targetPath);
+        }
+
+        if ($extension === 'pdf') {
             return $this->savePdf($targetPath);
         }
 
