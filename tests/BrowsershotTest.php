@@ -3,6 +3,7 @@
 namespace Spatie\Browsershot\Test;
 
 use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase
@@ -56,14 +57,14 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_save_to_file_without_extension()
+    public function it_cannot_save_without_an_extension()
     {
+        $this->expectException(CouldNotTakeBrowsershot::class);
+
         $targetPath = __DIR__.'/temp/testScreenshot';
 
         Browsershot::url('https://example.com')
             ->save($targetPath);
-
-        $this->assertFileExists($targetPath);
     }
 
     /** @test */

@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.10.1 - 2017-11-18
+
+- improve error handling for when no extension is provided
+
 ### 3.10.0 - 2017-11-13
 
 - add `setProxyServer`
