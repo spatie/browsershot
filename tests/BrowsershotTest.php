@@ -402,4 +402,31 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_can_set_arbitrary_options()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setOption('foo.bar', 100)
+            ->setOption('foo.bar', 150)
+            ->setOption('foo.baz', 200)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'foo' => [
+                    'bar' => 150,
+                    'baz' => 200,
+                ],
+                'args' => [],
+            ],
+        ], $command);
+    }
 }
