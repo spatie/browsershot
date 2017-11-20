@@ -434,12 +434,16 @@ class BrowsershotTest extends TestCase
     public function it_can_add_a_delay_before_taking_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
+
         $delay = 2000;
-        $start = round(microtime(true) * 2000);
+
+        $start = round(microtime(true) * 1000);
+
         Browsershot::url('https://example.com')
             ->setDelay($delay)
             ->save($targetPath);
-        $end = round(microtime(true) * 2000);
+
+        $end = round(microtime(true) * 1000);
 
         $this->assertGreaterThanOrEqual($delay, $end - $start);
     }
