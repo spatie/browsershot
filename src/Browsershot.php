@@ -23,7 +23,6 @@ class Browsershot
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
-    protected $delay = 0;
     protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
@@ -237,11 +236,9 @@ class Browsershot
             ->setOption('viewport.height', $height);
     }
 
-    public function setDelay(int $delay)
+    public function setDelay(int $delayInMilliseconds)
     {
-        $this->delay = $delay;
-
-        return $this;
+        return $this->setOption('delay', $delayInMilliseconds);
     }
 
     public function setOption($key, $value)
@@ -327,10 +324,6 @@ class Browsershot
 
         if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
-        }
-
-        if ($this->delay > 0) {
-            $command['options']['delay'] = $this->delay;
         }
 
         return $command;

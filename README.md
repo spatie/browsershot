@@ -206,11 +206,11 @@ Browsershot::url('https://example.com')
 ```
 
 #### Delayed screenshots
-You can delay execution of the screenshot by a specified amount of time by using `setDelay()`. This is useful if you need to wait for completion of javascript or if you are attempting to capture lazy-loaded resources. Delay time is measured in milliseconds.
+You can delay the taking of screenshot by  `setDelay()`. This is useful if you need to wait for completion of javascript or if you are attempting to capture lazy-loaded resources.
 
 ```php
 Browsershot::url('https://example.com')
-    ->setDelay(5000)
+    ->setDelay($delayInMilliseconds)
     ->save($pathToImage);
 ```
 

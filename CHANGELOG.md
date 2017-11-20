@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.12.0 - 2017-11-20
+
+- add `setDelay`
 
 ### 3.11.1 - 2017-11-18
 
@@ -11,7 +14,6 @@ All notable changes to `Browsershot` will be documented in this file
 
 - add `setOption`
 - refactor internals
-
 
 ### 3.10.0 - 2017-11-13
 
