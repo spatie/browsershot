@@ -205,6 +205,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Delayed screenshots
+You can delay execution of the screenshot by a specified amount of time by using `setDelay()`. This is useful if you need to wait for completion of javascript or if you are attempting to capture lazy-loaded resources. Delay time is measured in milliseconds.
+
+```php
+Browsershot::url('https://example.com')
+    ->setDelay(5000)
+    ->save($pathToImage);
+```
+
 ### PDFs
 
 Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.

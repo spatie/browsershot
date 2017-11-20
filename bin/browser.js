@@ -37,6 +37,10 @@ const callChrome = async () => {
 
         await page.goto(request.url, requestOptions);
 
+        if (request.options.delay) {
+            await page.waitFor(request.options.delay);
+        }
+
         console.log(await page[request.action](request.options));
 
         await browser.close();
