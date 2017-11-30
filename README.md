@@ -90,6 +90,15 @@ Browsershot::html('Foo')
 
 Setting the include path can be useful in cases where `node` and `npm` can not be found automatically.
 
+### Custom node module path
+
+If you want to use an alternative `node_modules` source you can set it using the `setNodeModulePath` method.
+
+```php
+Browsershot::html('Foo')
+  ->setNodeModulePath("/path/to/my/project/node_modules/")
+```
+
 ## Installation
 
 This package can be installed through Composer.
