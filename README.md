@@ -327,6 +327,18 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Setting the CSS media type of the page
+
+
+You can also emulate the media type, especially usefull when you're generating pdf shots, because it will try to emulate the print version of the page by default.
+
+```php
+Browsershot::url('https://example.com')
+    ->emulateMedia('screen') // "screen", "print" (default) or null (passing null disables the emulation).
+    ->savePdf($pathToPdf);
+```
+
+
 The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
 
 ```php
