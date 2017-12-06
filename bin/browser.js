@@ -44,11 +44,7 @@ const callChrome = async () => {
 
         output = await page[request.action](request.options);
 
-        if ( request.options.path )
-        {
-            console.log(output);
-        }
-        else
+        if ( !request.options.path )
         {
             console.log(output.toString('base64'));
         }
