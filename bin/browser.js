@@ -24,6 +24,10 @@ const callChrome = async () => {
             await page.setUserAgent(request.options.userAgent);
         }
 
+        if (request.options && request.options.emulateMedia) {
+            await page.emulateMedia(request.options.emulateMedia);
+        }
+
         if (request.options && request.options.viewport) {
             await page.setViewport(request.options.viewport);
         }
