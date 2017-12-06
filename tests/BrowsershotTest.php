@@ -468,7 +468,7 @@ class BrowsershotTest extends TestCase
             ->pdf();
 
         $finfo = finfo_open();
-        
+
         $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
 
         $this->assertEquals($mimeType, 'application/pdf');

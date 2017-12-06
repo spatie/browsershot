@@ -339,7 +339,7 @@ class Browsershot
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $options = [];
-        if ( $targetPath ) {
+        if ($targetPath) {
             $options['path'] = $targetPath;
         }
 
@@ -357,7 +357,7 @@ class Browsershot
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $options = [];
-        if ( $targetPath ) {
+        if ($targetPath) {
             $options['path'] = $targetPath;
         }
 
