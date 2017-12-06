@@ -290,7 +290,7 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
-    
+
     /** @test */
     public function it_can_set_emulate_media_option()
     {
