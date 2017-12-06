@@ -5,6 +5,7 @@ const request = JSON.parse(process.argv[2]);
 const callChrome = async () => {
     let browser;
     let page;
+    let output;
 
     try {
         browser = await puppeteer.launch({
@@ -41,7 +42,16 @@ const callChrome = async () => {
             await page.waitFor(request.options.delay);
         }
 
-        console.log(await page[request.action](request.options));
+        output = await page[request.action](request.options);
+
+        if ( request.options.path )
+        {
+            console.log(output);
+        }
+        else
+        {
+            console.log(output.toString('base64'));
+        }
 
         await browser.close();
     } catch (exception) {
