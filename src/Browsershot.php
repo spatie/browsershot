@@ -228,11 +228,11 @@ class Browsershot
 
         return $this;
     }
-    
+
     public function emulateMedia(string $media)
     {
         $this->setOption('emulateMedia', $media);
-        
+
         return $this;
     }
 
