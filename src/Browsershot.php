@@ -289,7 +289,7 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
-    public function screenshot()
+    public function screenshot(): string
     {
         $command = $this->createScreenshotCommand();
 
@@ -298,7 +298,7 @@ class Browsershot
         return base64_decode($encoded_image);
     }
 
-    public function pdf()
+    public function pdf(): string
     {
         $command = $this->createPdfCommand();
 
