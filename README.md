@@ -223,7 +223,7 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-#### Output
+#### Output directly to the browser
 You can output the image directly to the browser using the `screenshot()` method.
 
 ```php
@@ -312,7 +312,7 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
-#### Output
+#### Output directly to the browser
 You can output the PDF directly to the browser using the `pdf()` method.
 
 ```php
