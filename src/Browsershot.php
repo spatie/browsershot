@@ -14,6 +14,7 @@ class Browsershot
 {
     protected $nodeBinary = null;
     protected $npmBinary = null;
+    protected $nodeModulePath = null;
     protected $includePath = '$PATH:/usr/local/bin';
     protected $html = '';
     protected $noSandbox = false;
@@ -74,6 +75,13 @@ class Browsershot
     public function setIncludePath(string $includePath)
     {
         $this->includePath = $includePath;
+
+        return $this;
+    }
+
+    public function setNodeModulePath(string $nodeModulePath)
+    {
+        $this->nodeModulePath = $nodeModulePath;
 
         return $this;
     }
@@ -451,6 +459,9 @@ class Browsershot
 
     protected function getNodePathCommand(string $nodeBinary): string
     {
+        if ($this->nodeModulePath) {
+            return "NODE_PATH='{$this->nodeModulePath}'";
+        }
         if ($this->npmBinary) {
             return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
         }
