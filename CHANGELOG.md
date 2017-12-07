@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.13.0 - 2017-12-07
+- add ability to set node module path
+- add ability to output directory to the browser
+
 ### 3.12.0 - 2017-11-20
 
 - add `setDelay`
