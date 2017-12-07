@@ -296,6 +296,24 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function screenshot(): string
+    {
+        $command = $this->createScreenshotCommand();
+
+        $encoded_image = $this->callBrowser($command);
+
+        return base64_decode($encoded_image);
+    }
+
+    public function pdf(): string
+    {
+        $command = $this->createPdfCommand();
+
+        $encoded_pdf = $this->callBrowser($command);
+
+        return base64_decode($encoded_pdf);
+    }
+
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
@@ -323,11 +341,16 @@ class Browsershot
         return $this->createCommand($url, 'content');
     }
 
-    public function createScreenshotCommand(string $targetPath): array
+    public function createScreenshotCommand($targetPath = null): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
+        $options = [];
+        if ($targetPath) {
+            $options['path'] = $targetPath;
+        }
+
+        $command = $this->createCommand($url, 'screenshot', $options);
 
         if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
@@ -336,11 +359,16 @@ class Browsershot
         return $command;
     }
 
-    public function createPdfCommand($targetPath): array
+    public function createPdfCommand($targetPath = null): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
+        $options = [];
+        if ($targetPath) {
+            $options['path'] = $targetPath;
+        }
+
+        $command = $this->createCommand($url, 'pdf', $options);
 
         if ($this->showBackground) {
             $command['options']['printBackground'] = true;

@@ -469,4 +469,30 @@ class BrowsershotTest extends TestCase
 
         $this->assertGreaterThanOrEqual($delay, $end - $start);
     }
+
+    /** @test */
+    public function it_can_get_the_output_of_a_screenshot()
+    {
+        $output = Browsershot::url('https://example.com')
+            ->screenshot();
+
+        $finfo = finfo_open();
+
+        $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
+
+        $this->assertEquals($mimeType, 'image/png');
+    }
+
+    /** @test */
+    public function it_can_get_the_output_of_a_pdf()
+    {
+        $output = Browsershot::url('https://example.com')
+            ->pdf();
+
+        $finfo = finfo_open();
+
+        $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
+
+        $this->assertEquals($mimeType, 'application/pdf');
+    }
 }

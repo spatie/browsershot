@@ -214,6 +214,14 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Output
+You can output the image directly to the browser using the `screenshot()` method.
+
+```php
+$image = Browsershot::url('https://example.com')
+    ->screenshot()
+```
+
 ### PDFs
 
 Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
@@ -293,6 +301,14 @@ You can control which pages should be export by passing a print range to the `pa
 Browsershot::html($someHtml)
    ->pages('1-5, 8, 11-13')
    ->save('example.pdf');
+```
+
+#### Output
+You can output the PDF directly to the browser using the `pdf()` method.
+
+```php
+$pdf = Browsershot::url('https://example.com')
+    ->pdf()
 ```
 
 ### HTML
