@@ -101,11 +101,11 @@ Browsershot::html('Foo')
 
 ### Custom chrome/chromium executable path
 
-If you want to use an alternative chrome or chromium executable from what is installed by puppeteer you can set it using the `setExecutablePath` method.
+If you want to use an alternative chrome or chromium executable from what is installed by puppeteer you can set it using the `setChromePath` method.
 
 ```php
 Browsershot::html('Foo')
-  ->setExecutablePath("/path/to/my/chrome")
+  ->setChromePath("/path/to/my/chrome")
 ```
 
 ## Installation

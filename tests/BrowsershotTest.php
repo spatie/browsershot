@@ -333,7 +333,7 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
-            ->setExecutablePath('non-existant/bin/wich/causes/an/exception')
+            ->setChromePath('non-existant/bin/wich/causes/an/exception')
             ->save($targetPath);
     }
 

@@ -86,7 +86,7 @@ class Browsershot
         return $this;
     }
 
-    public function setExecutablePath(string $executablePath)
+    public function setChromePath(string $executablePath)
     {
         $this->setOption('executablePath', $executablePath);
 
