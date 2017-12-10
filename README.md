@@ -99,6 +99,15 @@ Browsershot::html('Foo')
   ->setNodeModulePath("/path/to/my/project/node_modules/")
 ```
 
+### Custom chrome/chromium executable path
+
+If you want to use an alternative chrome or chromium executable from what is installed by puppeteer you can set it using the `setChromePath` method.
+
+```php
+Browsershot::html('Foo')
+  ->setChromePath("/path/to/my/chrome")
+```
+
 ## Installation
 
 This package can be installed through Composer.
@@ -339,7 +348,7 @@ Browsershot::url('https://example.com')
    ->setOption('landscape', true)
    ->save($pathToImage);
 ```
-  
+
 
 #### Setting the user agent
 

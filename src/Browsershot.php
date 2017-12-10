@@ -86,6 +86,13 @@ class Browsershot
         return $this;
     }
 
+    public function setChromePath(string $executablePath)
+    {
+        $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
     /**
      * @deprecated This option is no longer supported by modern versions of Puppeteer.
      */

@@ -326,6 +326,18 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_set_another_chrome_executable_path()
+    {
+        $this->expectException(ProcessFailedException::class);
+
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::html('Foo')
+            ->setChromePath('non-existant/bin/wich/causes/an/exception')
+            ->save($targetPath);
+    }
+
+    /** @test */
     public function it_can_set_the_include_path_and_still_works()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
