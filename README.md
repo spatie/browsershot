@@ -215,7 +215,7 @@ Browsershot::url('https://example.com')
 ```
 
 #### Dismiss dialogs
-Javascript pop ups such as alerts, prompts and confirmations cause rendering of the site to stop what leads to an empty screenshot. Calling `dismissDialogs()` method automatically closes such popups allowing the  screenshot to be taken.
+Javascript pop ups such as alerts, prompts and confirmations cause rendering of the site to stop, which leads to an empty screenshot. Calling `dismissDialogs()` method automatically closes such popups allowing the  screenshot to be taken.
 
 ```php
 Browsershot::url('https://example.com')
