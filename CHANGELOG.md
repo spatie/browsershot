@@ -2,6 +2,9 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 2.4.2 - 2017-12-24
+- update dep on `spatie/image`
+
 ### 2.4.1 - 2017-09-27
 - add the default path for linux Chromium users
 
