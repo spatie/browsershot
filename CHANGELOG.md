@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.14.1 - 2017-12-24
+
+- update dep on `spatie/image`
+
 ### 3.14.0 - 2017-12-10
 
 - add `setChromePath`
