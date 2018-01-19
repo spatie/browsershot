@@ -153,14 +153,14 @@ class Browsershot
         return $this->footerHtml('<p></p>');
     }
 
-    public function headerHtml(string $template)
+    public function headerHtml(string $html)
     {
-        return $this->setOption('headerTemplate', $template);
+        return $this->setOption('headerTemplate', $html);
     }
 
-    public function footerHtml(string $template)
+    public function footerHtml(string $html)
     {
-        return $this->setOption('footerTemplate', $template);
+        return $this->setOption('footerTemplate', $html);
     }
 
     public function deviceScaleFactor(int $deviceScaleFactor)
