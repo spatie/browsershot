@@ -301,7 +301,7 @@ In the header and footer HTML, any tags with the following classes will have its
 * `pageNumber` current page number
 * `totalPages` total pages in the document
 
-If you would like to hide either the header, or the footer, you can call either `hideHeader` or `hideFooter`.
+To hide the header or footer, you can call either `hideHeader` or `hideFooter`.
 
 #### Backgrounds
 
