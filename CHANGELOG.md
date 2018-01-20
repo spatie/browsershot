@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.15.0 - 2018-01-20
+
+- add ability to set sustom header and footer
+
 ### 3.14.1 - 2017-12-24
 
 - update dep on `spatie/image`
