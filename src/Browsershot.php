@@ -143,6 +143,26 @@ class Browsershot
         return $this->setOption('displayHeaderFooter', false);
     }
 
+    public function hideHeader()
+    {
+        return $this->headerHtml('<p></p>');
+    }
+
+    public function hideFooter()
+    {
+        return $this->footerHtml('<p></p>');
+    }
+
+    public function headerHtml(string $html)
+    {
+        return $this->setOption('headerTemplate', $html);
+    }
+
+    public function footerHtml(string $html)
+    {
+        return $this->setOption('footerTemplate', $html);
+    }
+
     public function deviceScaleFactor(int $deviceScaleFactor)
     {
         // Google Chrome currently supports values of 1, 2, and 3.
