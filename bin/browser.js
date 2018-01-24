@@ -39,6 +39,8 @@ const callChrome = async () => {
         if (request.options && request.options.networkIdleTimeout) {
             requestOptions.waitUntil = 'networkidle';
             requestOptions.networkIdleTimeout = request.options.networkIdleTimeout;
+        } else if (request.options && request.options.waitUntil) {
+            requestOptions.waitUntil = request.options.waitUntil;
         }
 
         await page.goto(request.url, requestOptions);
