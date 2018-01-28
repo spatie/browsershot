@@ -103,6 +103,13 @@ class Browsershot
         return $this;
     }
 
+    public function waitUntilNetworkIdle(bool $strict = true)
+    {
+        $this->setOption('waitUntil', $strict ? 'networkidle0' : 'networkidle2');
+
+        return $this;
+    }
+
     public function setUrl(string $url)
     {
         $this->url = $url;

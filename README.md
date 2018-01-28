@@ -223,6 +223,17 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Waiting for lazy-loaded resources
+Some websites lazy-load additional resources via ajax or use webfonts, which might not be loaded in time for the screenshot. Using the `waitUntilNetworkIdle()` method you can tell Browsershot to wait for a period of 500 ms with no network activity before taking the screenshot, ensuring all additional resources are loaded.
+
+```php
+Browsershot::url('https://example.com')
+    ->waitUntilNetworkIdle()
+    ->save($pathToImage);
+```
+
+Alternatively you can use less strict `waitUntilNetworkIdle(false)`, which allows 2 network connections in the 500 ms waiting period, useful for websites with scripts periodically pinging an ajax endpoint.
+
 #### Delayed screenshots
 You can delay the taking of screenshot by  `setDelay()`. This is useful if you need to wait for completion of javascript or if you are attempting to capture lazy-loaded resources.
 

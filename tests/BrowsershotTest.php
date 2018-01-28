@@ -658,4 +658,44 @@ class BrowsershotTest extends TestCase
 
         $this->assertFileExists($targetPath);
     }
+
+    /** @test */
+    public function it_can_wait_until_network_idle()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->waitUntilNetworkIdle()
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'waitUntil' => 'networkidle0',
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+            ],
+        ], $command);
+
+        $command = Browsershot::url('https://example.com')
+            ->waitUntilNetworkIdle($strict = false)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'waitUntil' => 'networkidle2',
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+            ],
+        ], $command);
+    }
 }
