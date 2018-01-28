@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.16.0 - 2018-01-28
+
+- add `waitUntilNetworkIdle`
+
 ### 3.15.0 - 2018-01-20
 
 - add ability to set sustom header and footer
