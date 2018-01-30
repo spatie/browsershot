@@ -1,16 +1,13 @@
 <?php
 
-namespace Spatie\Browsershot;
+namespace WebChefs\PuppeteerToPdf;
 
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Process;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
+use WebChefs\PuppeteerToPdf\TemporaryDirectory;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-/** @mixin \Spatie\Image\Manipulations */
-class Browsershot
+class Pdf
 {
     protected $nodeBinary = null;
     protected $npmBinary = null;
@@ -25,9 +22,6 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
-
-    /** @var \Spatie\Image\Manipulations */
-    protected $imageManipulations;
 
     /**
      * @param string $url
@@ -52,9 +46,6 @@ class Browsershot
     public function __construct(string $url = '')
     {
         $this->url = $url;
-
-        $this->imageManipulations = new Manipulations();
-
         $this->windowSize(800, 600);
     }
 
@@ -297,38 +288,9 @@ class Browsershot
         return $this;
     }
 
-    public function __call($name, $arguments)
-    {
-        $this->imageManipulations->$name(...$arguments);
-
-        return $this;
-    }
-
     public function save(string $targetPath)
     {
-        $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
-
-        if ($extension === '') {
-            throw CouldNotTakeBrowsershot::outputFileDidNotHaveAnExtension($targetPath);
-        }
-
-        if ($extension === 'pdf') {
-            return $this->savePdf($targetPath);
-        }
-
-        $command = $this->createScreenshotCommand($targetPath);
-
-        $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
-
-        if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
-        }
-
-        if (! $this->imageManipulations->isEmpty()) {
-            $this->applyManipulations($targetPath);
-        }
+        return $this->savePdf($targetPath);
     }
 
     public function bodyHtml(): string
@@ -336,15 +298,6 @@ class Browsershot
         $command = $this->createBodyHtmlCommand();
 
         return $this->callBrowser($command);
-    }
-
-    public function screenshot(): string
-    {
-        $command = $this->createScreenshotCommand();
-
-        $encoded_image = $this->callBrowser($command);
-
-        return base64_decode($encoded_image);
     }
 
     public function pdf(): string
@@ -369,36 +322,11 @@ class Browsershot
         }
     }
 
-    public function applyManipulations(string $imagePath)
-    {
-        Image::load($imagePath)
-            ->manipulate($this->imageManipulations)
-            ->save();
-    }
-
     public function createBodyHtmlCommand(): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         return $this->createCommand($url, 'content');
-    }
-
-    public function createScreenshotCommand($targetPath = null): array
-    {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
-
-        $options = [];
-        if ($targetPath) {
-            $options['path'] = $targetPath;
-        }
-
-        $command = $this->createCommand($url, 'screenshot', $options);
-
-        if (! $this->showScreenshotBackground) {
-            $command['options']['omitBackground'] = true;
-        }
-
-        return $command;
     }
 
     public function createPdfCommand($targetPath = null): array
