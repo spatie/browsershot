@@ -16,6 +16,7 @@ class Browsershot
     protected $npmBinary = null;
     protected $nodeModulePath = null;
     protected $includePath = '$PATH:/usr/local/bin';
+    protected $binPath = null;
     protected $html = '';
     protected $noSandbox = false;
     protected $proxyServer = '';
@@ -75,6 +76,13 @@ class Browsershot
     public function setIncludePath(string $includePath)
     {
         $this->includePath = $includePath;
+
+        return $this;
+    }
+
+    public function setBinPath(string $binPath)
+    {
+        $this->binPath = $binPath;
 
         return $this;
     }
@@ -471,7 +479,7 @@ class Browsershot
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
-        $binPath = __DIR__.'/../bin/browser.js';
+        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
         $fullCommand =
             $setIncludePathCommand.' '

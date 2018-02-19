@@ -99,6 +99,15 @@ Browsershot::html('Foo')
   ->setNodeModulePath("/path/to/my/project/node_modules/")
 ```
 
+### Custom binary path
+
+If you want to use an alternative script source you can set it using the `setBinPath` method.
+
+```php
+Browsershot::html('Foo')
+  ->setBinPath("/path/to/my/project/my_script.js")
+```
+
 ### Custom chrome/chromium executable path
 
 If you want to use an alternative chrome or chromium executable from what is installed by puppeteer you can set it using the `setChromePath` method.
