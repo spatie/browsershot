@@ -2,10 +2,14 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.17.0 - 2018-02-22
+
+- add support for custom binary/browser script
+
 ### 3.16.1 - 2018-02-08
 
-- Support symfony ^4.0
-- Support phpunit ^7.0
+- support symfony ^4.0
+- support phpunit ^7.0
 
 ### 3.16.0 - 2018-01-28
 
