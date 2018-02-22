@@ -461,7 +461,7 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
-            ->setNodeBinary('non-existant/bin/wich/causes/an/exception')
+            ->setBinPath(__DIR__.'/../browser.js')
             ->save($targetPath);
     }
 
@@ -475,6 +475,18 @@ class BrowsershotTest extends TestCase
         Browsershot::html('Foo')
             ->setChromePath('non-existant/bin/wich/causes/an/exception')
             ->save($targetPath);
+    }
+
+    /** @test */
+    public function it_can_set_another_bin_path()
+    {
+        $this->expectException(ProcessFailedException::class);
+
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::html('Foo')
+                   ->setChromePath('non-existant/bin/wich/causes/an/exception')
+                   ->save($targetPath);
     }
 
     /** @test */
