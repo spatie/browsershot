@@ -381,6 +381,16 @@ Browsershot::url('https://example.com')
    ->save($pathToImage);
 ```
 
+#### Changing the language of the browser
+
+You can use `setOption` to change the language of the browser.  
+In order to load a page in a specific language for example. 
+
+```php
+Browsershot::url('https://example.com')
+   ->setOption('args', '--lang=en-GB')
+   ...
+```
 
 #### Setting the user agent
 
@@ -442,7 +452,6 @@ Browsershot::url('https://example.com')
    ->setProxyServer("1.2.3.4:8080")
    ...
 ```
-
 
 ## Contributing
 
