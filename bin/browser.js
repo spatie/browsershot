@@ -34,6 +34,10 @@ const callChrome = async () => {
             await page.setViewport(request.options.viewport);
         }
 
+        if (request.options && request.options.extraHTTPHeaders) {
+            await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
+        }
+
         const requestOptions = {};
 
         if (request.options && request.options.networkIdleTimeout) {

@@ -102,6 +102,13 @@ class Browsershot
         return $this;
     }
 
+    public function setExtraHTTPHeaders(array $extraHTTPHeaders)
+    {
+        $this->setOption('extraHTTPHeaders', $extraHTTPHeaders);
+
+        return $this;
+    }
+
     /**
      * @deprecated This option is no longer supported by modern versions of Puppeteer.
      */
@@ -493,6 +500,7 @@ class Browsershot
             .$nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
+
 
         $process = (new Process($fullCommand))->setTimeout($this->timeout);
 
