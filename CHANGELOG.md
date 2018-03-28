@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.18.0 - 2018-03-28
+
+- add support for taking screenshot of an element using a selector
+
 ### 3.17.0 - 2018-02-22
 
 - add support for custom binary/browser script
