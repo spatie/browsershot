@@ -49,6 +49,15 @@ const callChrome = async () => {
             await page.waitFor(request.options.delay);
         }
 
+        if (request.options.selector) {
+            const element = await page.$(request.options.selector);
+            if(element === null) {
+                throw { type: 'ElementNotFound' };
+            }
+
+            request.options.clip = await element.boundingBox();
+        }
+
         output = await page[request.action](request.options);
 
         if (!request.options.path) {
@@ -62,6 +71,10 @@ const callChrome = async () => {
         }
 
         console.error(exception);
+
+        if(exception.type === 'ElementNotFound') {
+            process.exit(2);
+        }
 
         process.exit(1);
     }

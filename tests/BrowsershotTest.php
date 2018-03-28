@@ -3,6 +3,7 @@
 namespace Spatie\Browsershot\Test;
 
 use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -94,6 +95,29 @@ class BrowsershotTest extends TestCase
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_screenshot_of_an_element_matching_a_selector()
+    {
+        $targetPath = __DIR__.'/temp/nodeScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->select('div')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_if_the_selector_does_not_match_any_elements()
+    {
+        $this->expectException(ElementNotFound::class);
+        $targetPath = __DIR__.'/temp/nodeScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->select('not-a-valid-selector')
+            ->save($targetPath);
     }
 
     /** @test */

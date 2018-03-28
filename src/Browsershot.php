@@ -6,6 +6,7 @@ use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Process;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -146,6 +147,11 @@ class Browsershot
     public function clip(int $x, int $y, int $width, int $height)
     {
         return $this->setOption('clip', compact('x', 'y', 'width', 'height'));
+    }
+
+    public function select($selector)
+    {
+        return $this->setOption('selector', $selector);
     }
 
     public function showBrowserHeaderAndFooter()
@@ -492,11 +498,15 @@ class Browsershot
 
         $process->run();
 
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+        if ($process->isSuccessful()) {
+            return $process->getOutput();
         }
 
-        return $process->getOutput();
+        if ($process->getExitCode() === 2) {
+            throw new ElementNotFound($this->additionalOptions['selector']);
+        }
+
+        throw new ProcessFailedException($process);
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
