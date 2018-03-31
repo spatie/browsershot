@@ -755,6 +755,5 @@ class BrowsershotTest extends TestCase
                 'args' => [],
             ],
         ], $command);
-        ;
     }
 }
