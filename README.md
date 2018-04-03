@@ -477,7 +477,7 @@ To send custom HTTP headers, set the extraHTTPHeaders option like so:
 
 ```php
 Browsershot::url('https://example.com')
-    ->setExtraHTTPHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
+    ->setExtraHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
    ...
 ```
 

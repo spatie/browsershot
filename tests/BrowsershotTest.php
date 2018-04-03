@@ -739,7 +739,7 @@ class BrowsershotTest extends TestCase
     public function it_can_send_extra_http_headers()
     {
         $command = Browsershot::url('https://example.com')
-            ->setExtraHTTPHeaders(['extra-http-header' => 'extra-http-header'])
+            ->setExtraHttpHeaders(['extra-http-header' => 'extra-http-header'])
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([

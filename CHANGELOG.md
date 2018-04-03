@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.19.0 - 2018-04-03
+
+- add `setExtraHttpHeaders`
+
 ### 3.18.0 - 2018-03-28
 
 - add support for taking screenshot of an element using a selector

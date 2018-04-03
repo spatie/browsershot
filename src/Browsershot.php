@@ -102,7 +102,7 @@ class Browsershot
         return $this;
     }
 
-    public function setExtraHTTPHeaders(array $extraHTTPHeaders)
+    public function setExtraHttpHeaders(array $extraHTTPHeaders)
     {
         $this->setOption('extraHTTPHeaders', $extraHTTPHeaders);
 
