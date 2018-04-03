@@ -734,4 +734,26 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_can_send_extra_http_headers()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->setExtraHTTPHeaders(['extra-http-header' => 'extra-http-header'])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'extraHTTPHeaders' => ['extra-http-header' => 'extra-http-header'],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+            ],
+        ], $command);
+    }
 }

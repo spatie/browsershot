@@ -471,6 +471,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Setting extraHTTPHeaders
+
+To send custom HTTP headers, set the extraHTTPHeaders option like so:
+
+```php
+Browsershot::url('https://example.com')
+    ->setExtraHTTPHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
+   ...
+```
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
