@@ -39,6 +39,10 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
+## Framework implementations
+
+* Laravel: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
+
 
 ## Requirements
 
