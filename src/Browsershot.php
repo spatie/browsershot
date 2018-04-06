@@ -109,6 +109,17 @@ class Browsershot
         return $this;
     }
 
+    public function click(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0)
+    {
+        $clicks = ($this->additionalOptions['clicks'] ?? []);
+
+        $clicks[] = compact('selector', 'button', 'clickCount', 'delay');
+
+        $this->setOption('clicks', $clicks);
+
+        return $this;
+    }
+
     /**
      * @deprecated This option is no longer supported by modern versions of Puppeteer.
      */
