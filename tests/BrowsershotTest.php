@@ -478,6 +478,28 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_set_emulate_media_option_to_null()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->emulateMedia(null)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'emulateMedia' => null,
+                'args' => [],
+            ],
+        ], $command);
+    }
+
+    /** @test */
     public function it_can_set_another_node_binary()
     {
         $this->expectException(ProcessFailedException::class);
