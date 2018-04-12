@@ -223,7 +223,7 @@ class Browsershot
     public function setScreenshotType(string $type, int $quality = null)
     {
         $this->screenshotType = $type;
-        if(!is_null($quality)) {
+        if (! is_null($quality)) {
             $this->screenshotQuality = $quality;
         }
 
