@@ -39,11 +39,6 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-## Framework implementations
-
-* Laravel: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
-
-
 ## Requirements
 
 This package requires node 7.6.0 or higher and the Puppeteer Node library.
@@ -484,6 +479,10 @@ Browsershot::url('https://example.com')
     ->setExtraHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
    ...
 ```
+
+## Related packages
+
+* Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
 
 ## Contributing
 
