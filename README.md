@@ -261,11 +261,21 @@ Browsershot::url('https://example.com')
 ```
 
 #### Output directly to the browser
-You can output the image directly to the browser using the `screenshot()` method.
+You can output the image directly to the browser using the `screenshot()` method with [various options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions).
 
+Without Option (Default type `png`) 
 ```php
 $image = Browsershot::url('https://example.com')
     ->screenshot()
+```
+
+With Option (Get screenshot as `jpg` with quality `100`)
+```php
+$image = Browsershot::url('https://example.com')
+    ->screenshot([
+        'type' => 'jpeg',
+        'quality' => 100
+    ])
 ```
 
 ### PDFs
