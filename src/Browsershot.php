@@ -23,8 +23,8 @@ class Browsershot
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
-    protected $screenshotType = '';
-    protected $screenshotQuality = 0;
+    protected $screenshotType = 'png';
+    protected $screenshotQuality = null;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
@@ -223,6 +223,7 @@ class Browsershot
     public function setScreenshotType(string $type, int $quality = null)
     {
         $this->screenshotType = $type;
+
         if (! is_null($quality)) {
             $this->screenshotQuality = $quality;
         }
@@ -420,13 +421,12 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $options = [];
+        $options = [
+            'type' => $this->screenshotType
+        ];
+
         if ($targetPath) {
             $options['path'] = $targetPath;
-        }
-
-        if ($this->screenshotType) {
-            $options['type'] = $this->screenshotType;
         }
 
         if ($this->screenshotQuality) {
