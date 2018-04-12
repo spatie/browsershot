@@ -422,7 +422,7 @@ class Browsershot
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $options = [
-            'type' => $this->screenshotType
+            'type' => $this->screenshotType,
         ];
 
         if ($targetPath) {
