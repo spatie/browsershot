@@ -39,7 +39,6 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-
 ## Requirements
 
 This package requires node 7.6.0 or higher and the Puppeteer Node library.
@@ -481,6 +480,7 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+
 #### Clicking on the page
 
 You can specify clicks on the page.
@@ -490,6 +490,11 @@ Browsershot::url('https://example.com')
     ->click('#selector1')
     ->click('#selector2', 'right', 5, 200) // Right click 5 times on #selector2, each click lasting 200 milliseconds.
 ```
+
+## Related packages
+
+* Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
+
 
 ## Contributing
 
