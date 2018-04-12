@@ -756,4 +756,40 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_can_click_on_the_page()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->click('#selector1')
+            ->click('#selector2', 'right', 2, 1)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clicks' => [
+                    [
+                        'selector' => '#selector1',
+                        'button' => 'left',
+                        'clickCount' => 1,
+                        'delay' => 0,
+                    ],
+                    [
+                        'selector' => '#selector2',
+                        'button' => 'right',
+                        'clickCount' => 2,
+                        'delay' => 1,
+                    ],
+                ],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+            ],
+        ], $command);
+    }
 }

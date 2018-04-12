@@ -480,9 +480,21 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+
+#### Clicking on the page
+
+You can specify clicks on the page.
+
+```php
+Browsershot::url('https://example.com')
+    ->click('#selector1')
+    ->click('#selector2', 'right', 5, 200) // Right click 5 times on #selector2, each click lasting 200 milliseconds.
+```
+
 ## Related packages
 
 * Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
+
 
 ## Contributing
 
