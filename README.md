@@ -140,9 +140,19 @@ Here's the easiest way to create an image of a webpage:
 Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
+#### Formatting the image
+By default the screenshot's type will be a `png`. (According to [Puppeteer's Config](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions))  
+But you can change it to `jpeg` with quality option.
+
+```php
+Browsershot::url('https://example.com')
+    ->setScreenshotType('jpeg', 100)
+    ->save($pathToImage);
+```
+
 #### Sizing the image
 
-By default the screenshot will be a `png` and it's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
+By default the screenshot's size will match the resolution you use for your desktop. Want another size of screenshot? No problem!
 
 ```php
 Browsershot::url('https://example.com')
@@ -401,7 +411,7 @@ Browsershot::url('https://example.com')
 #### Changing the language of the browser
 
 You can use `setOption` to change the language of the browser.  
-In order to load a page in a specific language for example. 
+In order to load a page in a specific language for example.
 
 ```php
 Browsershot::url('https://example.com')
