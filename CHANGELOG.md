@@ -2,6 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.20.1 -2018-04-13
+
+- fix typehint in `emulateMedia`
+- drop PHP 7.0 support
+
 ## 3.20.0 - 2018-04-13
 
 - add `click`
