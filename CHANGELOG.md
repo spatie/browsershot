@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.20.0 - 2018-04-13
+
+- add `click`
+
 ## 3.19.0 - 2018-04-03
 
 - add `setExtraHttpHeaders`
