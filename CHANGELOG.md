@@ -2,7 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-## 3.20.1 -2018-04-13
+## 3.21.0 - 2018-04-13
+
+- add `setScreenshotType`
+
+## 3.20.1 - 2018-04-13
 
 - fix typehint in `emulateMedia`
 - drop PHP 7.0 support
