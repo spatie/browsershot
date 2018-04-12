@@ -348,7 +348,7 @@ class Browsershot
             return $this->savePdf($targetPath);
         }
 
-        $command = $this->createScreenshotCommand($targetPath);
+        $command = $this->createScreenshotCommand(['path' => $targetPath]);
 
         $this->callBrowser($command);
 
@@ -370,9 +370,9 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
-    public function screenshot(): string
+    public function screenshot($options = []): string
     {
-        $command = $this->createScreenshotCommand();
+        $command = $this->createScreenshotCommand($options);
 
         $encoded_image = $this->callBrowser($command);
 
@@ -415,14 +415,9 @@ class Browsershot
         return $this->createCommand($url, 'content');
     }
 
-    public function createScreenshotCommand($targetPath = null): array
+    public function createScreenshotCommand($options = []): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
-
-        $options = [];
-        if ($targetPath) {
-            $options['path'] = $targetPath;
-        }
 
         $command = $this->createCommand($url, 'screenshot', $options);
 

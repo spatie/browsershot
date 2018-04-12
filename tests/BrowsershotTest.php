@@ -185,7 +185,7 @@ class BrowsershotTest extends TestCase
             ->fullPage()
             ->dismissDialogs()
             ->windowSize(1920, 1080)
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -213,7 +213,7 @@ class BrowsershotTest extends TestCase
             ->deviceScaleFactor(2)
             ->hideBackground()
             ->windowSize(1920, 1080)
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -438,7 +438,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->userAgent('my_special_snowflake')
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -460,7 +460,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->emulateMedia('screen')
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -530,7 +530,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->noSandbox()
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -553,7 +553,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->dismissDialogs()
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -575,7 +575,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->ignoreHttpsErrors()
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -597,7 +597,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->setProxyServer('1.2.3.4:8080')
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -620,7 +620,7 @@ class BrowsershotTest extends TestCase
             ->setOption('foo.bar', 100)
             ->setOption('foo.bar', 150)
             ->setOption('foo.baz', 200)
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -700,7 +700,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->waitUntilNetworkIdle()
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -718,7 +718,7 @@ class BrowsershotTest extends TestCase
 
         $command = Browsershot::url('https://example.com')
             ->waitUntilNetworkIdle($strict = false)
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
@@ -740,7 +740,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->setExtraHttpHeaders(['extra-http-header' => 'extra-http-header'])
-            ->createScreenshotCommand('screenshot.png');
+            ->createScreenshotCommand(['path' => 'screenshot.png']);
 
         $this->assertEquals([
             'url' => 'https://example.com',
