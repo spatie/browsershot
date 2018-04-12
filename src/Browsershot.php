@@ -23,6 +23,8 @@ class Browsershot
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
+    protected $screenshotType = '';
+    protected $screenshotQuality = 0;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
@@ -214,6 +216,16 @@ class Browsershot
     {
         $this->showBackground = false;
         $this->showScreenshotBackground = false;
+
+        return $this;
+    }
+
+    public function setScreenshotType(string $type, int $quality = null)
+    {
+        $this->screenshotType = $type;
+        if(!is_null($quality)) {
+            $this->screenshotQuality = $quality;
+        }
 
         return $this;
     }
@@ -411,6 +423,14 @@ class Browsershot
         $options = [];
         if ($targetPath) {
             $options['path'] = $targetPath;
+        }
+
+        if ($this->screenshotType) {
+            $options['type'] = $this->screenshotType;
+        }
+
+        if ($this->screenshotQuality) {
+            $options['quality'] = $this->screenshotQuality;
         }
 
         $command = $this->createCommand($url, 'screenshot', $options);
