@@ -386,6 +386,16 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
+### Evaluate
+
+Browsershot can get the evaluation of an html page:
+
+```php
+Browsershot::url('https://example.com')
+  ->deviceScaleFactor(2)
+  ->evaluate("window.devicePixelRatio"); // returns 2
+```
+
 ### Misc
 
 #### Setting an arbitrary option

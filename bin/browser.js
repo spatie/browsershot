@@ -73,10 +73,15 @@ const callChrome = async () => {
             request.options.clip = await element.boundingBox();
         }
 
-        output = await page[request.action](request.options);
+        if(request.action == 'evaluate') {
+            output = await page.evaluate(request.options.pageFunction);
+        } else {
+            output = await page[request.action](request.options);
+            output = output.toString('base64')
+        }
 
         if (!request.options.path) {
-            console.log(output.toString('base64'));
+            console.log(output);
         }
 
         await browser.close();
