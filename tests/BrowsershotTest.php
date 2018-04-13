@@ -201,6 +201,7 @@ class BrowsershotTest extends TestCase
                     'height' => 1080,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -228,6 +229,7 @@ class BrowsershotTest extends TestCase
                     'height' => 1080,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -451,6 +453,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'userAgent' => 'my_special_snowflake',
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -473,6 +476,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'emulateMedia' => 'screen',
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -495,6 +499,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'emulateMedia' => null,
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -566,6 +571,7 @@ class BrowsershotTest extends TestCase
                 'args' => [
                     '--no-sandbox',
                 ],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -588,6 +594,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -610,6 +617,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -631,6 +639,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => ['--proxy-server=1.2.3.4:8080'],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -658,6 +667,7 @@ class BrowsershotTest extends TestCase
                     'baz' => 200,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -735,6 +745,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
 
@@ -775,6 +786,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -811,6 +823,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
