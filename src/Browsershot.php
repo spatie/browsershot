@@ -483,7 +483,7 @@ class Browsershot
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $options = [
-            'pageFunction' => $pageFunction
+            'pageFunction' => $pageFunction,
         ];
 
         return $this->createCommand($url, 'evaluate', $options);
