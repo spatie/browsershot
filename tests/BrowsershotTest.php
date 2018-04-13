@@ -163,20 +163,6 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_the_methods_of_the_image_package()
-    {
-        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
-
-        Browsershot::url('https://example.com')
-            ->format('jpg')
-            ->save($targetPath);
-
-        $this->assertFileExists($targetPath);
-
-        $this->assertMimeType('image/jpeg', $targetPath);
-    }
-
-    /** @test */
     public function it_can_create_a_command_to_generate_a_screenshot()
     {
         $command = Browsershot::url('https://example.com')
@@ -764,6 +750,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -826,5 +813,19 @@ class BrowsershotTest extends TestCase
                 'type' => 'png',
             ],
         ], $command);
+    }
+
+    /** @test */
+    public function it_can_set_type_of_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
+
+        Browsershot::url('https://example.com')
+            ->setScreenshotType('jpeg')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertMimeType('image/jpeg', $targetPath);
     }
 }
