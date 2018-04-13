@@ -416,7 +416,7 @@ class Browsershot
 
     public function evaluate(string $pageFunction): string
     {
-        $command = $this->createEvaluateCommand(null, $pageFunction);
+        $command = $this->createEvaluateCommand($pageFunction);
 
         return $this->callBrowser($command);
     }
@@ -478,7 +478,7 @@ class Browsershot
         return $command;
     }
 
-    public function createEvaluateCommand($targetPath = null, string $pageFunction): array
+    public function createEvaluateCommand(string $pageFunction): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
