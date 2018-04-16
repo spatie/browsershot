@@ -418,9 +418,7 @@ class Browsershot
     {
         $command = $this->createEvaluateCommand($pageFunction);
 
-        $encoded_result = $this->callBrowser($command);
-
-        return base64_decode($encoded_result);
+        return $this->callBrowser($command);
     }
 
     public function applyManipulations(string $imagePath)
