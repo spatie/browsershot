@@ -77,11 +77,10 @@ const callChrome = async () => {
             output = await page.evaluate(request.options.pageFunction);
         } else {
             output = await page[request.action](request.options);
-            output = output.toString('base64')
         }
 
         if (!request.options.path) {
-            console.log(output);
+            console.log(output.toString('base64'));
         }
 
         await browser.close();
