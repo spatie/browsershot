@@ -2,6 +2,15 @@ const puppeteer = require('puppeteer');
 
 const request = JSON.parse(process.argv[2]);
 
+const getOutput = (page, request) => {
+
+    if(request.action == 'evaluate') {
+        return page.evaluate(request.options.pageFunction);
+    }
+
+    return page[request.action](request.options);
+}
+
 const callChrome = async () => {
     let browser;
     let page;
@@ -73,11 +82,7 @@ const callChrome = async () => {
             request.options.clip = await element.boundingBox();
         }
 
-        if(request.action == 'evaluate') {
-            output = await page.evaluate(request.options.pageFunction);
-        } else {
-            output = await page[request.action](request.options);
-        }
+        output = await getOutput(page, request);
 
         if (!request.options.path) {
             console.log(output.toString('base64'));
