@@ -414,6 +414,13 @@ class Browsershot
         }
     }
 
+    public function evaluate(string $pageFunction): string
+    {
+        $command = $this->createEvaluateCommand($pageFunction);
+
+        return $this->callBrowser($command);
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -469,6 +476,17 @@ class Browsershot
         }
 
         return $command;
+    }
+
+    public function createEvaluateCommand(string $pageFunction): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        $options = [
+            'pageFunction' => $pageFunction,
+        ];
+
+        return $this->createCommand($url, 'evaluate', $options);
     }
 
     protected function getOptionArgs(): array
@@ -537,7 +555,7 @@ class Browsershot
         $process->run();
 
         if ($process->isSuccessful()) {
-            return $process->getOutput();
+            return rtrim($process->getOutput());
         }
 
         if ($process->getExitCode() === 2) {
