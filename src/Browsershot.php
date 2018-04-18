@@ -441,6 +441,7 @@ class Browsershot
 
         $options = [
             'type' => $this->screenshotType,
+            'timeout' => $this->timeout,
         ];
 
         if ($targetPath) {
@@ -464,7 +465,9 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $options = [];
+        $options = [
+            'timeout' => $this->timeout
+        ];
         if ($targetPath) {
             $options['path'] = $targetPath;
         }
