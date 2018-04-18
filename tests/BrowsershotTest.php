@@ -814,6 +814,7 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+<<<<<<< HEAD
 
     /** @test */
     public function it_can_evaluate_page()
@@ -823,4 +824,6 @@ class BrowsershotTest extends TestCase
 
         $this->assertEquals('2', $result);
     }
+=======
+>>>>>>> Restore original test script
 }
