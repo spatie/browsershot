@@ -52,6 +52,10 @@ const callChrome = async () => {
             await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
         }
 
+        if (request.options && request.options.timeout) {
+            await page.setDefaultNavigationTimeout(request.options.timeout);
+        }
+        
         const requestOptions = {};
 
         if (request.options && request.options.networkIdleTimeout) {
