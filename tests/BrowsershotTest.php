@@ -163,20 +163,6 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_use_the_methods_of_the_image_package()
-    {
-        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
-
-        Browsershot::url('https://example.com')
-            ->format('jpg')
-            ->save($targetPath);
-
-        $this->assertFileExists($targetPath);
-
-        $this->assertMimeType('image/jpeg', $targetPath);
-    }
-
-    /** @test */
     public function it_can_create_a_command_to_generate_a_screenshot()
     {
         $command = Browsershot::url('https://example.com')
@@ -201,6 +187,7 @@ class BrowsershotTest extends TestCase
                     'height' => 1080,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -228,6 +215,7 @@ class BrowsershotTest extends TestCase
                     'height' => 1080,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -451,6 +439,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'userAgent' => 'my_special_snowflake',
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -473,6 +462,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'emulateMedia' => 'screen',
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -495,6 +485,7 @@ class BrowsershotTest extends TestCase
                 ],
                 'emulateMedia' => null,
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -566,6 +557,7 @@ class BrowsershotTest extends TestCase
                 'args' => [
                     '--no-sandbox',
                 ],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -588,6 +580,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -610,6 +603,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -631,6 +625,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => ['--proxy-server=1.2.3.4:8080'],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -658,6 +653,7 @@ class BrowsershotTest extends TestCase
                     'baz' => 200,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -735,6 +731,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
 
@@ -753,6 +750,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -775,6 +773,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
     }
@@ -811,7 +810,22 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [],
+                'type' => 'png',
             ],
         ], $command);
+    }
+
+    /** @test */
+    public function it_can_set_type_of_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.jpg';
+
+        Browsershot::url('https://example.com')
+            ->setScreenshotType('jpeg')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertMimeType('image/jpeg', $targetPath);
     }
 }
