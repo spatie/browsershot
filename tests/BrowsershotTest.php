@@ -828,4 +828,13 @@ class BrowsershotTest extends TestCase
 
         $this->assertMimeType('image/jpeg', $targetPath);
     }
+
+    /** @test */
+    public function it_can_evaluate_page()
+    {
+        $result = Browsershot::url('https://example.com')
+            ->evaluate('1 + 1');
+
+        $this->assertEquals('2', $result);
+    }
 }
