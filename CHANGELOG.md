@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.22.0 - 2018-04-18
+
+- add `evaluate`
+
 ## 3.21.0 - 2018-04-13
 
 - add `setScreenshotType`
