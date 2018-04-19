@@ -838,7 +838,6 @@ class BrowsershotTest extends TestCase
         $this->assertEquals('2', $result);
     }
 
-
     /** @test **/
     public function it_can_add_a_timeout_to_puppeteer()
     {
