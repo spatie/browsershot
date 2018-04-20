@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.22.1 - 2018-04-20
+
+- better handling of timeouts
+
 ## 3.22.0 - 2018-04-18
 
 - add `evaluate`
