@@ -837,4 +837,27 @@ class BrowsershotTest extends TestCase
 
         $this->assertEquals('2', $result);
     }
+
+    /** @test **/
+    public function it_can_add_a_timeout_to_puppeteer()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->timeout(123)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'timeout' => 123000,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 }

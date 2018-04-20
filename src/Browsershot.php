@@ -305,6 +305,7 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
+        $this->setOption('timeout', $timeout * 1000); // puppeteer need the timeout in ms
 
         return $this;
     }
@@ -442,7 +443,6 @@ class Browsershot
         $options = [
             'type' => $this->screenshotType,
         ];
-
         if ($targetPath) {
             $options['path'] = $targetPath;
         }
