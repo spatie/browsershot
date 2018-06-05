@@ -23,8 +23,6 @@ class Browsershot
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
-    protected $screenshotType = 'png';
-    protected $screenshotQuality = null;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
@@ -231,17 +229,6 @@ class Browsershot
         return $this;
     }
 
-    public function setScreenshotType(string $type, int $quality = null)
-    {
-        $this->screenshotType = $type;
-
-        if (! is_null($quality)) {
-            $this->screenshotQuality = $quality;
-        }
-
-        return $this;
-    }
-
     public function ignoreHttpsErrors()
     {
         return $this->setOption('ignoreHttpsErrors', true);
@@ -305,7 +292,6 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
-        $this->setOption('timeout', $timeout * 1000);
 
         return $this;
     }
@@ -317,7 +303,7 @@ class Browsershot
         return $this;
     }
 
-    public function emulateMedia(?string $media)
+    public function emulateMedia(string $media)
     {
         $this->setOption('emulateMedia', $media);
 
@@ -415,13 +401,6 @@ class Browsershot
         }
     }
 
-    public function evaluate(string $pageFunction): string
-    {
-        $command = $this->createEvaluateCommand($pageFunction);
-
-        return $this->callBrowser($command);
-    }
-
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -440,15 +419,9 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $options = [
-            'type' => $this->screenshotType,
-        ];
+        $options = [];
         if ($targetPath) {
             $options['path'] = $targetPath;
-        }
-
-        if ($this->screenshotQuality) {
-            $options['quality'] = $this->screenshotQuality;
         }
 
         $command = $this->createCommand($url, 'screenshot', $options);
@@ -476,17 +449,6 @@ class Browsershot
         }
 
         return $command;
-    }
-
-    public function createEvaluateCommand(string $pageFunction): array
-    {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
-
-        $options = [
-            'pageFunction' => $pageFunction,
-        ];
-
-        return $this->createCommand($url, 'evaluate', $options);
     }
 
     protected function getOptionArgs(): array
@@ -535,27 +497,14 @@ class Browsershot
 
     protected function callBrowser(array $command)
     {
-        $setIncludePathCommand = "PATH={$this->includePath}";
-
-        $nodeBinary = $this->nodeBinary ?: 'node';
-
-        $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
-
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
-
-        $fullCommand =
-            $setIncludePathCommand.' '
-            .$setNodePathCommand.' '
-            .$nodeBinary.' '
-            .escapeshellarg($binPath).' '
-            .escapeshellarg(json_encode($command));
+        $fullCommand = $this->getFullCommand($command);
 
         $process = (new Process($fullCommand))->setTimeout($this->timeout);
 
         $process->run();
 
         if ($process->isSuccessful()) {
-            return rtrim($process->getOutput());
+            return $process->getOutput();
         }
 
         if ($process->getExitCode() === 2) {
@@ -563,6 +512,33 @@ class Browsershot
         }
 
         throw new ProcessFailedException($process);
+    }
+
+    protected function getFullCommand(array $command)
+    {
+        $nodeBinary = $this->nodeBinary ?: 'node';
+
+        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
+
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+        {
+            return
+                $nodeBinary . ' '
+                . escapeshellarg($binPath) . ' '
+                . '"' . str_replace('"', '\"', (json_encode($command))) . '"';
+        }
+        else {
+            $setIncludePathCommand = "PATH={$this->includePath}";
+
+            $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
+
+            return
+                $setIncludePathCommand . ' '
+                . $setNodePathCommand . ' '
+                . $nodeBinary . ' '
+                . escapeshellarg($binPath) . ' '
+                . escapeshellarg(json_encode($command));
+        }
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
