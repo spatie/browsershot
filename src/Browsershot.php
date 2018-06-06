@@ -23,6 +23,8 @@ class Browsershot
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
+    protected $screenshotType = 'png';
+    protected $screenshotQuality = null;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
@@ -229,6 +231,17 @@ class Browsershot
         return $this;
     }
 
+    public function setScreenshotType(string $type, int $quality = null)
+    {
+        $this->screenshotType = $type;
+
+        if (! is_null($quality)) {
+            $this->screenshotQuality = $quality;
+        }
+
+        return $this;
+    }
+
     public function ignoreHttpsErrors()
     {
         return $this->setOption('ignoreHttpsErrors', true);
@@ -292,6 +305,7 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
+        $this->setOption('timeout', $timeout * 1000);
 
         return $this;
     }
@@ -303,7 +317,7 @@ class Browsershot
         return $this;
     }
 
-    public function emulateMedia(string $media)
+    public function emulateMedia(?string $media)
     {
         $this->setOption('emulateMedia', $media);
 
@@ -401,11 +415,18 @@ class Browsershot
         }
     }
 
+    public function evaluate(string $pageFunction): string
+    {
+        $command = $this->createEvaluateCommand($pageFunction);
+
+        return $this->callBrowser($command);
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
-            ->manipulate($this->imageManipulations)
-            ->save();
+             ->manipulate($this->imageManipulations)
+             ->save();
     }
 
     public function createBodyHtmlCommand(): array
@@ -419,9 +440,15 @@ class Browsershot
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $options = [];
+        $options = [
+            'type' => $this->screenshotType,
+        ];
         if ($targetPath) {
             $options['path'] = $targetPath;
+        }
+
+        if ($this->screenshotQuality) {
+            $options['quality'] = $this->screenshotQuality;
         }
 
         $command = $this->createCommand($url, 'screenshot', $options);
@@ -449,6 +476,17 @@ class Browsershot
         }
 
         return $command;
+    }
+
+    public function createEvaluateCommand(string $pageFunction): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        $options = [
+            'pageFunction' => $pageFunction,
+        ];
+
+        return $this->createCommand($url, 'evaluate', $options);
     }
 
     protected function getOptionArgs(): array
@@ -504,7 +542,7 @@ class Browsershot
         $process->run();
 
         if ($process->isSuccessful()) {
-            return $process->getOutput();
+            return rtrim($process->getOutput());
         }
 
         if ($process->getExitCode() === 2) {
