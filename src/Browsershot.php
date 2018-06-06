@@ -425,8 +425,8 @@ class Browsershot
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
-             ->manipulate($this->imageManipulations)
-             ->save();
+            ->manipulate($this->imageManipulations)
+            ->save();
     }
 
     public function createBodyHtmlCommand(): array
