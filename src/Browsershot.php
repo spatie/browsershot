@@ -560,20 +560,20 @@ class Browsershot
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             return
-                $nodeBinary . ' '
-                . escapeshellarg($binPath) . ' '
-                . '"' . str_replace('"', '\"', (json_encode($command))) . '"';
+                $nodeBinary.' '
+                .escapeshellarg($binPath).' '
+                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
         } else {
             $setIncludePathCommand = "PATH={$this->includePath}";
 
             $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
             return
-                $setIncludePathCommand . ' '
-                . $setNodePathCommand . ' '
-                . $nodeBinary . ' '
-                . escapeshellarg($binPath) . ' '
-                . escapeshellarg(json_encode($command));
+                $setIncludePathCommand.' '
+                .$setNodePathCommand.' '
+                .$nodeBinary.' '
+                .escapeshellarg($binPath).' '
+                .escapeshellarg(json_encode($command));
         }
     }
 
