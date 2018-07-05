@@ -139,8 +139,12 @@ class Browsershot
         return $this;
     }
 
-    public function waitForFunction($function)
+    public function waitForFunction($function, $polling = 'raf', $timeout = 0)
     {
+        if($timeout === 0) $timeout = $this->timeout * 1000;
+        $this->setOption('functionPolling', $polling);
+        $this->setOption('functionTimeout', $timeout);
+
         return $this->setOption('function', $function);
     }
 

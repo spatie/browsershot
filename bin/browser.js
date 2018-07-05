@@ -92,7 +92,7 @@ const callChrome = async () => {
         }
 
         if (request.options.function) {
-            await page.waitForFunction(request.options.function, {polling: 500, timeout: request.options.timeout});
+            await page.waitForFunction(request.options.function, {polling: request.options.functionPolling, timeout: request.options.functionTimeout});
         }
 
         output = await getOutput(page, request);
