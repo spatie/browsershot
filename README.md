@@ -268,6 +268,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Waiting for javascript function
+You can also wait for the javascript function until is returns true by  `waitForFunction()`. This is useful if you need to wait for task on javascript which is not related to network status.
+
+```php
+Browsershot::url('https://example.com')
+    ->waitForFunction('window.innerWidth < 100', $pollingInMilliseconds, $timeoutInMilliseconds)
+    ->save($pathToImage);
+```
+
 #### Output directly to the browser
 You can output the image directly to the browser using the `screenshot()` method.
 
