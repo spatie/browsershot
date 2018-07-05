@@ -91,6 +91,10 @@ const callChrome = async () => {
             request.options.clip = await element.boundingBox();
         }
 
+        if (request.options.function) {
+            await page.waitForFunction(request.options.function, {polling: 500, timeout: request.options.timeout});
+        }
+
         output = await getOutput(page, request);
 
         if (!request.options.path) {

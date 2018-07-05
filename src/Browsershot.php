@@ -139,6 +139,11 @@ class Browsershot
         return $this;
     }
 
+    public function waitForFunction($function)
+    {
+        return $this->setOption('function', $function);
+    }
+
     public function setUrl(string $url)
     {
         $this->url = $url;
