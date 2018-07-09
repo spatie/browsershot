@@ -139,7 +139,7 @@ class Browsershot
         return $this;
     }
 
-    public function waitForFunction(string $function, mixed $polling = 'raf', int $timeout = 0)
+    public function waitForFunction(string $function, $polling = 'raf', int $timeout = 0)
     {
         $this->setOption('functionPolling', $polling);
         $this->setOption('functionTimeout', $timeout);
