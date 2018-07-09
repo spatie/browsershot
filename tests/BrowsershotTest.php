@@ -874,7 +874,7 @@ class BrowsershotTest extends TestCase
             'options' => [
                 'function' => 'window.innerWidth < 100',
                 'functionPolling' => 'raf',
-                'functionTimeout' => 60000,
+                'functionTimeout' => 0,
                 'path' => 'screenshot.png',
                 'viewport' => [
                     'width' => 800,
