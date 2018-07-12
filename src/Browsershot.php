@@ -33,6 +33,9 @@ class Browsershot
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
 
+    const POLLING_REQUEST_ANIMATION_FRAME = 'raf';
+    const POLLING_MUTATION = 'mutation';
+
     /**
      * @param string $url
      *
@@ -139,7 +142,7 @@ class Browsershot
         return $this;
     }
 
-    public function waitForFunction(string $function, $polling = 'raf', int $timeout = 0)
+    public function waitForFunction(string $function, $polling = self::POLLING_REQUEST_ANIMATION_FRAME, int $timeout = 0)
     {
         $this->setOption('functionPolling', $polling);
         $this->setOption('functionTimeout', $timeout);
