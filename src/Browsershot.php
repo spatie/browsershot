@@ -546,20 +546,7 @@ class Browsershot
 
     protected function callBrowser(array $command)
     {
-        $setIncludePathCommand = "PATH={$this->includePath}";
-
-        $nodeBinary = $this->nodeBinary ?: 'node';
-
-        $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
-
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
-
-        $fullCommand =
-            $setIncludePathCommand.' '
-            .$setNodePathCommand.' '
-            .$nodeBinary.' '
-            .escapeshellarg($binPath).' '
-            .escapeshellarg(json_encode($command));
+        $fullCommand = $this->getFullCommand($command);
 
         $process = (new Process($fullCommand))->setTimeout($this->timeout);
 
@@ -574,6 +561,31 @@ class Browsershot
         }
 
         throw new ProcessFailedException($process);
+    }
+
+    protected function getFullCommand(array $command)
+    {
+        $nodeBinary = $this->nodeBinary ?: 'node';
+
+        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
+
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            return
+                $nodeBinary.' '
+                .escapeshellarg($binPath).' '
+                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+        } else {
+            $setIncludePathCommand = "PATH={$this->includePath}";
+
+            $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
+
+            return
+                $setIncludePathCommand.' '
+                .$setNodePathCommand.' '
+                .$nodeBinary.' '
+                .escapeshellarg($binPath).' '
+                .escapeshellarg(json_encode($command));
+        }
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
