@@ -269,7 +269,7 @@ Browsershot::url('https://example.com')
 ```
 
 #### Waiting for javascript function
-You can also wait for the javascript function until is returns true by  `waitForFunction()`. This is useful if you need to wait for task on javascript which is not related to network status.
+You can also wait for a javascript function until is returns true by using `waitForFunction()`. This is useful if you need to wait for task on javascript which is not related to network status.
 
 ```php
 Browsershot::url('https://example.com')
