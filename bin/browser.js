@@ -55,7 +55,7 @@ const callChrome = async () => {
         if (request.options && request.options.timeout) {
             await page.setDefaultNavigationTimeout(request.options.timeout);
         }
-        
+
         const requestOptions = {};
 
         if (request.options && request.options.networkIdleTimeout) {
@@ -89,6 +89,14 @@ const callChrome = async () => {
             }
 
             request.options.clip = await element.boundingBox();
+        }
+
+        if (request.options.function) {
+            let functionOptions = {
+                polling: request.options.functionPolling,
+                timeout: request.options.functionTimeout || request.options.timeout
+            };
+            await page.waitForFunction(request.options.function, functionOptions);
         }
 
         output = await getOutput(page, request);

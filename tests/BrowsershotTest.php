@@ -860,4 +860,29 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test **/
+    public function it_can_add_a_wait_for_function_to_puppeteer()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->waitForFunction('window.innerWidth < 100')
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'function' => 'window.innerWidth < 100',
+                'functionPolling' => 'raf',
+                'functionTimeout' => 0,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 }

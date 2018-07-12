@@ -139,6 +139,14 @@ class Browsershot
         return $this;
     }
 
+    public function waitForFunction(string $function, $polling = 'raf', int $timeout = 0)
+    {
+        $this->setOption('functionPolling', $polling);
+        $this->setOption('functionTimeout', $timeout);
+
+        return $this->setOption('function', $function);
+    }
+
     public function setUrl(string $url)
     {
         $this->url = $url;
