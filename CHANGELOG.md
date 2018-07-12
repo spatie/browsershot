@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.23.1 - 2018-07-12
+
+- improve compatibility with Windows
+
 # 3.23.0 - 2018-07-12
 
 - added `waitForFunction`

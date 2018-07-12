@@ -574,18 +574,19 @@ class Browsershot
                 $nodeBinary.' '
                 .escapeshellarg($binPath).' '
                 .'"'.str_replace('"', '\"', (json_encode($command))).'"';
-        } else {
-            $setIncludePathCommand = "PATH={$this->includePath}";
-
-            $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
-
-            return
-                $setIncludePathCommand.' '
-                .$setNodePathCommand.' '
-                .$nodeBinary.' '
-                .escapeshellarg($binPath).' '
-                .escapeshellarg(json_encode($command));
         }
+
+        $setIncludePathCommand = "PATH={$this->includePath}";
+
+        $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
+
+        return
+            $setIncludePathCommand.' '
+            .$setNodePathCommand.' '
+            .$nodeBinary.' '
+            .escapeshellarg($binPath).' '
+            .escapeshellarg(json_encode($command));
+
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
