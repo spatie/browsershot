@@ -113,6 +113,11 @@ class Browsershot
 
         return $this;
     }
+    
+    public function setScale(float $scale = 1)
+    {
+        return $this->setOption('scale', $scale);
+    }
 
     public function click(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0)
     {
