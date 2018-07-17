@@ -282,10 +282,10 @@ class Browsershot
     public function margins(int $top, int $right, int $bottom, int $left)
     {
         return $this->setOption('margin', [
-                'top' => $top . 'mm',
-                'right' => $right . 'mm',
-                'bottom' => $bottom . 'mm',
-                'left' => $left . 'mm',
+                'top' => $top.'mm',
+                'right' => $right.'mm',
+                'bottom' => $bottom.'mm',
+                'left' => $left.'mm',
         ]);
     }
 
@@ -309,8 +309,8 @@ class Browsershot
     public function paperSize(float $width, float $height)
     {
         return $this
-                ->setOption('width', $width . 'mm')
-                ->setOption('height', $height . 'mm');
+                ->setOption('width', $width.'mm')
+                ->setOption('height', $height.'mm');
     }
 
     // paper format
@@ -322,7 +322,7 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
-        $this->setOption('timeout', $timeout * 1000);
+        $this->setOption('timeout', $timeout*1000);
 
         return $this;
     }
@@ -371,11 +371,11 @@ class Browsershot
     {
         $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
 
-        if ($extension === '') {
+        if ($extension ==='') {
             throw CouldNotTakeBrowsershot::outputFileDidNotHaveAnExtension($targetPath);
         }
 
-        if ($extension === 'pdf') {
+        if ($extension ==='pdf') {
             return $this->savePdf($targetPath);
         }
 
@@ -515,7 +515,7 @@ class Browsershot
         }
 
         if ($this->proxyServer) {
-            $args[] = '--proxy-server=' . $this->proxyServer;
+            $args[] = '--proxy-server='.$this->proxyServer;
         }
 
         return $args;
@@ -562,7 +562,7 @@ class Browsershot
             return rtrim($process->getOutput());
         }
 
-        if ($process->getExitCode() === 2) {
+        if ($process->getExitCode() ===2) {
             throw new ElementNotFound($this->additionalOptions['selector']);
         }
 
@@ -573,13 +573,13 @@ class Browsershot
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        $binPath = $this->binPath ?: __DIR__ . '/../bin/browser.js';
+        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        if (strtoupper(substr(PHP_OS, 0, 3)) ==='WIN') {
             return
-                $nodeBinary . ' '
-                . escapeshellarg($binPath) . ' '
-                . '"' . str_replace('"', '\"', (json_encode($command))) . '"';
+                $nodeBinary.' '
+                .escapeshellarg($binPath).' '
+                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
         }
 
         $setIncludePathCommand = "PATH={$this->includePath}";
@@ -587,11 +587,11 @@ class Browsershot
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
         return
-            $setIncludePathCommand . ' '
-            . $setNodePathCommand . ' '
-            . $nodeBinary . ' '
-            . escapeshellarg($binPath) . ' '
-            . escapeshellarg(json_encode($command));
+            $setIncludePathCommand.' '
+            .$setNodePathCommand.' '
+            .$nodeBinary.' '
+            .escapeshellarg($binPath).' '
+            .escapeshellarg(json_encode($command));
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
@@ -614,13 +614,13 @@ class Browsershot
 
         $keys = explode('.', $key);
 
-        while (count($keys) > 1) {
+        while (count($keys)>1) {
             $key = array_shift($keys);
 
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if (!isset($array[$key]) || !is_array($array[$key])) {
+            if (!isset($array[$key])||!is_array($array[$key])) {
                 $array[$key] = [];
             }
 
