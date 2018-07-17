@@ -13,6 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
+
     protected $nodeBinary = null;
     protected $npmBinary = null;
     protected $nodeModulePath = null;
@@ -112,6 +113,11 @@ class Browsershot
         $this->setOption('extraHTTPHeaders', $extraHTTPHeaders);
 
         return $this;
+    }
+
+    public function setScale(float $scale = 1)
+    {
+        return $this->setOption('scale', $scale);
     }
 
     public function click(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0)
@@ -246,7 +252,7 @@ class Browsershot
     {
         $this->screenshotType = $type;
 
-        if (! is_null($quality)) {
+        if (!is_null($quality)) {
             $this->screenshotQuality = $quality;
         }
 
@@ -276,10 +282,10 @@ class Browsershot
     public function margins(int $top, int $right, int $bottom, int $left)
     {
         return $this->setOption('margin', [
-            'top' => $top.'mm',
-            'right' => $right.'mm',
-            'bottom' => $bottom.'mm',
-            'left' =>  $left.'mm',
+                'top' => $top.'mm',
+                'right' => $right.'mm',
+                'bottom' => $bottom.'mm',
+                'left' => $left.'mm',
         ]);
     }
 
@@ -303,8 +309,8 @@ class Browsershot
     public function paperSize(float $width, float $height)
     {
         return $this
-            ->setOption('width', $width.'mm')
-            ->setOption('height', $height.'mm');
+                ->setOption('width', $width.'mm')
+                ->setOption('height', $height.'mm');
     }
 
     // paper format
@@ -316,7 +322,7 @@ class Browsershot
     public function timeout(int $timeout)
     {
         $this->timeout = $timeout;
-        $this->setOption('timeout', $timeout * 1000);
+        $this->setOption('timeout', $timeout*1000);
 
         return $this;
     }
@@ -338,8 +344,8 @@ class Browsershot
     public function windowSize(int $width, int $height)
     {
         return $this
-            ->setOption('viewport.width', $width)
-            ->setOption('viewport.height', $height);
+                ->setOption('viewport.width', $width)
+                ->setOption('viewport.height', $height);
     }
 
     public function setDelay(int $delayInMilliseconds)
@@ -365,11 +371,11 @@ class Browsershot
     {
         $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
 
-        if ($extension === '') {
+        if ($extension ==='') {
             throw CouldNotTakeBrowsershot::outputFileDidNotHaveAnExtension($targetPath);
         }
 
-        if ($extension === 'pdf') {
+        if ($extension ==='pdf') {
             return $this->savePdf($targetPath);
         }
 
@@ -379,11 +385,11 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        if (! file_exists($targetPath)) {
+        if (!file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
         }
 
-        if (! $this->imageManipulations->isEmpty()) {
+        if (!$this->imageManipulations->isEmpty()) {
             $this->applyManipulations($targetPath);
         }
     }
@@ -421,7 +427,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        if (! file_exists($targetPath)) {
+        if (!file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
         }
     }
@@ -464,7 +470,7 @@ class Browsershot
 
         $command = $this->createCommand($url, 'screenshot', $options);
 
-        if (! $this->showScreenshotBackground) {
+        if (!$this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
         }
 
@@ -521,7 +527,7 @@ class Browsershot
 
         $command['options']['args'] = $this->getOptionArgs();
 
-        if (! empty($this->additionalOptions)) {
+        if (!empty($this->additionalOptions)) {
             $command['options'] = array_merge_recursive($command['options'], $this->additionalOptions);
         }
 
@@ -556,7 +562,7 @@ class Browsershot
             return rtrim($process->getOutput());
         }
 
-        if ($process->getExitCode() === 2) {
+        if ($process->getExitCode() ===2) {
             throw new ElementNotFound($this->additionalOptions['selector']);
         }
 
@@ -569,7 +575,7 @@ class Browsershot
 
         $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        if (strtoupper(substr(PHP_OS, 0, 3)) ==='WIN') {
             return
                 $nodeBinary.' '
                 .escapeshellarg($binPath).' '
@@ -586,7 +592,6 @@ class Browsershot
             .$nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
-
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
@@ -609,13 +614,13 @@ class Browsershot
 
         $keys = explode('.', $key);
 
-        while (count($keys) > 1) {
+        while (count($keys)>1) {
             $key = array_shift($keys);
 
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if (!isset($array[$key])||!is_array($array[$key])) {
                 $array[$key] = [];
             }
 
