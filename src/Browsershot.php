@@ -593,7 +593,6 @@ class Browsershot
             .$nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
-
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
