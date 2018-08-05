@@ -508,6 +508,15 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Setting Cookies
+
+To add cookies to HTTP headers, pass an array containing cookie key/value pairs to `useCookies` method:
+
+```php
+Browsershot::url('https://example.com')
+    ->useCookies(['Cookie-Key' => 'Cookie-Value'])
+   ...
+```
 
 #### Clicking on the page
 

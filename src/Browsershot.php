@@ -107,6 +107,13 @@ class Browsershot
         return $this;
     }
 
+    public function useCookies(array $cookies)
+    {
+        $this->setExtraHttpHeaders(['Cookie' => http_build_query($cookies, null, '; ')]);
+
+        return $this;
+    }
+
     public function setExtraHttpHeaders(array $extraHTTPHeaders)
     {
         $this->setOption('extraHTTPHeaders', $extraHTTPHeaders);
@@ -586,7 +593,6 @@ class Browsershot
             .$nodeBinary.' '
             .escapeshellarg($binPath).' '
             .escapeshellarg(json_encode($command));
-
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
