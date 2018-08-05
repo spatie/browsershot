@@ -778,6 +778,31 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
+    /**
+     * @test
+     */
+    public function it_can_send_cookie_in_http_headers()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->useCookies(['theme' => 'light', 'sessionToken' => 'abc123'])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'extraHTTPHeaders' => ['Cookie' => 'theme=light; sessionToken=abc123'],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
     /** @test */
     public function it_can_click_on_the_page()
     {
