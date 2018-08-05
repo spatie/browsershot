@@ -439,8 +439,7 @@ Browsershot::url('https://example.com')
 
 #### Setting the user agent
 
-
-If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
+If you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
 
 ```php
 Browsershot::url('https://example.com')
@@ -450,15 +449,13 @@ Browsershot::url('https://example.com')
 
 #### Setting the CSS media type of the page
 
-
-You can also emulate the media type, especially usefull when you're generating pdf shots, because it will try to emulate the print version of the page by default.
+You can emulate the media type, especially usefull when you're generating pdf shots, because it will try to emulate the print version of the page by default.
 
 ```php
 Browsershot::url('https://example.com')
     ->emulateMedia('screen') // "screen", "print" (default) or null (passing null disables the emulation).
     ->savePdf($pathToPdf);
 ```
-
 
 The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
 
@@ -508,9 +505,9 @@ Browsershot::url('https://example.com')
    ...
 ```
 
-#### Setting Cookies
+#### Using Cookies
 
-To add cookies to HTTP headers, pass an array containing cookie key/value pairs to `useCookies` method:
+You can add cookies to the request to the given url:
 
 ```php
 Browsershot::url('https://example.com')
