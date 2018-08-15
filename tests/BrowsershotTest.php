@@ -910,4 +910,24 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test **/
+    public function it_can_send_post_parameters_and_get_the_body_html()
+    {
+        $html = Browsershot::url('http://example.com')
+            ->usePost(['hello' => 'hi there!', 'is it me' => 'you are looking for?'])
+            ->bodyHtml();
+
+        $this->assertContains('<h1>Example Domain</h1>', $html);
+    }
+
+    /** @test **/
+    public function it_can_send_post_parameters_to_ssl_and_get_the_body_html()
+    {
+        $html = Browsershot::url('https://example.com')
+            ->usePost(['hello' => 'hi there!', 'is it me' => 'you are looking for?'])
+            ->bodyHtml();
+
+        $this->assertContains('<h1>Example Domain</h1>', $html);
+    }
 }

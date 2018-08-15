@@ -525,6 +525,16 @@ Browsershot::url('https://example.com')
     ->click('#selector2', 'right', 5, 200) // Right click 5 times on #selector2, each click lasting 200 milliseconds.
 ```
 
+#### Sending post parameters
+
+You can send post parameters to the given url (will internally set the body html):
+
+```php
+Browsershot::url('https://example.com')
+    ->usePost(['hello' => 'hi there!', 'is it me' => 'you are looking for?'])
+```
+The HTTP POST request is separated from regular Browsershot requests (which are made using puppeteer). Your additional headers will also be used by this request, but other http options will possibly not. This is caused by the fact that POST requests would have to be intercepted and that does not work when using puppeteer on commandline (see [GoogleChrome/puppeteer#669](https://github.com/GoogleChrome/puppeteer/issues/669)).
+
 ## Related packages
 
 * Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)

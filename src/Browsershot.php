@@ -29,6 +29,8 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
+    protected $useSSL = false;
+    protected $postParams = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -110,6 +112,18 @@ class Browsershot
     public function useCookies(array $cookies)
     {
         $this->setExtraHttpHeaders(['Cookie' => http_build_query($cookies, null, '; ')]);
+
+        return $this;
+    }
+
+    public function usePost(array $data)
+    {
+        $this->postParams = $data;
+        $parsedUrl = parse_url($this->url);
+
+        $this->useSSL = strtolower($parsedUrl['scheme']) === 'https';
+
+        $this->setHtml($this->postToWebsite());
 
         return $this;
     }
@@ -505,6 +519,46 @@ class Browsershot
         ];
 
         return $this->createCommand($url, 'evaluate', $options);
+    }
+
+    protected function postToWebsite()
+    {
+        $postData = http_build_query($this->postParams);
+        $parsedUrl = parse_url($this->url);
+
+        $headers = [
+            'Host' => $parsedUrl['host'],
+            'Content-Length' => strlen($postData),
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Connection' => 'close'
+        ];
+
+        if(isset($this->additionalOptions['extraHTTPHeaders']))
+            $headers = array_merge($this->additionalOptions['extraHTTPHeaders'], $headers);
+
+        $fp = fsockopen(($this->useSSL ? 'ssl://' : '') . $parsedUrl['host'], $this->useSSL ? 443 : 80);
+        $result = '';
+
+        if ($fp) {
+            fputs($fp, 'POST '.($parsedUrl['path'] ?? '/').' HTTP/1.1'."\r\n");
+
+            foreach ($headers as $k=>$v) {
+                fputs($fp, $k.": ".$v."\r\n");
+            }
+
+            fputs($fp, "\r\n");
+            fputs($fp, $postData."\r\n\r\n");
+
+            $response = '';
+            while (!feof($fp)) {
+                $response .= fread($fp, 8192);
+            }
+            fclose($fp);
+
+            $result = explode("\r\n\r\n", $response, 2)[1];
+        }
+
+        return $result;
     }
 
     protected function getOptionArgs(): array
