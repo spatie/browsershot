@@ -533,8 +533,9 @@ class Browsershot
             'Connection' => 'close'
         ];
 
-        if(isset($this->additionalOptions['extraHTTPHeaders']))
+        if (isset($this->additionalOptions['extraHTTPHeaders'])) {
             $headers = array_merge($this->additionalOptions['extraHTTPHeaders'], $headers);
+        }
 
         $fp = fsockopen(($this->useSSL ? 'ssl://' : '') . $parsedUrl['host'], $this->useSSL ? 443 : 80);
         $result = '';
@@ -542,7 +543,7 @@ class Browsershot
         if ($fp) {
             fputs($fp, 'POST '.($parsedUrl['path'] ?? '/').' HTTP/1.1'."\r\n");
 
-            foreach ($headers as $k=>$v) {
+            foreach ($headers as $k => $v) {
                 fputs($fp, $k.": ".$v."\r\n");
             }
 
