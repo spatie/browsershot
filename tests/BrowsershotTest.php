@@ -914,7 +914,7 @@ class BrowsershotTest extends TestCase
     /** @test **/
     public function it_can_input_form_fields_and_post_and_get_the_body_html()
     {
-	    $delay = 2000;
+        $delay = 2000;
 	                
         $command = Browsershot::url('http://example.com')
             ->type('#selector1', 'Hello, is it me you are looking for?')
@@ -956,7 +956,7 @@ class BrowsershotTest extends TestCase
     /** @test **/
     public function it_can_input_form_fields_and_post_to_ssl_and_get_the_body_html()
     {
-	    $delay = 2000;
+        $delay = 2000;
 	                
         $command = Browsershot::url('https://example.com')
             ->type('#selector1', 'Hello, is it me you are looking for?')
