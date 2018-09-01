@@ -29,6 +29,8 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
+    protected $useSSL = false;
+    protected $postParams = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -128,6 +130,17 @@ class Browsershot
         $clicks[] = compact('selector', 'button', 'clickCount', 'delay');
 
         $this->setOption('clicks', $clicks);
+
+        return $this;
+    }
+
+    public function type(string $selector, string $text = '', int $delay = 0)
+    {
+        $types = ($this->additionalOptions['types'] ?? []);
+
+        $types[] = compact('selector', 'text', 'delay');
+
+        $this->setOption('types', $types);
 
         return $this;
     }

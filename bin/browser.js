@@ -67,6 +67,15 @@ const callChrome = async () => {
 
         await page.goto(request.url, requestOptions);
 
+        if (request.options && request.options.types) {
+            for (let i = 0, len = request.options.types.length; i < len; i++) {
+                let typeOptions = request.options.types[i];
+                await page.type(typeOptions.selector, typeOptions.text, {
+                    'delay': typeOptions.delay,
+                });
+            }
+        }
+
         if (request.options && request.options.clicks) {
             for (let i = 0, len = request.options.clicks.length; i < len; i++) {
                 let clickOptions = request.options.clicks[i];
