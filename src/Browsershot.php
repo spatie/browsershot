@@ -29,8 +29,6 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
-    protected $useSSL = false;
-    protected $postParams = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
