@@ -522,7 +522,8 @@ You can specify clicks on the page.
 ```php
 Browsershot::url('https://example.com')
     ->click('#selector1')
-    ->click('#selector2', 'right', 5, 200) // Right click 5 times on #selector2, each click lasting 200 milliseconds.
+    // Right click 5 times on #selector2, each click lasting 200 milliseconds.
+    ->click('#selector2', 'right', 5, 200) 
 ```
 
 #### Typing on the page
@@ -534,7 +535,7 @@ Browsershot::url('https://example.com')
     ->type('#selector1', 'Hello, is it me you are looking for?')
 ```
 
-You can combined `type` and `click` to create a screenshot of a page after submitting a form:
+You can combine `type` and `click` to create a screenshot of a page after submitting a form:
 
 ```php
 Browsershot::url('https://example.com')
