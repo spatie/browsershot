@@ -365,6 +365,11 @@ class Browsershot
         return $this->setOption('delay', $delayInMilliseconds);
     }
 
+    public function delay(int $delayInMilliseconds)
+    {
+        return $this->setDelay($delayInMilliseconds);
+    }
+
     public function setOption($key, $value)
     {
         $this->arraySet($this->additionalOptions, $key, $value);
