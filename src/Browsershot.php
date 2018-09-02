@@ -123,7 +123,7 @@ class Browsershot
 
     public function click(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0)
     {
-        $clicks = ($this->additionalOptions['clicks'] ?? []);
+        $clicks = $this->additionalOptions['clicks'] ?? [];
 
         $clicks[] = compact('selector', 'button', 'clickCount', 'delay');
 
@@ -134,7 +134,7 @@ class Browsershot
 
     public function type(string $selector, string $text = '', int $delay = 0)
     {
-        $types = ($this->additionalOptions['types'] ?? []);
+        $types = $this->additionalOptions['types'] ?? [];
 
         $types[] = compact('selector', 'text', 'delay');
 
