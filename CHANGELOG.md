@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.25.0 - 2018-09-02
+
+- add `type`
+
 # 3.24.0 - 2018-08-05
 
 - add `useCookies`
