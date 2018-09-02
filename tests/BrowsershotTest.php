@@ -910,4 +910,88 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test **/
+    public function it_can_input_form_fields_and_post_and_get_the_body_html()
+    {
+        $delay = 2000;
+
+        $command = Browsershot::url('http://example.com')
+            ->type('#selector1', 'Hello, is it me you are looking for?')
+            ->click('#selector2')
+            ->setDelay($delay)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'http://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clicks' => [
+                    [
+                        'selector' => '#selector2',
+                        'button' => 'left',
+                        'clickCount' => 1,
+                        'delay' => 0,
+                    ],
+                ],
+                'types' => [
+                    [
+                        'selector' => '#selector1',
+                        'text' => 'Hello, is it me you are looking for?',
+                        'delay' => 0,
+                    ],
+                ],
+                'delay' => 2000,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test **/
+    public function it_can_input_form_fields_and_post_to_ssl_and_get_the_body_html()
+    {
+        $delay = 2000;
+
+        $command = Browsershot::url('https://example.com')
+            ->type('#selector1', 'Hello, is it me you are looking for?')
+            ->click('#selector2')
+            ->setDelay($delay)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clicks' => [
+                    [
+                        'selector' => '#selector2',
+                        'button' => 'left',
+                        'clickCount' => 1,
+                        'delay' => 0,
+                    ],
+                ],
+                'types' => [
+                    [
+                        'selector' => '#selector1',
+                        'text' => 'Hello, is it me you are looking for?',
+                        'delay' => 0,
+                    ],
+                ],
+                'delay' => 2000,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 }

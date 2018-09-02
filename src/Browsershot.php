@@ -132,6 +132,17 @@ class Browsershot
         return $this;
     }
 
+    public function type(string $selector, string $text = '', int $delay = 0)
+    {
+        $types = ($this->additionalOptions['types'] ?? []);
+
+        $types[] = compact('selector', 'text', 'delay');
+
+        $this->setOption('types', $types);
+
+        return $this;
+    }
+
     /**
      * @deprecated This option is no longer supported by modern versions of Puppeteer.
      */

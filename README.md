@@ -525,6 +525,17 @@ Browsershot::url('https://example.com')
     ->click('#selector2', 'right', 5, 200) // Right click 5 times on #selector2, each click lasting 200 milliseconds.
 ```
 
+#### Filling form fields
+
+You can fill form fields on the page.
+
+```php
+Browsershot::url('https://example.com')
+    ->type('#selector1', 'Hello, is it me you are looking for?')
+```
+
+Note about AJAX requests: They may take longer for the response to arrive, so include a delay (eg. `->delay(5000)`) in your request chain.
+
 ## Related packages
 
 * Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
