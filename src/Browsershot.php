@@ -593,10 +593,12 @@ class Browsershot
         $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            return
+            $fullCommand =
                 $nodeBinary.' '
                 .escapeshellarg($binPath).' '
                 .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+
+            return escapeshellcmd($fullCommand);
         }
 
         $setIncludePathCommand = "PATH={$this->includePath}";
