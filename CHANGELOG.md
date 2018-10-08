@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.25.1 - 2018-10-08
+
+- improve compatibilty with W-w-windows
+
 # 3.25.0 - 2018-09-02
 
 - add `type`
