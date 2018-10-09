@@ -56,13 +56,15 @@ class Browsershot
         return (new static)->setHtml($html);
     }
 
-    public function __construct(string $url = '')
+    public function __construct(string $url = '', bool $deviceEmulate = false)
     {
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
 
-        $this->windowSize(800, 600);
+        if(! $deviceEmulate) {
+            $this->windowSize(800, 600);
+        }
     }
 
     public function setNodeBinary(string $nodeBinary)
@@ -346,6 +348,12 @@ class Browsershot
         return $this;
     }
 
+    public function device(string $device)
+    {
+        $this->setOption('device', $device);
+
+        return $this;
+    }
     public function emulateMedia(?string $media)
     {
         $this->setOption('emulateMedia', $media);
