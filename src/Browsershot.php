@@ -62,7 +62,7 @@ class Browsershot
 
         $this->imageManipulations = new Manipulations();
 
-        if(! $deviceEmulate) {
+        if (! $deviceEmulate) {
             $this->windowSize(800, 600);
         }
     }
@@ -354,6 +354,7 @@ class Browsershot
 
         return $this;
     }
+
     public function emulateMedia(?string $media)
     {
         $this->setOption('emulateMedia', $media);
