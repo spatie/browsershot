@@ -45,6 +45,7 @@ const callChrome = async () => {
             const device = devices[request.options.device];
             await page.emulate(device);
         }
+
         if (request.options && request.options.emulateMedia) {
             await page.emulateMedia(request.options.emulateMedia);
         }
