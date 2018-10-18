@@ -578,7 +578,7 @@ class Browsershot
         if ($process->isSuccessful()) {
             return rtrim($process->getOutput());
         }
-		$process->clearOutput();
+		 $process->clearOutput();
 
         if ($process->getExitCode() === 2) {
             throw new ElementNotFound($this->additionalOptions['selector']);
