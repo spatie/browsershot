@@ -93,6 +93,10 @@ const callChrome = async () => {
             }
         }
 
+        if (request.options && request.options.addStyleTag) {
+			await page.addStyleTag( JSON.parse( request.options.addStyleTag ) );
+		}
+
         if (request.options.delay) {
             await page.waitFor(request.options.delay);
         }
