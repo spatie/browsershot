@@ -230,6 +230,30 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Device emulation
+
+You can emulate a device view with the `device` method. The devices' names can be found [Here](https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js).
+
+```php
+$browsershot = new Browsershot('https://example.com', true);
+$browsershot
+        ->device('iPhone X')
+        ->save($pathToImage);
+```
+
+is the same as
+
+```php
+Browsershot::url('https://example.com')
+    ->userAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1')
+    ->windowSize(375, 812)
+    ->deviceScaleFactor(3)
+    ->mobile()
+    ->touch()
+    ->landscape(false)
+    ->save($pathToImage);
+```
+
 #### Backgrounds
 If you want to ignore the website's background when capturing a screenshot, use the `hideBackground()` method.
 

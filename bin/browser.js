@@ -40,6 +40,12 @@ const callChrome = async () => {
             await page.setUserAgent(request.options.userAgent);
         }
 
+        if(request.options && request.options.device) {
+            const devices = require('puppeteer/DeviceDescriptors');
+            const device = devices[request.options.device];
+            await page.emulate(device);
+        }
+
         if (request.options && request.options.emulateMedia) {
             await page.emulateMedia(request.options.emulateMedia);
         }
