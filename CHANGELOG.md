@@ -2,6 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.26.0 - 2018-10-18
+
+- new methods `addStyleTag` and `device` added
+- fixed a bug where chrome would not shut down properly
+
 # 3.25.1 - 2018-10-08
 
 - improve compatibilty with W-w-windows
