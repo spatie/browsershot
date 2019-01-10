@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.26.1 - 2019-01-10
+
+- update lower deps
+
 # 3.26.0 - 2018-10-18
 
 - new methods `addStyleTag` and `device` added
