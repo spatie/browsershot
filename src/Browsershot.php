@@ -113,13 +113,13 @@ class Browsershot
     {
         $domain = parse_url($this->url)['host'];
 
-        foreach ($cookies as $key => $value)
-        {
-            $formatted_cookies[] = ["name" => $key, 'value' => $value, 'domain' => $domain];
+        foreach ($cookies as $key => $value) {
+            $formatted_cookies[] = ['name' => $key, 'value' => $value, 'domain' => $domain];
         }
 
-        if(!empty($formatted_cookies))
-            $this->setOption('cookies',$formatted_cookies);
+        if (! empty($formatted_cookies)) {
+            $this->setOption('cookies', $formatted_cookies);
+        }
 
         return $this;
     }
