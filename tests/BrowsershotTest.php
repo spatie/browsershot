@@ -801,7 +801,7 @@ class BrowsershotTest extends TestCase
                         'name' => 'sessionToken',
                         'value' => 'abc123',
                         'domain' => 'example.com',
-                    ]
+                    ],
                 ],
                 'path' => 'screenshot.png',
                 'viewport' => [
