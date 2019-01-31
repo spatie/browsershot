@@ -781,7 +781,7 @@ class BrowsershotTest extends TestCase
     /**
      * @test
      */
-    public function it_can_send_cookie()
+    public function it_can_send_cookies()
     {
         $command = Browsershot::url('https://example.com')
             ->useCookies(['theme' => 'light', 'sessionToken' => 'abc123'])
