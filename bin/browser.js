@@ -59,7 +59,7 @@ const callChrome = async () => {
         }
 
         if (request.options && request.options.cookies) {
-            await page.setCookie.apply(page,request.options.cookies);
+            await page.setCookie(...request.options.cookies);
         }
 
         if (request.options && request.options.timeout) {
