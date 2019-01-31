@@ -111,9 +111,11 @@ class Browsershot
 
     public function useCookies(array $cookies)
     {
+        $domain = parse_url($this->url)['host'];
+
         foreach ($cookies as $key => $value)
         {
-            $formatted_cookies[] = ["name" => $key, 'value' =>$value, 'url' => $this->url];
+            $formatted_cookies[] = ["name" => $key, 'value' => $value, 'domain' => $domain];
         }
 
         if(!empty($formatted_cookies))
