@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.26.2 - 2019-02-01
+
+- fix for setting cookies
+
 # 3.26.1 - 2019-01-10
 
 - update lower deps
