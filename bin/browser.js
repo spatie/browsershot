@@ -58,6 +58,10 @@ const callChrome = async () => {
             await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
         }
 
+        if (request.options && request.options.cookies) {
+            await page.setCookie(...request.options.cookies);
+        }
+
         if (request.options && request.options.timeout) {
             await page.setDefaultNavigationTimeout(request.options.timeout);
         }

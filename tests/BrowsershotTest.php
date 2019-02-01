@@ -781,7 +781,7 @@ class BrowsershotTest extends TestCase
     /**
      * @test
      */
-    public function it_can_send_cookie_in_http_headers()
+    public function it_can_send_cookies()
     {
         $command = Browsershot::url('https://example.com')
             ->useCookies(['theme' => 'light', 'sessionToken' => 'abc123'])
@@ -791,7 +791,18 @@ class BrowsershotTest extends TestCase
             'url' => 'https://example.com',
             'action' => 'screenshot',
             'options' => [
-                'extraHTTPHeaders' => ['Cookie' => 'theme=light; sessionToken=abc123'],
+                'cookies' => [
+                    [
+                        'name' => 'theme',
+                        'value' => 'light',
+                        'domain' => 'example.com',
+                    ],
+                    [
+                        'name' => 'sessionToken',
+                        'value' => 'abc123',
+                        'domain' => 'example.com',
+                    ],
+                ],
                 'path' => 'screenshot.png',
                 'viewport' => [
                     'width' => 800,

@@ -111,7 +111,15 @@ class Browsershot
 
     public function useCookies(array $cookies)
     {
-        $this->setExtraHttpHeaders(['Cookie' => http_build_query($cookies, null, '; ')]);
+        $domain = parse_url($this->url)['host'];
+
+        foreach ($cookies as $key => $value) {
+            $formatted_cookies[] = ['name' => $key, 'value' => $value, 'domain' => $domain];
+        }
+
+        if (! empty($formatted_cookies)) {
+            $this->setOption('cookies', $formatted_cookies);
+        }
 
         return $this;
     }
