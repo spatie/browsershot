@@ -117,7 +117,7 @@ class Browsershot
 
         $domain = parse_url($this->url)['host'];
 
-        $cookies = array_map(function($value, $name) use ($domain) {
+        $cookies = array_map(function ($value, $name) use ($domain) {
             return compact('name', 'value', 'domain');
         }, $cookies, array_keys($cookies));
 
