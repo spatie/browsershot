@@ -29,6 +29,8 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
+    protected $temporaryOptionsDirectory;
+    protected $writeOptionsToFile = false;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -306,10 +308,10 @@ class Browsershot
     public function margins(int $top, int $right, int $bottom, int $left)
     {
         return $this->setOption('margin', [
-            'top' => $top.'mm',
-            'right' => $right.'mm',
-            'bottom' => $bottom.'mm',
-            'left' =>  $left.'mm',
+            'top' => $top . 'mm',
+            'right' => $right . 'mm',
+            'bottom' => $bottom . 'mm',
+            'left' => $left . 'mm',
         ]);
     }
 
@@ -333,8 +335,8 @@ class Browsershot
     public function paperSize(float $width, float $height)
     {
         return $this
-            ->setOption('width', $width.'mm')
-            ->setOption('height', $height.'mm');
+            ->setOption('width', $width . 'mm')
+            ->setOption('height', $height . 'mm');
     }
 
     // paper format
@@ -387,6 +389,13 @@ class Browsershot
     public function delay(int $delayInMilliseconds)
     {
         return $this->setDelay($delayInMilliseconds);
+    }
+
+    public function writeOptionsToFile()
+    {
+        $this->writeOptionsToFile = true;
+
+        return $this;
     }
 
     public function setOption($key, $value)
@@ -551,7 +560,7 @@ class Browsershot
         }
 
         if ($this->proxyServer) {
-            $args[] = '--proxy-server='.$this->proxyServer;
+            $args[] = '--proxy-server=' . $this->proxyServer;
         }
 
         return $args;
@@ -586,6 +595,22 @@ class Browsershot
         }
     }
 
+    protected function createTemporaryOptionsFile(string $command): string
+    {
+        $this->temporaryOptionsDirectory = (new TemporaryDirectory())->create();
+
+        file_put_contents($temporaryOptionsFile = $this->temporaryOptionsDirectory->path('command.js'), $command);
+
+        return "file://{$temporaryOptionsFile}";
+    }
+
+    protected function cleanupTemporaryOptionsFile()
+    {
+        if ($this->temporaryOptionsDirectory) {
+            $this->temporaryOptionsDirectory->delete();
+        }
+    }
+
     protected function callBrowser(array $command)
     {
         $fullCommand = $this->getFullCommand($command);
@@ -597,6 +622,8 @@ class Browsershot
         if ($process->isSuccessful()) {
             return rtrim($process->getOutput());
         }
+
+        $this->cleanupTemporaryOptionsFile();
         $process->clearOutput();
 
         if ($process->getExitCode() === 2) {
@@ -610,13 +637,13 @@ class Browsershot
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
+        $binPath = $this->binPath ?: __DIR__ . '/../bin/browser.js';
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $fullCommand =
-                $nodeBinary.' '
-                .escapeshellarg($binPath).' '
-                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+                $nodeBinary . ' '
+                . escapeshellarg($binPath) . ' '
+                . '"' . str_replace('"', '\"', (json_encode($command))) . '"';
 
             return escapeshellcmd($fullCommand);
         }
@@ -625,12 +652,14 @@ class Browsershot
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
+        $optionsCommand = $this->getOptionsCommand(json_encode($command));
+
         return
-            $setIncludePathCommand.' '
-            .$setNodePathCommand.' '
-            .$nodeBinary.' '
-            .escapeshellarg($binPath).' '
-            .escapeshellarg(json_encode($command));
+            $setIncludePathCommand . ' '
+            . $setNodePathCommand . ' '
+            . $nodeBinary . ' '
+            . escapeshellarg($binPath) . ' '
+            . $optionsCommand;
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
@@ -643,6 +672,17 @@ class Browsershot
         }
 
         return 'NODE_PATH=`npm root -g`';
+    }
+
+    protected function getOptionsCommand(string $command): string
+    {
+        if ($this->writeOptionsToFile) {
+            $temporaryOptionsFile = $this->createTemporaryOptionsFile($command);
+
+            return escapeshellarg("-f {$temporaryOptionsFile}");
+        }
+
+        return escapeshellarg($command);
     }
 
     protected function arraySet(array &$array, string $key, $value): array

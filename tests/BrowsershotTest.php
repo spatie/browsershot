@@ -1005,4 +1005,16 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_can_write_options_to_a_file()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->writeOptionsToFile()
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
 }
