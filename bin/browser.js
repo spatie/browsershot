@@ -4,6 +4,12 @@ const URL = require('url').URL;
 
 const [, , ...args] = process.argv;
 
+/**
+ * There are two ways for Browsershot to communicate with puppeteer:
+ * - By giving a options JSON dump as an argument
+ * - Or by providing a temporary file with the options JSON dump,
+ *   the path to this file is then given as an argument with the flag -f
+ */
 const request = args[0].startsWith('-f ')
     ? JSON.parse(fs.readFileSync(new URL(args[0].substring(3))))
     : JSON.parse(args[0]);

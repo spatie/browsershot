@@ -1007,7 +1007,7 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_can_write_options_to_a_file()
+    public function it_can_write_options_to_a_file_and_generate_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
@@ -1016,5 +1016,19 @@ class BrowsershotTest extends TestCase
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_write_options_to_a_file_and_generate_a_pdf()
+    {
+        $targetPath = __DIR__.'/temp/testPdf.pdf';
+
+        Browsershot::url('https://example.com')
+            ->writeOptionsToFile()
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertEquals('application/pdf', mime_content_type($targetPath));
     }
 }
