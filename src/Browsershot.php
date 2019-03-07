@@ -305,13 +305,13 @@ class Browsershot
         return $this->setOption('landscape', $landscape);
     }
 
-    public function margins(int $top, int $right, int $bottom, int $left)
+    public function margins(float $top, float $right, float $bottom, float $left, string $unit = 'mm')
     {
         return $this->setOption('margin', [
-            'top' => $top.'mm',
-            'right' => $right.'mm',
-            'bottom' => $bottom.'mm',
-            'left' => $left.'mm',
+            'top' => $top.$unit,
+            'right' => $right.$unit,
+            'bottom' => $bottom.$unit,
+            'left' => $left.$unit,
         ]);
     }
 
@@ -332,11 +332,11 @@ class Browsershot
         return $this->setOption('pageRanges', $pages);
     }
 
-    public function paperSize(float $width, float $height)
+    public function paperSize(float $width, float $height, string $unit = 'mm')
     {
         return $this
-            ->setOption('width', $width.'mm')
-            ->setOption('height', $height.'mm');
+            ->setOption('width', $width.$unit)
+            ->setOption('height', $height.$unit);
     }
 
     // paper format
