@@ -1031,6 +1031,7 @@ class BrowsershotTest extends TestCase
 
         $this->assertEquals('application/pdf', mime_content_type($targetPath));
     }
+
     /** @test */
     public function it_can_generate_a_pdf_with_custom_paper_size_unit()
     {
