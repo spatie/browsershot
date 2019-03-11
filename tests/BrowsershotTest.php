@@ -1031,4 +1031,34 @@ class BrowsershotTest extends TestCase
 
         $this->assertEquals('application/pdf', mime_content_type($targetPath));
     }
+
+    /** @test */
+    public function it_can_generate_a_pdf_with_custom_paper_size_unit()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->paperSize(8.3, 11.7, 'in')
+            ->margins(0.39, 0.78, 1.18, 1.57, 'in')
+            ->createPdfCommand('screenshot.pdf');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'pdf',
+            'options' => [
+                'path' => 'screenshot.pdf',
+                'margin' => [
+                    'top' => '0.39in',
+                    'right' => '0.78in',
+                    'bottom' => '1.18in',
+                    'left' => '1.57in',
+                ],
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'width' => '8.3in',
+                'height' => '11.7in',
+                'args' => [],
+            ],
+        ], $command);
+    }
 }
