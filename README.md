@@ -342,23 +342,28 @@ Browsershot::html($someHtml)->savePdf('example.pdf');
 
 #### Sizing the pdf
 
-You can specify the width and the height in custom unit.
+You can specify the width and the height.
 
 ```php
 Browsershot::html($someHtml)
-   ->paperSize($width, $height, 'mm')
+   ->paperSize($width, $height)
    ->save('example.pdf');
 ```
+
+Optionally you can give a custom unit to the `paperSize` as the third parameter.
 
 #### Setting margins
 
-Margins can be set in custom unit.
+Margins can be set.
 
 ```php
 Browsershot::html($someHtml)
-   ->margins($top, $right, $bottom, $left, 'mm')
+   ->margins($top, $right, $bottom, $left)
    ->save('example.pdf');
 ```
+
+Optionally you can give a custom unit to the `margins` as the fourth parameter.
+
 
 #### Headers and footers
 
