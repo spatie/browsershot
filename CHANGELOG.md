@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.27.0 - 2019-03-11
+
+- `paperSize` and `margins` can now use custom units
+
 # 3.26.3 - 2019-02-06
 
 - add `writeOptionsToFile`
