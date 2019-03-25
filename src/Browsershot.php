@@ -146,6 +146,17 @@ class Browsershot
         return $this;
     }
 
+    public function dropdown_select(string $selector, string $value = '')
+    {
+        $dropdown_selects = $this->additionalOptions['selects'] ?? [];
+
+        $dropdown_selects[] = compact('selector', 'value');
+
+        $this->setOption('selects', $dropdown_selects);
+
+        return $this;
+    }
+
     public function type(string $selector, string $text = '', int $delay = 0)
     {
         $types = $this->additionalOptions['types'] ?? [];
