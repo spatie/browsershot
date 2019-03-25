@@ -98,6 +98,13 @@ const callChrome = async () => {
             }
         }
 
+        if (request.options && request.options.selects) {
+            for (let i = 0, len = request.options.selects.length; i < len; i++) {
+                let selectOptions = request.options.selects[i];
+                await page.select(selectOptions.selector, selectOptions.value);
+            }
+        }
+
         if (request.options && request.options.clicks) {
             for (let i = 0, len = request.options.clicks.length; i < len; i++) {
                 let clickOptions = request.options.clicks[i];
