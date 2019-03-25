@@ -1032,7 +1032,7 @@ class BrowsershotTest extends TestCase
                 'selects' => [
                     [
                         'selector' => '#selector1',
-                        'value' => 'option_one'
+                        'value' => 'option_one',
                     ],
                 ],
                 'delay' => 2000,
