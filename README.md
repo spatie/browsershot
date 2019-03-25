@@ -584,6 +584,26 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Changing the value of a dropdown value
+
+You can change the value of a dropdown on the page (you can use this to change form select fields).
+
+```php
+Browsershot::url('https://example.com')
+    ->dropdown_select('#selector1', '100')
+```
+
+You can combine `dropdown_select`, `type` and `click` to create a screenshot of a page after submitting a form:
+
+```php
+Browsershot::url('https://example.com')
+    ->type('#firstName', 'My name')
+    ->dropdown_select('#state', 'MT')
+    ->click('#submit')
+    ->delay($millisecondsToWait)
+    ->save($pathToImage);
+```
+
 #### Writing options to file
 
 When the amount of options given to puppeteer becomes too big, Browsershot will fail because of an overflow of characters in the command line. 
