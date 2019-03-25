@@ -148,11 +148,11 @@ class Browsershot
 
     public function dropdown_select(string $selector, string $value = '')
     {
-        $dropdown_selects = $this->additionalOptions['selects'] ?? [];
+        $dropdownSelects = $this->additionalOptions['selects'] ?? [];
 
-        $dropdown_selects[] = compact('selector', 'value');
+        $dropdownSelects[] = compact('selector', 'value');
 
-        $this->setOption('selects', $dropdown_selects);
+        $this->setOption('selects', $dropdownSelects);
 
         return $this;
     }
