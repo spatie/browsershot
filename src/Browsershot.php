@@ -146,7 +146,7 @@ class Browsershot
         return $this;
     }
 
-    public function dropdown_select(string $selector, string $value = '')
+    public function selectOption(string $selector, string $value = '')
     {
         $dropdownSelects = $this->additionalOptions['selects'] ?? [];
 

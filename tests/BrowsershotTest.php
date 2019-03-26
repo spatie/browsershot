@@ -1012,7 +1012,7 @@ class BrowsershotTest extends TestCase
         $delay = 2000;
 
         $command = Browsershot::url('http://example.com')
-            ->dropdown_select('#selector1', 'option_one')
+            ->selectOption('#selector1', 'option_one')
             ->click('#selector2')
             ->setDelay($delay)
             ->createScreenshotCommand('screenshot.png');
