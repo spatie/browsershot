@@ -1006,6 +1006,47 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
+    /** @test **/
+    public function it_can_change_select_fields_and_post_and_get_the_body_html()
+    {
+        $delay = 2000;
+
+        $command = Browsershot::url('http://example.com')
+            ->selectOption('#selector1', 'option_one')
+            ->click('#selector2')
+            ->setDelay($delay)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'http://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'clicks' => [
+                    [
+                        'selector' => '#selector2',
+                        'button' => 'left',
+                        'clickCount' => 1,
+                        'delay' => 0,
+                    ],
+                ],
+                'selects' => [
+                    [
+                        'selector' => '#selector1',
+                        'value' => 'option_one',
+                    ],
+                ],
+                'delay' => 2000,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
     /** @test */
     public function it_can_write_options_to_a_file_and_generate_a_screenshot()
     {
