@@ -590,15 +590,15 @@ You can change the value of a dropdown on the page (you can use this to change f
 
 ```php
 Browsershot::url('https://example.com')
-    ->dropdown_select('#selector1', '100')
+    ->selectOption('#selector1', '100')
 ```
 
-You can combine `dropdown_select`, `type` and `click` to create a screenshot of a page after submitting a form:
+You can combine `selectOption`, `type` and `click` to create a screenshot of a page after submitting a form:
 
 ```php
 Browsershot::url('https://example.com')
     ->type('#firstName', 'My name')
-    ->dropdown_select('#state', 'MT')
+    ->selectOption('#state', 'MT')
     ->click('#submit')
     ->delay($millisecondsToWait)
     ->save($pathToImage);
