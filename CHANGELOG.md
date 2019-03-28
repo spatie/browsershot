@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.28.0 - 2019-03-29
+
+- add `selectOption`
+
 # 3.27.0 - 2019-03-11
 
 - `paperSize` and `margins` can now use custom units
