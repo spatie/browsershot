@@ -115,6 +115,17 @@ Browsershot::html('Foo')
   ->setChromePath("/path/to/my/chrome")
 ```
 
+### Pass custom arguments to Chromium
+
+If you need to pass custom arguments to Chromium, use the `addChromiumArg` method.
+
+This can be useful to fix font rendering issues on some Linux distributions (e.g. CentOS).
+
+```php
+Browsershot::html('Foo')
+  ->addChromiumArg('--font-render-hinting=none');
+```
+
 ## Installation
 
 This package can be installed through Composer.
