@@ -1102,4 +1102,54 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_will_pass_on_a_single_added_chromium_arg()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->addChromiumArg('--my-custom-arg=foobar')
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    '--my-custom-arg=foobar',
+                ],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_will_pass_on_multiple_added_chromium_args()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->addChromiumArg('--my-custom-arg=foobar')
+            ->addChromiumArg('--another-arg')
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    '--my-custom-arg=foobar',
+                    '--another-arg',
+                ],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 }
