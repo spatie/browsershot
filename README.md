@@ -123,7 +123,7 @@ The method accepts an `array` of key/value pairs, or simply values. All of these
 
 ```php
 Browsershot::html('Foo')
-  ->addChromiumArg([
+  ->addChromiumArguments([
       'some-argument-without-a-value',
       'keyed-argument' => 'argument-value',
   ]);
