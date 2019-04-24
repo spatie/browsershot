@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.29.0 - 2019-04-24
+
+- add `addChromiumArguments`
+
 # 3.28.0 - 2019-03-29
 
 - add `selectOption`
