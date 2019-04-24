@@ -426,6 +426,7 @@ class Browsershot
                 $this->chromiumArgs[] = "--$argument=$value";
             }
         }
+
         return $this;
     }
 

@@ -1150,7 +1150,7 @@ class BrowsershotTest extends TestCase
                 'args' => [
                     '--my-custom-arg',
                     '--another-argument=some-value',
-                    '--yet-another-arg=foo'
+                    '--yet-another-arg=foo',
                 ],
                 'type' => 'png',
             ],
