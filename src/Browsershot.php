@@ -31,6 +31,7 @@ class Browsershot
     protected $additionalOptions = [];
     protected $temporaryOptionsDirectory;
     protected $writeOptionsToFile = false;
+    protected $chromiumArgs = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -416,6 +417,19 @@ class Browsershot
         return $this;
     }
 
+    public function addChromiumArguments(array $arguments)
+    {
+        foreach ($arguments as $argument => $value) {
+            if (is_numeric($argument)) {
+                $this->chromiumArgs[] = "--$value";
+            } else {
+                $this->chromiumArgs[] = "--$argument=$value";
+            }
+        }
+
+        return $this;
+    }
+
     public function __call($name, $arguments)
     {
         $this->imageManipulations->$name(...$arguments);
@@ -564,7 +578,7 @@ class Browsershot
 
     protected function getOptionArgs(): array
     {
-        $args = [];
+        $args = $this->chromiumArgs;
 
         if ($this->noSandbox) {
             $args[] = '--no-sandbox';

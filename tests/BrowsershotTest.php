@@ -1102,4 +1102,58 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+
+    /** @test */
+    public function it_will_auto_prefix_chromium_arguments()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->addChromiumArguments(['please-autoprefix-me'])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    '--please-autoprefix-me',
+                ],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_will_allow_many_chromium_arguments()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->addChromiumArguments([
+                'my-custom-arg',
+                'another-argument' => 'some-value',
+                'yet-another-arg' => 'foo',
+            ])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    '--my-custom-arg',
+                    '--another-argument=some-value',
+                    '--yet-another-arg=foo',
+                ],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 }
