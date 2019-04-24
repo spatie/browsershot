@@ -417,10 +417,15 @@ class Browsershot
         return $this;
     }
 
-    public function addChromiumArg(string $argument)
+    public function addChromiumArguments(array $arguments)
     {
-        $this->chromiumArgs[] = $argument;
-
+        foreach ($arguments as $argument => $value) {
+            if (is_numeric($argument)) {
+                $this->chromiumArgs[] = "--$value";
+            } else {
+                $this->chromiumArgs[] = "--$argument=$value";
+            }
+        }
         return $this;
     }
 
