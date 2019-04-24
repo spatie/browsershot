@@ -117,13 +117,33 @@ Browsershot::html('Foo')
 
 ### Pass custom arguments to Chromium
 
-If you need to pass custom arguments to Chromium, use the `addChromiumArg` method.
+If you need to pass custom arguments to Chromium, use the `addChromiumArguments` method.
 
-This can be useful to fix font rendering issues on some Linux distributions (e.g. CentOS).
+The method accepts an `array` of key/value pairs, or simply values. All of these arguments will automatically be prefixed with `--`.
 
 ```php
 Browsershot::html('Foo')
-  ->addChromiumArg('--font-render-hinting=none');
+  ->addChromiumArg([
+      'some-argument-without-a-value',
+      'keyed-argument' => 'argument-value',
+  ]);
+```
+
+If no key is provided, then the argument is passed through as-is.
+
+| Example array | Flags that will be passed to Chromium |
+| - | - |
+| `['foo']` | `--foo` |
+| `['foo', 'bar']` | `--foo --bar` |
+| `['foo', 'bar' => 'baz' ]` | `--foo --bar=baz` |
+
+This method can be useful in order to pass a flag to fix font rendering issues on some Linux distributions (e.g. CentOS).
+
+```php
+Browsershot::html('Foo')
+  ->addChromiumArg([
+      'font-render-hinting' => 'none',
+  ]);
 ```
 
 ## Installation
