@@ -1104,10 +1104,10 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_will_pass_on_a_single_added_chromium_arg()
+    public function it_will_auto_prefix_chromium_arguments()
     {
         $command = Browsershot::url('https://example.com')
-            ->addChromiumArg('--my-custom-arg=foobar')
+            ->addChromiumArguments(['please-autoprefix-me'])
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
@@ -1120,7 +1120,7 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [
-                    '--my-custom-arg=foobar',
+                    '--please-autoprefix-me',
                 ],
                 'type' => 'png',
             ],
@@ -1128,11 +1128,14 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
-    public function it_will_pass_on_multiple_added_chromium_args()
+    public function it_will_allow_many_chromium_arguments()
     {
         $command = Browsershot::url('https://example.com')
-            ->addChromiumArg('--my-custom-arg=foobar')
-            ->addChromiumArg('--another-arg')
+            ->addChromiumArguments([
+                'my-custom-arg',
+                'another-argument' => 'some-value',
+                'yet-another-arg' => 'foo',
+            ])
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
@@ -1145,8 +1148,9 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'args' => [
-                    '--my-custom-arg=foobar',
-                    '--another-arg',
+                    '--my-custom-arg',
+                    '--another-argument=some-value',
+                    '--yet-another-arg=foo'
                 ],
                 'type' => 'png',
             ],
