@@ -141,7 +141,7 @@ This method can be useful in order to pass a flag to fix font rendering issues o
 
 ```php
 Browsershot::html('Foo')
-  ->addChromiumArg([
+  ->addChromiumArguments([
       'font-render-hinting' => 'none',
   ]);
 ```
