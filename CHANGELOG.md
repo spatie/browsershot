@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.30.0 - 2019-06-07
+
+- allow JavaScript to be disabled
+
 # 3.29.0 - 2019-04-24
 
 - add `addChromiumArguments`
