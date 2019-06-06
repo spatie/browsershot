@@ -42,6 +42,10 @@ const callChrome = async () => {
 
         page = await browser.newPage();
 
+        if (request.options && request.options.disableJavascript) {
+            await page.setJavaScriptEnabled(false);
+        }
+
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
                 await dialog.dismiss();

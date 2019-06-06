@@ -303,6 +303,16 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Disable Javascript
+If you want to completely disable javascript when capturing the page, use the `disableJavascript()` method.  
+Be aware that some sites will not render correctly without javascript.
+
+```php
+Browsershot::url('https://example.com')
+    ->disableJavascript()
+    ->save($pathToImage);
+```
+
 #### Waiting for lazy-loaded resources
 Some websites lazy-load additional resources via ajax or use webfonts, which might not be loaded in time for the screenshot. Using the `waitUntilNetworkIdle()` method you can tell Browsershot to wait for a period of 500 ms with no network activity before taking the screenshot, ensuring all additional resources are loaded.
 
