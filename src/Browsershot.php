@@ -339,6 +339,11 @@ class Browsershot
         return $this->setOption('dismissDialogs', true);
     }
 
+    public function disableJavascript()
+    {
+        return $this->setOption('disableJavascript', true);
+    }
+
     public function pages(string $pages)
     {
         return $this->setOption('pageRanges', $pages);
