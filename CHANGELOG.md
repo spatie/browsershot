@@ -2,60 +2,60 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-# 3.31.0 - 2019-06-20
+## 3.31.0 - 2019-06-20
 
 - allow to specify the cookie domain
 
-# 3.30.0 - 2019-06-07
+## 3.30.0 - 2019-06-07
 
 - allow JavaScript to be disabled
 
-# 3.29.0 - 2019-04-24
+## 3.29.0 - 2019-04-24
 
 - add `addChromiumArguments`
 
-# 3.28.0 - 2019-03-29
+## 3.28.0 - 2019-03-29
 
 - add `selectOption`
 
-# 3.27.0 - 2019-03-11
+## 3.27.0 - 2019-03-11
 
 - `paperSize` and `margins` can now use custom units
 
-# 3.26.3 - 2019-02-06
+## 3.26.3 - 2019-02-06
 
 - add `writeOptionsToFile`
 
-# 3.26.2 - 2019-02-01
+## 3.26.2 - 2019-02-01
 
 - fix for setting cookies
 
-# 3.26.1 - 2019-01-10
+## 3.26.1 - 2019-01-10
 
 - update lower deps
 
-# 3.26.0 - 2018-10-18
+## 3.26.0 - 2018-10-18
 
 - new methods `addStyleTag` and `device` added
 - fixed a bug where chrome would not shut down properly
 
-# 3.25.1 - 2018-10-08
+## 3.25.1 - 2018-10-08
 
 - improve compatibilty with W-w-windows
 
-# 3.25.0 - 2018-09-02
+## 3.25.0 - 2018-09-02
 
 - add `type`
 
-# 3.24.0 - 2018-08-05
+## 3.24.0 - 2018-08-05
 
 - add `useCookies`
 
-# 3.23.1 - 2018-07-12
+## 3.23.1 - 2018-07-12
 
 - improve compatibility with Windows
 
-# 3.23.0 - 2018-07-12
+## 3.23.0 - 2018-07-12
 
 - added `waitForFunction`
 
