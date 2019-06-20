@@ -808,6 +808,7 @@ class BrowsershotTest extends TestCase
     {
         $command = Browsershot::url('https://example.com')
             ->useCookies(['theme' => 'light', 'sessionToken' => 'abc123'])
+            ->useCookies(['theme' => 'dark'], 'ui.example.com')
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
@@ -824,6 +825,11 @@ class BrowsershotTest extends TestCase
                         'name' => 'sessionToken',
                         'value' => 'abc123',
                         'domain' => 'example.com',
+                    ],
+                    [
+                        'name' => 'theme',
+                        'value' => 'dark',
+                        'domain' => 'ui.example.com',
                     ],
                 ],
                 'path' => 'screenshot.png',
