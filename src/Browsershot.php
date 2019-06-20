@@ -112,17 +112,23 @@ class Browsershot
         return $this;
     }
 
-    public function useCookies(array $cookies)
+    public function useCookies(array $cookies, string $domain = null)
     {
         if (! count($cookies)) {
             return $this;
         }
 
-        $domain = parse_url($this->url)['host'];
+        if (is_null($domain)) {
+            $domain = parse_url($this->url)['host'];
+        }
 
         $cookies = array_map(function ($value, $name) use ($domain) {
             return compact('name', 'value', 'domain');
         }, $cookies, array_keys($cookies));
+
+        if (isset($this->additionalOptions['cookies'])) {
+            $cookies = array_merge($this->additionalOptions['cookies'], $cookies);
+        }
 
         $this->setOption('cookies', $cookies);
 
