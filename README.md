@@ -595,6 +595,14 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+You can specify the domain to register cookies to, if necessary:
+
+```php
+Browsershot::url('https://example.com')
+    ->useCookies(['Cookie-Key' => 'Cookie-Value'], 'ui.example.com')
+   ...
+```
+
 #### Clicking on the page
 
 You can specify clicks on the page.
