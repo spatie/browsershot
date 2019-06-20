@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+# 3.30.1 - 2019-06-20
+
+- allow to specify the cookie domain
+
 # 3.30.0 - 2019-06-07
 
 - allow JavaScript to be disabled
