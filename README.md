@@ -193,6 +193,7 @@ Browsershot::url('https://example.com')
 You can also set the size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
 
 ```php
+use Spatie\Image\Manipulations;
 Browsershot::url('https://example.com')
     ->windowSize(1920, 1080)
     ->fit(Manipulations::FIT_CONTAIN, 200, 200)
