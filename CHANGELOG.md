@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.32.0 - 2019-07-19
+
+- add support for HTTP authentication
+
 ## 3.31.1 - 2019-07-19
 
 - fix screenshotimage manipulations
