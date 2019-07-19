@@ -326,10 +326,10 @@ class Browsershot
     public function margins(float $top, float $right, float $bottom, float $left, string $unit = 'mm')
     {
         return $this->setOption('margin', [
-            'top' => $top.$unit,
-            'right' => $right.$unit,
-            'bottom' => $bottom.$unit,
-            'left' => $left.$unit,
+            'top' => $top . $unit,
+            'right' => $right . $unit,
+            'bottom' => $bottom . $unit,
+            'left' => $left . $unit,
         ]);
     }
 
@@ -358,8 +358,8 @@ class Browsershot
     public function paperSize(float $width, float $height, string $unit = 'mm')
     {
         return $this
-            ->setOption('width', $width.$unit)
-            ->setOption('height', $height.$unit);
+            ->setOption('width', $width . $unit)
+            ->setOption('height', $height . $unit);
     }
 
     // paper format
@@ -484,11 +484,19 @@ class Browsershot
 
     public function screenshot(): string
     {
-        $command = $this->createScreenshotCommand();
+        if ($this->imageManipulations->isEmpty()) {
+            $command = $this->createScreenshotCommand();
 
-        $encoded_image = $this->callBrowser($command);
+            $encoded_image = $this->callBrowser($command);
 
-        return base64_decode($encoded_image);
+            return base64_decode($encoded_image);
+        }
+
+        $tempFile = tmpfile().'.png';
+
+        $this->save($tempFile);
+
+        return file_get_contents($tempFile);
     }
 
     public function pdf(): string
@@ -596,7 +604,7 @@ class Browsershot
         }
 
         if ($this->proxyServer) {
-            $args[] = '--proxy-server='.$this->proxyServer;
+            $args[] = '--proxy-server=' . $this->proxyServer;
         }
 
         return $args;
@@ -673,13 +681,13 @@ class Browsershot
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
+        $binPath = $this->binPath ?: __DIR__ . '/../bin/browser.js';
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $fullCommand =
-                $nodeBinary.' '
-                .escapeshellarg($binPath).' '
-                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+                $nodeBinary . ' '
+                . escapeshellarg($binPath) . ' '
+                . '"' . str_replace('"', '\"', (json_encode($command))) . '"';
 
             return escapeshellcmd($fullCommand);
         }
@@ -691,11 +699,11 @@ class Browsershot
         $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
         return
-            $setIncludePathCommand.' '
-            .$setNodePathCommand.' '
-            .$nodeBinary.' '
-            .escapeshellarg($binPath).' '
-            .$optionsCommand;
+            $setIncludePathCommand . ' '
+            . $setNodePathCommand . ' '
+            . $nodeBinary . ' '
+            . escapeshellarg($binPath) . ' '
+            . $optionsCommand;
     }
 
     protected function getNodePathCommand(string $nodeBinary): string

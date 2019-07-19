@@ -5,6 +5,7 @@ namespace Spatie\Browsershot\Test;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase
@@ -1184,5 +1185,22 @@ class BrowsershotTest extends TestCase
                 'type' => 'png',
             ],
         ], $command);
+    }
+
+    /** @test */
+    public function it_will_apply_manipulations_when_taking_screen_shots()
+    {
+        $screenShot = Browsershot::url('https://example.com')
+            ->windowSize(1920, 1080)
+            ->fit(Manipulations::FIT_FILL, 200, 200)
+            ->screenshot();
+
+        $targetPath = __DIR__.'/temp/testScreenshots.png';
+
+        file_put_contents($targetPath, $screenShot);
+
+        $this->assertFileExists($targetPath);
+        $this->assertEquals(200, getimagesize($targetPath)[0]);
+        $this->assertEquals(200, getimagesize($targetPath)[1]);
     }
 }
