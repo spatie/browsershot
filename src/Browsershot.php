@@ -142,6 +142,13 @@ class Browsershot
         return $this;
     }
 
+    public function authenticate(string $username, string $password)
+    {
+        $this->setOption('authentication', compact('username', 'password'));
+
+        return $this;
+    }
+
     public function click(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0)
     {
         $clicks = $this->additionalOptions['clicks'] ?? [];

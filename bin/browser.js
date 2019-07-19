@@ -74,6 +74,10 @@ const callChrome = async () => {
             await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
         }
 
+        if (request.options && request.options.authentication) {
+            await page.authenticate(request.options.authentication);
+        }
+
         if (request.options && request.options.cookies) {
             await page.setCookie(...request.options.cookies);
         }
