@@ -523,8 +523,8 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
-                   ->setBinPath('non-existant/bin/wich/causes/an/exception')
-                   ->save($targetPath);
+            ->setBinPath('non-existant/bin/wich/causes/an/exception')
+            ->save($targetPath);
     }
 
     /** @test */
@@ -682,7 +682,7 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
-    /** @test **/
+    /** @test * */
     public function it_can_add_a_delay_before_taking_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';
@@ -904,7 +904,7 @@ class BrowsershotTest extends TestCase
         $this->assertEquals('2', $result);
     }
 
-    /** @test **/
+    /** @test * */
     public function it_can_add_a_timeout_to_puppeteer()
     {
         $command = Browsershot::url('https://example.com')
