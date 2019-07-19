@@ -2,6 +2,7 @@
 
 namespace Spatie\Browsershot\Test;
 
+use Spatie\Image\Manipulations;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
@@ -522,8 +523,8 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::html('Foo')
-                   ->setBinPath('non-existant/bin/wich/causes/an/exception')
-                   ->save($targetPath);
+                ->setBinPath('non-existant/bin/wich/causes/an/exception')
+                ->save($targetPath);
     }
 
     /** @test */
@@ -1184,5 +1185,22 @@ class BrowsershotTest extends TestCase
                 'type' => 'png',
             ],
         ], $command);
+    }
+
+    /** @test */
+    public function it_will_apply_manipulations_when_taking_screen_shots()
+    {
+        $screenShot = Browsershot::url('https://example.com')
+            ->windowSize(1920, 1080)
+            ->fit(Manipulations::FIT_FILL, 200, 200)
+            ->screenshot();
+
+        $targetPath = __DIR__.'/temp/testScreenshots.png';
+
+        file_put_contents($targetPath, $screenShot);
+
+        $this->assertFileExists($targetPath);
+        $this->assertEquals(200, getimagesize($targetPath)[0]);
+        $this->assertEquals(200, getimagesize($targetPath)[1]);
     }
 }

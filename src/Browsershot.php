@@ -484,11 +484,19 @@ class Browsershot
 
     public function screenshot(): string
     {
-        $command = $this->createScreenshotCommand();
+        if ($this->imageManipulations->isEmpty()) {
+            $command = $this->createScreenshotCommand();
 
-        $encoded_image = $this->callBrowser($command);
+            $encoded_image = $this->callBrowser($command);
 
-        return base64_decode($encoded_image);
+            return base64_decode($encoded_image);
+        }
+
+        $tempFile = tmpfile().'.png';
+
+        $this->save($tempFile);
+
+        return file_get_contents($tempFile);
     }
 
     public function pdf(): string
