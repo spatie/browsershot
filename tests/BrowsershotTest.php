@@ -802,6 +802,29 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
+    /** @test */
+    public function it_can_authenticate()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->authenticate('username1', 'password1')
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'authentication' => ['username' => 'username1', 'password' => 'password1'],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
     /**
      * @test
      */

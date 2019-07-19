@@ -585,6 +585,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Using HTTP Authentication
+
+You can provide credentials for HTTP authentication:
+
+```php
+Browsershot::url('https://example.com')
+    ->authenticate('username', 'password')
+   ...
+```
+
 #### Using Cookies
 
 You can add cookies to the request to the given url:
