@@ -1218,7 +1218,7 @@ class BrowsershotTest extends TestCase
             ->fit(Manipulations::FIT_FILL, 200, 200)
             ->screenshot();
 
-        $targetPath = __DIR__.'/temp/testScreenshots.png';
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         file_put_contents($targetPath, $screenShot);
 

@@ -2,13 +2,17 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.32.1 - 2019-08-02
+
+- fix screenshots not deleting temporary files on the filesystem
+
 ## 3.32.0 - 2019-07-19
 
 - add support for HTTP authentication
 
 ## 3.31.1 - 2019-07-19
 
-- fix screenshotimage manipulations
+- fix screenshot image manipulations
 
 ## 3.31.0 - 2019-06-20
 

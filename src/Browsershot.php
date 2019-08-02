@@ -499,11 +499,15 @@ class Browsershot
             return base64_decode($encoded_image);
         }
 
-        $tempFile = tmpfile().'.png';
+        $temporaryDirectory = (new TemporaryDirectory())->create();
 
-        $this->save($tempFile);
+        $this->save($temporaryDirectory->path('screenshot.png'));
 
-        return file_get_contents($tempFile);
+        $screenshot = file_get_contents($temporaryDirectory->path('screenshot.png'));
+
+        $temporaryDirectory->delete();
+
+        return $screenshot;
     }
 
     public function pdf(): string
