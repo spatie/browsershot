@@ -403,7 +403,7 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
-Optionally you can give a custom unit to the `margins` as the fourth parameter.
+Optionally you can give a custom unit to the `margins` as the fifth parameter.
 
 
 #### Headers and footers
