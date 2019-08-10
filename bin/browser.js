@@ -128,6 +128,10 @@ const callChrome = async () => {
             await page.addStyleTag(JSON.parse(request.options.addStyleTag));
         }
 
+        if (request.options && request.options.addScriptTag) {
+            await page.addScriptTag(JSON.parse(request.options.addScriptTag));
+        }
+        
         if (request.options.delay) {
             await page.waitFor(request.options.delay);
         }
