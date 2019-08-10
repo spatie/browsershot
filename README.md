@@ -341,6 +341,14 @@ Browsershot::url('https://example.com')
     ->waitForFunction('window.innerWidth < 100', $pollingInMilliseconds, $timeoutInMilliseconds)
     ->save($pathToImage);
 ```
+#### Adding JS
+You can add javascript prior to your screenshot or output using the syntax for [Puppeteer's addScriptTag](https://github.com/GoogleChrome/puppeteer/blob/v1.9.0/docs/api.md#pageaddscripttagoptions).
+
+```php
+Browsershot::url('https://example.com')
+    ->setOption('addScriptTag', json_encode(['content' => 'alert("Hello World")']))
+    ->save($pathToImage);
+```
 
 #### Adding CSS
 You can add CSS styles prior to your screenshot or output using the syntax for [Puppeteer's addStyleTag](https://github.com/GoogleChrome/puppeteer/blob/v1.9.0/docs/api.md#pageaddstyletagoptions).
