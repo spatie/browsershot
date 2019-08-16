@@ -514,7 +514,9 @@ class Browsershot
     {
         $command = $this->createPdfCommand();
 
-        $encoded_pdf = $this->callBrowser($command);
+		$encoded_pdf = $this->callBrowser($command);
+		
+		$this->cleanupTemporaryHtmlFile();
 
         return base64_decode($encoded_pdf);
     }
