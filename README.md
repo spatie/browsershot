@@ -24,28 +24,6 @@ It will save a pdf if the path passed to the `save` method has a `pdf` extension
 Browsershot::url('https://example.com')->save('example.pdf');
 ```
 
-You can also use format method and provide any format size available by puppeteer :
-
-```php
-Browsershot::html('https://example.com')->format('A4')->save('example.pdf');
-```
-
-The  format  options available by puppeteer are:
-
-```php
-Letter: 8.5in  x  11in
-Legal: 8.5in  x  14in
-Tabloid: 11in  x  17in
-Ledger: 17in  x  11in
-A0: 33.1in  x  46.8in
-A1: 23.4in  x  33.1in
-A2: 16.54in  x  23.4in
-A3: 11.7in  x  16.54in
-A4: 8.27in  x  11.7in
-A5: 5.83in  x  8.27in
-A6: 4.13in  x  5.83in
-```
-
 You can also use an arbitrary html input, simply replace the `url` method with `html`:
 
 ```php
@@ -422,6 +400,30 @@ Browsershot::html($someHtml)
 ```
 
 Optionally you can give a custom unit to the `paperSize` as the third parameter.
+
+#### Using a predefined format
+
+You can use the `format` method and provide a format size:
+
+```php
+Browsershot::html('https://example.com')->format('A4')->save('example.pdf');
+```
+
+The `format` options available by puppeteer are:
+
+```php
+Letter: 8.5in  x  11in
+Legal: 8.5in  x  14in
+Tabloid: 11in  x  17in
+Ledger: 17in  x  11in
+A0: 33.1in  x  46.8in
+A1: 23.4in  x  33.1in
+A2: 16.54in  x  23.4in
+A3: 11.7in  x  16.54in
+A4: 8.27in  x  11.7in
+A5: 5.83in  x  8.27in
+A6: 4.13in  x  5.83in
+```
 
 #### Setting margins
 
