@@ -193,7 +193,7 @@ Browsershot::url('https://example.com')->save($pathToImage);
 ```
 
 #### Formatting the image
-By default the screenshot's type will be a `png`. (According to [Puppeteer's Config](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions))
+By default the screenshot's type will be a `png`. (According to [Puppeteer's Config](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions))  
 But you can change it to `jpeg` with quality option.
 
 ```php
@@ -326,7 +326,7 @@ Browsershot::url('https://example.com')
 ```
 
 #### Disable Javascript
-If you want to completely disable javascript when capturing the page, use the `disableJavascript()` method.
+If you want to completely disable javascript when capturing the page, use the `disableJavascript()` method.  
 Be aware that some sites will not render correctly without javascript.
 
 ```php
@@ -538,7 +538,7 @@ Browsershot::url('https://example.com')
 
 #### Changing the language of the browser
 
-You can use `setOption` to change the language of the browser.
+You can use `setOption` to change the language of the browser.  
 In order to load a page in a specific language for example.
 
 ```php
@@ -651,7 +651,7 @@ You can specify clicks on the page.
 Browsershot::url('https://example.com')
     ->click('#selector1')
     // Right click 5 times on #selector2, each click lasting 200 milliseconds.
-    ->click('#selector2', 'right', 5, 200)
+    ->click('#selector2', 'right', 5, 200) 
 ```
 
 #### Typing on the page
@@ -695,7 +695,7 @@ Browsershot::url('https://example.com')
 
 #### Writing options to file
 
-When the amount of options given to puppeteer becomes too big, Browsershot will fail because of an overflow of characters in the command line.
+When the amount of options given to puppeteer becomes too big, Browsershot will fail because of an overflow of characters in the command line. 
 Browsershot can write the options to a file and pass that file to puppeteer and so bypass the character overflow.
 
 ```php
