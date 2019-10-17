@@ -608,6 +608,16 @@ class Browsershot
         return $this->createCommand($url, 'evaluate', $options);
     }
 
+    public function setRemoteInstance(string $ip = '127.0.0.1', int $port = 9222) : self
+    {
+        // assuring that ip and port does actually contains a value
+        if ($ip && $port) {
+            $this->setOption('remoteInstanceUrl', 'http://'.$ip.':'.$port);
+        }
+
+        return $this;
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;
