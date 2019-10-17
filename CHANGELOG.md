@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.33.0 - 2019-10-17
+
+- allow to connect to remote chromium instance (#341)
+
 ## 3.32.1 - 2019-08-02
 
 - fix screenshots not deleting temporary files on the filesystem
