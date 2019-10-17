@@ -32,13 +32,28 @@ const callChrome = async () => {
     let browser;
     let page;
     let output;
+    let remoteInstance;
 
     try {
-        browser = await puppeteer.launch({
-            ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
-            executablePath: request.options.executablePath,
-            args: request.options.args || []
-        });
+        if (request.options.remoteInstanceUrl) {
+            try {
+                browser = await puppeteer.connect({
+                    browserURL: request.options.remoteInstanceUrl,
+                    ignoreHTTPSErrors: request.options.ignoreHttpsErrors
+                });
+
+                remoteInstance = true;
+            } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
+        }
+
+        if (!browser) {
+            browser = await puppeteer.launch({
+                ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
+                executablePath: request.options.executablePath,
+                args: request.options.args || []
+            });
+        }
+
 
         page = await browser.newPage();
 
@@ -131,7 +146,7 @@ const callChrome = async () => {
         if (request.options && request.options.addScriptTag) {
             await page.addScriptTag(JSON.parse(request.options.addScriptTag));
         }
-        
+
         if (request.options.delay) {
             await page.waitFor(request.options.delay);
         }
@@ -159,10 +174,19 @@ const callChrome = async () => {
             console.log(output);
         }
 
-        await browser.close();
+        if (remoteInstance && page) {
+            await page.close();
+        }
+
+        await remoteInstance ? browser.disconnect() : browser.close();
     } catch (exception) {
         if (browser) {
-            await browser.close();
+
+            if (remoteInstance && page) {
+                await page.close();
+            }
+
+            await remoteInstance ? browser.disconnect() : browser.close();
         }
 
         console.error(exception);

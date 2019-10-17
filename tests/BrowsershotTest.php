@@ -1226,4 +1226,70 @@ class BrowsershotTest extends TestCase
         $this->assertEquals(200, getimagesize($targetPath)[0]);
         $this->assertEquals(200, getimagesize($targetPath)[1]);
     }
+
+    /** @test */
+    public function it_will_connect_to_remote_instance_and_take_screenshot()
+    {
+        $instance = Browsershot::url('https://example.com')
+            ->setRemoteInstance();
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+                'remoteInstanceUrl' => 'http://127.0.0.1:9222',
+            ],
+        ], $instance->createScreenshotCommand('screenshot.png'));
+
+        /*
+         * to test the connection, uncomment the following code, and make sure you are running a chrome/chromium instance locally,
+         * with the following param: --headless --remote-debugging-port=9222
+         */
+        /*
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        file_put_contents($targetPath, $instance->screenshot());
+        $this->assertFileExists($targetPath);
+        */
+    }
+
+    /** @test */
+    public function it_will_connect_to_a_custom_remote_instance_and_take_screenshot()
+    {
+        $instance = Browsershot::url('https://example.com')
+            ->setRemoteInstance('127.0.0.1', 9999);
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+                'remoteInstanceUrl' => 'http://127.0.0.1:9999',
+            ],
+        ], $instance->createScreenshotCommand('screenshot.png'));
+
+        /*
+        * to test the connection, uncomment the following code, and make sure you are running a chrome/chromium instance locally,
+        * with the following params: --headless --remote-debugging-port=9999
+        */
+        /*
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        file_put_contents($targetPath, $instance->screenshot());
+        $this->assertFileExists($targetPath);
+        */
+    }
 }
