@@ -489,6 +489,13 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function cookie(): string
+    {
+        $command = $this->createCookieCommand();
+
+        return $this->callBrowser($command);
+    }
+    
     public function screenshot(): string
     {
         if ($this->imageManipulations->isEmpty()) {
@@ -555,6 +562,11 @@ class Browsershot
         return $this->createCommand($url, 'content');
     }
 
+    public function createCookieCommand(): array
+    {
+        return $this->createCommand($this->url, 'cookie');
+    }
+    
     public function createScreenshotCommand($targetPath = null): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
