@@ -17,13 +17,13 @@ const request = args[0].startsWith('-f ')
 const getOutput = async (page, request) => {
     let output;
 
-    if (request.action == 'evaluate') {
+    if (request.action === 'evaluate') {
         output = await page.evaluate(request.options.pageFunction);
 
         return output;
     }
 
-    if (request.action == 'cookie') {
+    if (request.action === 'cookie') {
         output = await page._client.send('Network.getAllCookies');
         return JSON.stringify(output);
     }
