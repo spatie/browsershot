@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.34.0 - 2019-11-06
+
+- add 'cookie' (schnederle@futureweb.at, #350)
+
 ## 3.33.0 - 2019-10-17
 
 - allow to connect to remote chromium instance (#341)
