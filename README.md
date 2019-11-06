@@ -506,6 +506,14 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
+### COOKIE
+
+Browsershot also can get Cookies of an html page after JavaScript has been executed:
+
+```php
+Browsershot::url('https://example.com')->cookie(); // returns cookies of requested url
+```
+
 ### Evaluate
 
 Browsershot can get the evaluation of an html page:
