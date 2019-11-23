@@ -26,7 +26,7 @@
         "php": "^7.1",
         "spatie/image": "^1.5.3",
         "spatie/temporary-directory": "^1.1",
-        "symfony/process": "^4.2"
+        "symfony/process": "^4.2|^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1|^7.5",
