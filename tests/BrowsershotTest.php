@@ -2,10 +2,10 @@
 
 namespace Spatie\Browsershot\Test;
 
-use Spatie\Image\Manipulations;
 use Spatie\Browsershot\Browsershot;
-use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Spatie\Browsershot\Exceptions\ElementNotFound;
+use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase

@@ -2,13 +2,13 @@
 
 namespace Spatie\Browsershot;
 
+use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
+use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
-use Symfony\Component\Process\Process;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
-use Spatie\Browsershot\Exceptions\ElementNotFound;
-use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
