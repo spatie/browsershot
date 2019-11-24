@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.33.1 - 2019-11-24
+
+- allow symfony 5 components
+
 ## 3.33.0 - 2019-10-17
 
 - allow to connect to remote chromium instance (#341)
