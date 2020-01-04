@@ -610,6 +610,29 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_disable_images()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->disableImages()
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'disableImages' => true,
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
     public function it_can_ignore_https_errors()
     {
         $command = Browsershot::url('https://example.com')
