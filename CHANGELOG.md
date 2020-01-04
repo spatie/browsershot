@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.34.10 - 2020-01-04
+
+- adds disableImages method to prevent images from loading (#362)
+
 ## 3.33.1 - 2019-11-24
 
 - allow symfony 5 components
