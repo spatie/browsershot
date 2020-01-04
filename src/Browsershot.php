@@ -357,6 +357,11 @@ class Browsershot
         return $this->setOption('disableJavascript', true);
     }
 
+    public function disableImages()
+    {
+        return $this->setOption('disableImages', true);
+    }
+
     public function pages(string $pages)
     {
         return $this->setOption('pageRanges', $pages);

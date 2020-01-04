@@ -61,6 +61,16 @@ const callChrome = async () => {
             await page.setJavaScriptEnabled(false);
         }
 
+        if (request.options && request.options.disableImages) {
+            await page.setRequestInterception(true);
+            page.on('request', request => {
+                if (request.resourceType() === 'image')
+                    request.abort();
+                else
+                    request.continue();
+            });
+        }
+
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
                 await dialog.dismiss();
@@ -111,6 +121,15 @@ const callChrome = async () => {
         }
 
         await page.goto(request.url, requestOptions);
+
+        if (request.options && request.options.disableImages) {
+            await page.evaluate(() => {
+                let images = document.getElementsByTagName('img');
+                while (images.length > 0) {
+                    images[0].parentNode.removeChild(images[0]);
+                }
+            });
+        }
 
         if (request.options && request.options.types) {
             for (let i = 0, len = request.options.types.length; i < len; i++) {

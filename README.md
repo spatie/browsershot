@@ -313,6 +313,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Disable Images
+You can completely remove all images and <img> elements when capturing a page using the `disableImages()` method.
+
+```php
+Browsershot::url('https://example.com')
+    ->disableImages()
+    ->save($pathToImage);
+```
+
 #### Waiting for lazy-loaded resources
 Some websites lazy-load additional resources via ajax or use webfonts, which might not be loaded in time for the screenshot. Using the `waitUntilNetworkIdle()` method you can tell Browsershot to wait for a period of 500 ms with no network activity before taking the screenshot, ensuring all additional resources are loaded.
 
