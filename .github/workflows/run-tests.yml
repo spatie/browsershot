@@ -35,9 +35,6 @@ jobs:
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
                   coverage: none
 
-#            - name: Fix Imagick Policy
-#              run: sudo sed -i 's/none/read|write/g' /etc/ImageMagick-6/policy.xml
-
             - name: Install dependencies
               run: |
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
