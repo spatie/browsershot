@@ -43,7 +43,7 @@ jobs:
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
             - name: Install Puppeteer
-              run: npm install yarn
+              run: npm install puppeteer
 
             - name: Execute tests
               run: vendor/bin/phpunit
