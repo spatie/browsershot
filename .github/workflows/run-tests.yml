@@ -4,7 +4,7 @@ on:
     push:
     pull_request:
     schedule:
-        - cron: '0 0 * * *'
+        -   cron: '0 0 * * *'
 
 jobs:
     test:
@@ -16,44 +16,59 @@ jobs:
                 php: [7.4, 7.3, 7.2, 7.1]
                 dependency-version: [prefer-lowest, prefer-stable]
 
+        env:
+            extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v1
+            -   name: Checkout code
+                uses: actions/checkout@v1
 
-            - name: Cache dependencies
-              uses: actions/cache@v1
-              with:
-                  path: ~/.composer/cache/files
-                  key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+            -   name: Cache dependencies
+                uses: actions/cache@v1
+                with:
+                    path: ~/.composer/cache/files
+                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v1
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-                  coverage: none
+            -   name: Setup PHP extensions
+                id: cache-env
+                uses: shivammathur/cache-extensions@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: ${{ env.extensions }}
+                    key: php-extensions-cache-v1
 
-#            - name: Fix Imagick Policy
-#              run: sudo sed -i 's/none/read|write/g' /etc/ImageMagick-6/policy.xml
+            -   name: Cache PHP extensions
+                uses: actions/cache@v2
+                with:
+                    path: ${{ steps.cache-env.outputs.dir }}
+                    key: ${{ steps.cache-env.outputs.key }}
+                    restore-keys: ${{ steps.cache-env.outputs.key }}
 
-            - name: Install dependencies
-              run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: ${{ env.extensions }}
+                    coverage: none
 
-            - name: Install Puppeteer
-              run: npm install yarn
+            -   name: Install dependencies
+                run: |
+                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-            - name: Execute tests
-              run: vendor/bin/phpunit
+            -   name: Install Puppeteer
+                run: npm install puppeteer
 
-            - name: Send Slack notification
-              uses: 8398a7/action-slack@v2
-              if: failure()
-              with:
-                  status: ${{ job.status }}
-                  author_name: ${{ github.actor }}
-              env:
-                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            -   name: Execute tests
+                run: vendor/bin/phpunit
+
+            -   name: Send Slack notification
+                uses: 8398a7/action-slack@v2
+                if: failure()
+                with:
+                    status: ${{ job.status }}
+                    author_name: ${{ github.actor }}
+                env:
+                    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
