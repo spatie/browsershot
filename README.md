@@ -322,6 +322,17 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Block Urls
+You can completely block connections to specific Urls using the `blockUrls()` method.
+Useful to block advertisements and trackers to make screenshot creation faster.
+
+```php
+$urlsList = array("example.com/cm-notify?pi=outbrain", "sync.outbrain.com/cookie-sync?p=bidswitch");
+Browsershot::url('https://example.com')
+    ->blockUrls($urlsList)
+    ->save($pathToImage);
+```
+
 #### Waiting for lazy-loaded resources
 Some websites lazy-load additional resources via ajax or use webfonts, which might not be loaded in time for the screenshot. Using the `waitUntilNetworkIdle()` method you can tell Browsershot to wait for a period of 500 ms with no network activity before taking the screenshot, ensuring all additional resources are loaded.
 
