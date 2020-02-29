@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const URL = require('url').URL;
+const URLParse = require('url').parse;
 
 const [, , ...args] = process.argv;
 
