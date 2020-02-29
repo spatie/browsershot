@@ -70,6 +70,18 @@ const callChrome = async () => {
                     request.continue();
             });
         }
+        
+        if (request.options && request.options.blockDomains) { 
+            await page.setRequestInterception(true);
+            var blockedArray = JSON.parse(request.options.blockDomains);
+            page.on('request', request => {
+                const hostname = URLParse(request.url()).hostname;
+                blockedArray.forEach(function(value){
+                    if (hostname.indexOf(value) > 0) request.abort();
+                });
+                request.continue();
+            });
+        }
 
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
