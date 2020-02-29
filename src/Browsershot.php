@@ -361,6 +361,11 @@ class Browsershot
     {
         return $this->setOption('disableImages', true);
     }
+    
+    public function blockDomains($array)
+    {
+        return $this->setOption('blockDomains', json_encode($array));
+    }
 
     public function pages(string $pages)
     {
