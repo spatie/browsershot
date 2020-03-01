@@ -78,7 +78,7 @@ const callChrome = async () => {
             page.on('request', request => {
                 const hostname = URLParse(request.url()).hostname;
                 domainsArray.forEach(function(value){
-                    if (hostname.indexOf(value) > 0) request.abort();
+                    if (hostname.indexOf(value) >= 0) request.abort();
                 });
                 request.continue();
             });
