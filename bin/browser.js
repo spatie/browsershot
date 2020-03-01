@@ -77,7 +77,7 @@ const callChrome = async () => {
             var urlsArray = JSON.parse(request.options.blockUrls);
             page.on('request', request => {
                 urlsArray.forEach(function(value){
-                    if (request.url().indexOf(value) > 0) request.abort();
+                    if (request.url().indexOf(value) >= 0) request.abort();
                 });
                 request.continue();
             });
