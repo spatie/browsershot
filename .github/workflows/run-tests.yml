@@ -39,13 +39,6 @@ jobs:
                     extensions: ${{ env.extensions }}
                     key: php-extensions-cache-v1
 
-            -   name: Cache PHP extensions
-                uses: actions/cache@v2
-                with:
-                    path: ${{ steps.cache-env.outputs.dir }}
-                    key: ${{ steps.cache-env.outputs.key }}
-                    restore-keys: ${{ steps.cache-env.outputs.key }}
-
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v1
                 with:
@@ -62,13 +55,3 @@ jobs:
 
             -   name: Execute tests
                 run: vendor/bin/phpunit
-
-            -   name: Send Slack notification
-                uses: 8398a7/action-slack@v2
-                if: failure()
-                with:
-                    status: ${{ job.status }}
-                    author_name: ${{ github.actor }}
-                env:
-                    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
