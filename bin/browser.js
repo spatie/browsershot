@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const URL = require('url').URL;
+const URLParse = require('url').parse;
 
 const [, , ...args] = process.argv;
 
@@ -68,6 +69,18 @@ const callChrome = async () => {
                     request.abort();
                 else
                     request.continue();
+            });
+        }
+        
+        if (request.options && request.options.blockDomains) { 
+            await page.setRequestInterception(true);
+            var domainsArray = JSON.parse(request.options.blockDomains);
+            page.on('request', request => {
+                const hostname = URLParse(request.url()).hostname;
+                domainsArray.forEach(function(value){
+                    if (hostname.indexOf(value) >= 0) request.abort();
+                });
+                request.continue();
             });
         }
 
