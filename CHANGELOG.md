@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.35.0 - 2020-03-03
+
+- adds `blockUrls` and `blockDomains`
+
 ## 3.34.10 - 2020-01-04
 
 - adds disableImages method to prevent images from loading (#362)
