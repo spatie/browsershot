@@ -322,6 +322,17 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Block Urls
+You can completely block connections to specific Urls using the `blockUrls()` method.
+Useful to block advertisements and trackers to make screenshot creation faster.
+
+```php
+$urlsList = array("example.com/cm-notify?pi=outbrain", "sync.outbrain.com/cookie-sync?p=bidswitch");
+Browsershot::url('https://example.com')
+    ->blockUrls($urlsList)
+    ->save($pathToImage);
+```
+    
 #### Block Domains
 You can completely block connections to specific domains using the `blockDomains()` method.
 Useful to block advertisements and trackers to make screenshot creation faster.
