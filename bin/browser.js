@@ -84,6 +84,17 @@ const callChrome = async () => {
             });
         }
 
+        if (request.options && request.options.blockUrls) { 
+            await page.setRequestInterception(true);
+            var urlsArray = JSON.parse(request.options.blockUrls);
+            page.on('request', request => {
+                urlsArray.forEach(function(value){
+                    if (request.url().indexOf(value) >= 0) request.abort();
+                });
+                request.continue();
+            });
+        }
+        
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
                 await dialog.dismiss();
