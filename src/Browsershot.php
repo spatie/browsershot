@@ -361,7 +361,7 @@ class Browsershot
     {
         return $this->setOption('disableImages', true);
     }
-    
+
     public function blockUrls($array)
     {
         return $this->setOption('blockUrls', json_encode($array));
@@ -370,7 +370,6 @@ class Browsershot
     public function blockDomains($array)
     {
         return $this->setOption('blockDomains', json_encode($array));
-
     }
 
     public function pages(string $pages)
