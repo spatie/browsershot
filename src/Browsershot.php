@@ -367,6 +367,12 @@ class Browsershot
         return $this->setOption('blockUrls', json_encode($array));
     }
 
+    public function blockDomains($array)
+    {
+        return $this->setOption('blockDomains', json_encode($array));
+
+    }
+
     public function pages(string $pages)
     {
         return $this->setOption('pageRanges', $pages);

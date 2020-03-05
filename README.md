@@ -322,6 +322,17 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Block Domains
+You can completely block connections to specific domains using the `blockDomains()` method.
+Useful to block advertisements and trackers to make screenshot creation faster.
+
+```php
+$domainsList = array("googletagmanager.com", "googlesyndication.com", "doubleclick.net", "google-analytics.com");
+Browsershot::url('https://example.com')
+    ->blockDomains($domainsList)
+    ->save($pathToImage);
+```
+
 #### Waiting for lazy-loaded resources
 Some websites lazy-load additional resources via ajax or use webfonts, which might not be loaded in time for the screenshot. Using the `waitUntilNetworkIdle()` method you can tell Browsershot to wait for a period of 500 ms with no network activity before taking the screenshot, ensuring all additional resources are loaded.
 
