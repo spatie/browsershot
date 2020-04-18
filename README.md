@@ -595,7 +595,7 @@ Browsershot::url('https://example.com')
 
 #### Setting the CSS media type of the page
 
-You can emulate the media type, especially usefull when you're generating pdf shots, because it will try to emulate the print version of the page by default.
+You can emulate the media type, especially useful when you're generating pdf shots, because it will try to emulate the print version of the page by default.
 
 ```php
 Browsershot::url('https://example.com')
@@ -613,7 +613,7 @@ Browsershot::url('https://example.com')
 
 #### Disable sandboxing
 
-When running Linux in certain virtualization enviroments it might need to disable sandboxing.
+When running Linux in certain virtualization environments it might need to disable sandboxing.
 
 ```php
 Browsershot::url('https://example.com')
