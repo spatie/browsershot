@@ -1338,11 +1338,11 @@ class BrowsershotTest extends TestCase
         ], $instance->createScreenshotCommand('screenshot.png'));
 
         // It should be online so mis-use the assetsContains because a 4xx error won't contain the word "browerless".
-        $html = Browsershot::url('https://browserless.io')
+        $html = Browsershot::url('https://chrome.browserless.io/json/')
             ->bodyHtml();
 
         // If it's offline then this will fail.
-        $this->assertContains('browserless', $html);
+        $this->assertContains('chrome.browserless.io', $html);
 
         /* Now that we now the domain is online, assert the screenshot.
          * Although we can't be sure, because Browsershot itself falls back to launching a chromium instance in browser.js
