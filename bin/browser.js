@@ -36,12 +36,21 @@ const callChrome = async () => {
     let remoteInstance;
 
     try {
-        if (request.options.remoteInstanceUrl) {
+        if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
+            // default options
+            let options = {
+                ignoreHTTPSErrors: request.options.ignoreHttpsErrors
+            };
+
+            // choose only one method to connect to the browser instance
+            if ( request.options.remoteInstanceUrl ) {
+                options.browserURL = request.options.remoteInstanceUrl;
+            } else if ( request.options.browserWSEndpoint ) {
+                options.browserWSEndpoint = request.options.browserWSEndpoint;
+            }
+
             try {
-                browser = await puppeteer.connect({
-                    browserURL: request.options.remoteInstanceUrl,
-                    ignoreHTTPSErrors: request.options.ignoreHttpsErrors
-                });
+                browser = await puppeteer.connect( options );
 
                 remoteInstance = true;
             } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}

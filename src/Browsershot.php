@@ -633,6 +633,15 @@ class Browsershot
         return $this;
     }
 
+    public function setWSEndpoint(string $endpoint): self
+    {
+        if (! is_null($endpoint)) {
+            $this->setOption('browserWSEndpoint', $endpoint);
+        }
+
+        return $this;
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;
