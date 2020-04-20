@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.36.0 - 2020-04-19
+
+- add use of WS Endpoint option (#390)
+
 ## 3.35.0 - 2020-03-03
 
 - adds `blockUrls` and `blockDomains`
