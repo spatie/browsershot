@@ -37,7 +37,11 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 ## Support us
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us). 
+Learn how to create a package like this one, by watching our premium video course:
+
+[![Laravel Package training](https://spatie.be/github/package-training.jpg)](https://laravelpackage.training)
+
+We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
 We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
@@ -229,7 +233,6 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-
 #### Taking a full page screenshot
 
 You can take a screenshot of the full length of the page by using `fullPage()`.
@@ -393,7 +396,6 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-
 #### Output directly to the browser
 You can output the image directly to the browser using the `screenshot()` method.
 
@@ -470,7 +472,6 @@ Browsershot::html($someHtml)
 ```
 
 Optionally you can give a custom unit to the `margins` as the fifth parameter.
-
 
 #### Headers and footers
 
@@ -753,7 +754,6 @@ Browsershot::url('https://example.com')
 ## Related packages
 
 * Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)
-
 
 ## Contributing
 
