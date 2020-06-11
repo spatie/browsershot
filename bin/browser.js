@@ -29,11 +29,12 @@ const getOutput = async (page, request) => {
     return output.toString('base64');
 };
 
-const callChrome = async () => {
+const callChrome = async pup => {
     let browser;
     let page;
     let output;
     let remoteInstance;
+	const puppet = (pup || puppeteer);
 
     try {
         if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
@@ -50,14 +51,14 @@ const callChrome = async () => {
             }
 
             try {
-                browser = await puppeteer.connect( options );
+                browser = await puppet.connect( options );
 
                 remoteInstance = true;
             } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
         }
 
         if (!browser) {
-            browser = await puppeteer.launch({
+            browser = await puppet.launch({
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
                 args: request.options.args || []
@@ -251,4 +252,8 @@ const callChrome = async () => {
     }
 };
 
-callChrome();
+if (require.main === module) {
+	callChrome();
+}
+
+exports.callChrome = callChrome;
