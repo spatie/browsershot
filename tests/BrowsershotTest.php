@@ -25,6 +25,17 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_requests_list()
+    {
+        $listAsString = Browsershot::url('https://example.com')
+            ->triggeredRequests();
+
+        $listAsArray = @json_decode($listAsString, true);
+
+        $this->assertEquals('https://example.com/', $listAsArray[0]['url']);
+    }
+
+    /** @test */
     public function it_can_take_a_screenshot()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';

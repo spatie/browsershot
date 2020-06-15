@@ -35,6 +35,20 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
+If you wish to retrieve a JSON list of all of the requests that the page triggered you can do so:
+
+```php
+$response = Browsershot::url('https://example.com')->triggeredRequest();
+
+$requests = json_decode($response, true);
+
+foreach ($requests as $request) {
+    $url = $request['url']; //https://example.com/
+}
+```
+
+**`triggeredRequests()` works well with `waitUntilNetworkIdle` as described [here](#waiting-for-lazy-loaded-resources)**
+
 ## Support us
 
 Learn how to create a package like this one, by watching our premium video course:
