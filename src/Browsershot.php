@@ -560,9 +560,7 @@ class Browsershot
     {
         $command = $this->createTriggeredRequestsListCommand();
 
-        $list = @json_decode($this->callBrowser($command), true);
-
-        return $list ?: [];
+        return json_decode($this->callBrowser($command), true);
     }
 
     public function applyManipulations(string $imagePath)
