@@ -33,8 +33,8 @@ class BrowsershotTest extends TestCase
         $this->assertCount(1, $list);
 
         $this->assertEquals(
-            ['url' => 'https://example.com/'],
-            $list[0]['url']
+            [['url' => 'https://example.com/']],
+            $list
         );
     }
 
