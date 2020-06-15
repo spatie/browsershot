@@ -556,11 +556,13 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
-    public function triggeredRequests(): string
+    public function triggeredRequests(): array
     {
         $command = $this->createTriggeredRequestsListCommand();
 
-        return $this->callBrowser($command);
+        $list = @json_decode($this->callBrowser($command), true);
+
+        return $list ?: [];
     }
 
     public function applyManipulations(string $imagePath)

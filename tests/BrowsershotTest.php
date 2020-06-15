@@ -27,12 +27,15 @@ class BrowsershotTest extends TestCase
     /** @test */
     public function it_can_get_the_requests_list()
     {
-        $listAsString = Browsershot::url('https://example.com')
+        $list = Browsershot::url('https://example.com')
             ->triggeredRequests();
 
-        $listAsArray = @json_decode($listAsString, true);
+        $this->assertCount(1, $list);
 
-        $this->assertEquals('https://example.com/', $listAsArray[0]['url']);
+        $this->assertEquals(
+            ['url' => 'https://example.com/'],
+            $list[0]['url']
+        );
     }
 
     /** @test */
