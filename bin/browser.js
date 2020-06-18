@@ -15,8 +15,16 @@ const request = args[0].startsWith('-f ')
     ? JSON.parse(fs.readFileSync(new URL(args[0].substring(3))))
     : JSON.parse(args[0]);
 
+const requestsList = [];
+
 const getOutput = async (page, request) => {
     let output;
+
+    if (request.action == 'requestsList') {
+        output = JSON.stringify(requestsList);
+
+        return output;
+    }
 
     if (request.action == 'evaluate') {
         output = await page.evaluate(request.options.pageFunction);
@@ -64,15 +72,22 @@ const callChrome = async () => {
             });
         }
 
-
         page = await browser.newPage();
 
         if (request.options && request.options.disableJavascript) {
             await page.setJavaScriptEnabled(false);
         }
 
+        await page.setRequestInterception(true);
+
+        page.on('request', request => {
+            requestsList.push({
+                url: request.url(),
+            });
+            request.continue();
+        });
+
         if (request.options && request.options.disableImages) {
-            await page.setRequestInterception(true);
             page.on('request', request => {
                 if (request.resourceType() === 'image')
                     request.abort();
@@ -80,9 +95,8 @@ const callChrome = async () => {
                     request.continue();
             });
         }
-        
-        if (request.options && request.options.blockDomains) { 
-            await page.setRequestInterception(true);
+
+        if (request.options && request.options.blockDomains) {
             var domainsArray = JSON.parse(request.options.blockDomains);
             page.on('request', request => {
                 const hostname = URLParse(request.url()).hostname;
@@ -93,8 +107,7 @@ const callChrome = async () => {
             });
         }
 
-        if (request.options && request.options.blockUrls) { 
-            await page.setRequestInterception(true);
+        if (request.options && request.options.blockUrls) {
             var urlsArray = JSON.parse(request.options.blockUrls);
             page.on('request', request => {
                 urlsArray.forEach(function(value){
@@ -103,7 +116,7 @@ const callChrome = async () => {
                 request.continue();
             });
         }
-        
+
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
                 await dialog.dismiss();

@@ -556,6 +556,13 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function triggeredRequests(): array
+    {
+        $command = $this->createTriggeredRequestsListCommand();
+
+        return json_decode($this->callBrowser($command), true);
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -621,6 +628,13 @@ class Browsershot
         ];
 
         return $this->createCommand($url, 'evaluate', $options);
+    }
+
+    public function createTriggeredRequestsListCommand(): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        return $this->createCommand($url, 'requestsList');
     }
 
     public function setRemoteInstance(string $ip = '127.0.0.1', int $port = 9222): self
