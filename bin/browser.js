@@ -128,7 +128,7 @@ const callChrome = async () => {
         }
 
         if (request.options && request.options.device) {
-            const devices = require('puppeteer/DeviceDescriptors');
+            const devices = puppeteer.devices;
             const device = devices[request.options.device];
             await page.emulate(device);
         }
