@@ -68,7 +68,8 @@ const callChrome = async () => {
             browser = await puppeteer.launch({
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
-                args: request.options.args || []
+                args: request.options.args || [],
+                pipe: true,
             });
         }
 
