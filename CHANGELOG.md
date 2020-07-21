@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.37.2 - 2020-07-22
+
+- Replace emulateMedia call with emulateMediaType (#411)
+
 ## 3.37.1 - 2020-07-09
 
 - account for the removal of require('puppeteer/DeviceDescriptors') (#406)
