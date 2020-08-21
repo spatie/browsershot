@@ -282,7 +282,7 @@ Browsershot::url('https://example.com')
 
 #### Device emulation
 
-You can emulate a device view with the `device` method. The devices' names can be found [Here](https://github.com/puppeteer/puppeteer/blob/master/src/DeviceDescriptors.ts).
+You can emulate a device view with the `device` method. The devices' names can be found [Here](https://github.com/puppeteer/puppeteer/blob/main/src/common/DeviceDescriptors.ts).
 
 ```php
 $browsershot = new Browsershot('https://example.com', true);
