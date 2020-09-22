@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.38.0 - 2020-09-22
+
+- pass puppeteer to `callChrome()` (#399)
+
 ## 3.37.2 - 2020-07-22
 
 - Replace emulateMedia call with emulateMediaType (#411)
