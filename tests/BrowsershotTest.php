@@ -58,6 +58,7 @@ class BrowsershotTest extends TestCase
 
         $this->assertFileExists($targetPath);
     }
+
     /** @test */
     public function it_can_take_a_screenshot_when_using_pipe()
     {
