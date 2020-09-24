@@ -764,6 +764,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Using a pipe instead of a WebSocket
+
+If you want to connects to the browser over a pipe instead of a WebSocket, you can use:
+
+```php
+Browsershot::url('https://example.com')
+   ->usePipe()
+   ...
+```
+
 ## Related packages
 
 * Laravel wrapper: [laravel-browsershot](https://github.com/verumconsilium/laravel-browsershot)

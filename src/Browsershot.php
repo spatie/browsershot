@@ -656,6 +656,13 @@ class Browsershot
         return $this;
     }
 
+    public function usePipe(): self
+    {
+        $this->setOption('pipe', true);
+
+        return $this;
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;
