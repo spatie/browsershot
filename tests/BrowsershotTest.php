@@ -25,6 +25,16 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_body_html_when_using_pipe()
+    {
+        $html = Browsershot::url('https://example.com')
+            ->usePipe()
+            ->bodyHtml();
+
+        $this->assertContains('<h1>Example Domain</h1>', $html);
+    }
+
+    /** @test */
     public function it_can_get_the_requests_list()
     {
         $list = Browsershot::url('https://example.com')
@@ -44,6 +54,18 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/testScreenshot.png';
 
         Browsershot::url('https://example.com')
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_take_a_screenshot_when_using_pipe()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+        Browsershot::url('https://example.com')
+            ->usePipe()
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
@@ -154,6 +176,25 @@ class BrowsershotTest extends TestCase
         $targetPath = __DIR__.'/temp/customPdf.pdf';
 
         Browsershot::url('https://example.com')
+            ->hideBrowserHeaderAndFooter()
+            ->showBackground()
+            ->landscape()
+            ->margins(5, 25, 5, 25)
+            ->pages('1')
+            ->savePdf($targetPath);
+
+        $this->assertFileExists($targetPath);
+
+        $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    }
+
+    /** @test */
+    public function it_can_save_a_highly_customized_pdf_when_using_pipe()
+    {
+        $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+        Browsershot::url('https://example.com')
+            ->usePipe()
             ->hideBrowserHeaderAndFooter()
             ->showBackground()
             ->landscape()
@@ -499,6 +540,29 @@ class BrowsershotTest extends TestCase
                     'height' => 600,
                 ],
                 'emulateMedia' => null,
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_can_use_pipe()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->usePipe()
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'pipe' => true,
                 'args' => [],
                 'type' => 'png',
             ],
