@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.39.0 - 2020-09-24
+
+- add `usePipe` to use pipe instead of WebSocket (#423)
+
 ## 3.38.0 - 2020-09-22
 
 - pass puppeteer to `callChrome()` (#399)
