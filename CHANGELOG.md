@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## unreleased
+
+- added `base64Screenshot`
+
 ## 3.39.0 - 2020-09-24
 
 - add `usePipe` to use pipe instead of WebSocket (#423)

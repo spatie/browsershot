@@ -60,6 +60,15 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_return_a_screenshot_as_base_64()
+    {
+        $base64 = Browsershot::url('https://example.com')
+            ->base64Screenshot();
+
+        $this->assertIsString($base64);
+    }
+
+    /** @test */
     public function it_can_take_a_screenshot_when_using_pipe()
     {
         $targetPath = __DIR__.'/temp/testScreenshot.png';

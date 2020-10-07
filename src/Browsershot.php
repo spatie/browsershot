@@ -504,14 +504,21 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function base64Screenshot(): string
+    {
+        $command = $this->createScreenshotCommand();
+
+        return $this->callBrowser($command);
+    }
+
     public function screenshot(): string
     {
         if ($this->imageManipulations->isEmpty()) {
             $command = $this->createScreenshotCommand();
 
-            $encoded_image = $this->callBrowser($command);
+            $encodedImage = $this->callBrowser($command);
 
-            return base64_decode($encoded_image);
+            return base64_decode($encodedImage);
         }
 
         $temporaryDirectory = (new TemporaryDirectory())->create();
@@ -524,6 +531,8 @@ class Browsershot
 
         return $screenshot;
     }
+
+
 
     public function pdf(): string
     {

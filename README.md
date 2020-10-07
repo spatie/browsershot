@@ -233,6 +233,15 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+### Getting a screenshot as base64
+
+If you need the base64 version of a screenshot you can use the `base64Screenshot` method. This can come in handy when you need don't want to save the screenshot on disk.
+
+```php
+$base64Data = Browsershot::url('https://example.com')
+    ->base64Screenshot();
+```
+
 #### Manipulating the image
 
 You can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
