@@ -532,8 +532,6 @@ class Browsershot
         return $screenshot;
     }
 
-
-
     public function pdf(): string
     {
         $command = $this->createPdfCommand();
