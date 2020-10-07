@@ -2,7 +2,7 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-## unreleased
+## 3.40.0 - 2020-10-07
 
 - added `base64Screenshot`
 
