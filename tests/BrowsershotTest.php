@@ -65,7 +65,7 @@ class BrowsershotTest extends TestCase
         $base64 = Browsershot::url('https://example.com')
             ->base64Screenshot();
 
-        $this->assertIsString($base64);
+        $this->assertTrue(is_string($base64));
     }
 
     /** @test */
