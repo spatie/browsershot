@@ -773,7 +773,7 @@ Browsershot::url('https://example.com')
 
 #### Using a pipe instead of a WebSocket
 
-If you want to connects to the browser over a pipe instead of a WebSocket, you can use:
+If you want to connect to the browser over a pipe instead of a WebSocket, you can use:
 
 ```php
 Browsershot::url('https://example.com')
@@ -797,7 +797,7 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 If you're not able to install Node and Puppeteer, take a look at [v2 of browsershot](https://github.com/spatie/browsershot/tree/2.4.1), which uses Chrome headless CLI to take a screenshot. `v2` is not maintained anymore, but should work pretty well.
 
-If using headless Chrome does not work for you take a lookat at `v1` of this package which uses the abandoned `PhantomJS` binary.
+If using headless Chrome does not work for you take a look at at `v1` of this package which uses the abandoned `PhantomJS` binary.
 
 ## Credits
 
