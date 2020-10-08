@@ -235,7 +235,7 @@ Browsershot::url('https://example.com')
 
 ### Getting a screenshot as base64
 
-If you need the base64 version of a screenshot you can use the `base64Screenshot` method. This can come in handy when you need don't want to save the screenshot on disk.
+If you need the base64 version of a screenshot you can use the `base64Screenshot` method. This can come in handy when you don't want to save the screenshot on disk.
 
 ```php
 $base64Data = Browsershot::url('https://example.com')
