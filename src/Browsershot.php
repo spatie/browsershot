@@ -29,6 +29,7 @@ class Browsershot
     protected $timeout = 60;
     protected $url = '';
     protected $additionalOptions = [];
+    protected $temporaryCommandDirectory;
     protected $temporaryOptionsDirectory;
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
@@ -730,6 +731,23 @@ class Browsershot
         }
     }
 
+    protected function createTemporaryCommandFile(string $command): string
+    {
+        $this->temporaryCommandDirectory = (new TemporaryDirectory())->create();
+
+        file_put_contents($temporaryCommandFile = $this->temporaryCommandDirectory->path(sha1($command).'.json'), $command);
+
+        return "file://{$temporaryCommandFile}";
+    }
+
+    protected function cleanupTemporaryCommandFile()
+    {
+        if ($this->temporaryCommandDirectory) {
+            $this->temporaryCommandDirectory->delete();
+            $this->temporaryCommandDirectory = null;
+        }
+    }
+
     protected function callBrowser(array $command)
     {
         $fullCommand = $this->getFullCommand($command);
@@ -737,6 +755,7 @@ class Browsershot
         $process = Process::fromShellCommandline($fullCommand)->setTimeout($this->timeout);
 
         $process->run();
+        $this->cleanupTemporaryCommandFile();
 
         if ($process->isSuccessful()) {
             return rtrim($process->getOutput());
@@ -760,11 +779,10 @@ class Browsershot
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $fullCommand =
-                $nodeBinary.' '
+                escapeshellcmd($nodeBinary).' '
                 .escapeshellarg($binPath).' '
-                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
-
-            return escapeshellcmd($fullCommand);
+                .escapeshellarg('-f '.$this->createTemporaryCommandFile(json_encode($command)));
+            return $fullCommand;
         }
 
         $setIncludePathCommand = "PATH={$this->includePath}";

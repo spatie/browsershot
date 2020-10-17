@@ -1440,4 +1440,20 @@ class BrowsershotTest extends TestCase
         file_put_contents($targetPath, $instance->screenshot());
         $this->assertFileExists($targetPath);
     }
+
+    /** @test*/
+    public function it_can_escape_quotes_on_windows()
+    {
+        if (0 !== stripos(PHP_OS, 'WIN')) {
+            $this->markTestSkipped('Skipping because not running Windows');
+        }
+
+        $html = Browsershot::url('https://example.com')
+                ->setOption('addScriptTag', json_encode(['content' => 'console.log("'.__FUNCTION__.'")']))
+                ->setNodeBinary('C:\nodejs\node.exe')
+                ->setNpmBinary('C:\nodejs\npm.cmd')
+                ->setChromePath('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe')
+                ->bodyHtml();
+        $this->assertStringContainsString(__FUNCTION__, $html);
+    }
 }
