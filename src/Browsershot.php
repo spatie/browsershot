@@ -782,6 +782,7 @@ class Browsershot
                 escapeshellcmd($nodeBinary).' '
                 .escapeshellarg($binPath).' '
                 .escapeshellarg('-f '.$this->createTemporaryCommandFile(json_encode($command)));
+
             return $fullCommand;
         }
 
