@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+    <linearGradient id="a" x1="50" x2="50" y1="100" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#176984"/>
+        <stop offset="1" stop-color="#197593"/>
+    </linearGradient>
+    <path fill="url(#a)" d="M12.5 43.8h-12.5v-43.8h43.8v12.5h-31.3v31.3zm0 43.7v-31.3h-12.5v43.8h43.8v-12.5h-31.3zm75 0h-31.3v12.5h43.8v-43.8h-12.5v31.3zm-31.3-87.5v12.5h31.2v31.2h12.6v-43.7h-43.8z"/>
+    <linearGradient id="b" gradientTransform="matrix(-1 0 0 -1 -132 128)" x1="-176.8" x2="-204.1" y1="49.5" y2="96.8" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#197593"/>
+        <stop offset=".3" stop-color="#1c7794"/>
+        <stop offset=".5" stop-color="#267d99"/>
+        <stop offset=".7" stop-color="#3787a1"/>
+        <stop offset=".9" stop-color="#4f95ac"/>
+        <stop offset="1" stop-color="#5e9eb3"/>
+    </linearGradient>
+    <path fill="url(#b)" d="M70 70h-40s17.9-40 40-40v40z"/>
+    <linearGradient id="c" x1="50" x2="50" y1="70" y2="30" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#176984"/>
+        <stop offset="1" stop-color="#08232c"/>
+    </linearGradient>
+    <path fill="url(#c)" d="M30 30h40s-17.9 40-40 40v-40z"/>
+</svg>

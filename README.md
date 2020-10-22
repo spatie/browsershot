@@ -1,3 +1,5 @@
+<p align="center"><img src="/art/socialcard.png" alt="Social Card of Spatie's Browsershot"></p>
+
 # Convert a webpage to an image or pdf using headless Chrome
 
 [![Latest Version](https://img.shields.io/github/release/spatie/browsershot.svg?style=flat-square)](https://github.com/spatie/browsershot/releases)
@@ -358,7 +360,7 @@ Browsershot::url('https://example.com')
     ->blockUrls($urlsList)
     ->save($pathToImage);
 ```
-    
+
 #### Block Domains
 You can completely block connections to specific domains using the `blockDomains()` method.
 Useful to block advertisements and trackers to make screenshot creation faster.
@@ -803,6 +805,8 @@ If using headless Chrome does not work for you take a look at at `v1` of this pa
 
 - [Freek Van der Herten](https://github.com/freekmurze)
 - [All Contributors](../../contributors)
+
+And a special thanks to [Caneco](https://twitter.com/caneco) for the logo ✨
 
 ## License
 
