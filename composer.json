@@ -2,8 +2,7 @@
     "name": "spatie/browsershot",
     "description": "Convert a webpage to an image or pdf using headless Chrome",
     "homepage": "https://github.com/spatie/browsershot",
-    "keywords":
-    [
+    "keywords": [
         "convert",
         "webpage",
         "image",
@@ -23,13 +22,13 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.0",
         "spatie/image": "^1.5.3",
         "spatie/temporary-directory": "^1.1",
         "symfony/process": "^4.2|^5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.1|^7.5",
+        "phpunit/phpunit": "^6.1|^7.5|^9.0",
         "spatie/phpunit-snapshot-assertions": "^1.0"
     },
     "autoload": {
