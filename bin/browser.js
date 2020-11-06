@@ -167,11 +167,8 @@ const callChrome = async pup => {
         } else if (request.options && request.options.waitUntil) {
             requestOptions.waitUntil = request.options.waitUntil;
         }
-        /**this isfix for local file access, php creates local temporary file using file scheme protocol. below code validates
-        * the use of file scheme and enforces the usage of page.setContent function
-        * refer https://github.com/puppeteer/puppeteer/blob/v5.4.1/docs/api.md#pagesetcontenthtml-options
-        */
-        if(request.url.trim().toLowerCase().substring(0,4)=='file'){
+
+        if(request.url.trim().toLowerCase().substring(0,4) === 'file'){
             await page.setContent(fs.readFileSync(new URL(request.url),'utf-8'),requestOptions);
         }
         else
