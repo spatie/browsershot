@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.41.1 - 2020-11-06
+
+- prevent local files from being rendered
+
 ## 3.40.0 - 2020-10-07
 
 - added `base64Screenshot`
