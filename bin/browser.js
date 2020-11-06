@@ -168,7 +168,13 @@ const callChrome = async pup => {
             requestOptions.waitUntil = request.options.waitUntil;
         }
 
-        await page.goto(request.url, requestOptions);
+        if(request.url.trim().toLowerCase().substring(0,4) === 'file'){
+            await page.setContent(fs.readFileSync(new URL(request.url),'utf-8'),requestOptions);
+        }
+        else
+        {
+            await page.goto(request.url, requestOptions);
+        }
 
         if (request.options && request.options.disableImages) {
             await page.evaluate(() => {
