@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.40.2 - 2020-11-11
+
+- revert changes from previous version
+
 ## 3.40.1 - 2020-11-06
 
 - prevent local files from being rendered
