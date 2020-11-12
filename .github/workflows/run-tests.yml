@@ -13,7 +13,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                php: [7.4, 7.3, 7.2, 7.1]
+                php: [8.0, 7.4]
                 dependency-version: [prefer-lowest, prefer-stable]
 
         env:

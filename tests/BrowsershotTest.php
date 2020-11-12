@@ -10,7 +10,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class BrowsershotTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->emptyTempDirectory();
     }
@@ -21,7 +21,7 @@ class BrowsershotTest extends TestCase
         $html = Browsershot::url('https://example.com')
             ->bodyHtml();
 
-        $this->assertContains('<h1>Example Domain</h1>', $html);
+        $this->assertStringContainsString('<h1>Example Domain</h1>', $html);
     }
 
     /** @test */
@@ -31,7 +31,7 @@ class BrowsershotTest extends TestCase
             ->usePipe()
             ->bodyHtml();
 
-        $this->assertContains('<h1>Example Domain</h1>', $html);
+        $this->assertStringContainsString('<h1>Example Domain</h1>', $html);
     }
 
     /** @test */
@@ -1429,7 +1429,7 @@ class BrowsershotTest extends TestCase
             ->bodyHtml();
 
         // If it's offline then this will fail.
-        $this->assertContains('chrome.browserless.io', $html);
+        $this->assertStringContainsString('chrome.browserless.io', $html);
 
         /* Now that we now the domain is online, assert the screenshot.
          * Although we can't be sure, because Browsershot itself falls back to launching a chromium instance in browser.js
