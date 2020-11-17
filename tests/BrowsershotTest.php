@@ -1462,7 +1462,7 @@ class BrowsershotTest extends TestCase
                 'type' => 'png',
                 'env' => [
                     'TZ' => 'Pacific/Auckland',
-                ]
+                ],
             ],
         ], $instance->createScreenshotCommand('screenshot.png'));
     }
