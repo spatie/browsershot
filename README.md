@@ -789,7 +789,7 @@ If you want to set custom environment variables which affect the browser instanc
 
 ```php
 Browsershot::url('https://example.com')
-   ->setOption('env.TZ', 'Pacific/Auckland')
+   ->setEnvironmentOption(['TZ' => 'Pacific/Auckland'])
    ...
 ```
 
