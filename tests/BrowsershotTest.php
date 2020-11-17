@@ -1446,7 +1446,7 @@ class BrowsershotTest extends TestCase
     {
         $instance = Browsershot::url('https://example.com')
             ->setEnvironmentOptions([
-                'TZ' => 'Pacific/Auckland'
+                'TZ' => 'Pacific/Auckland',
             ]);
 
         $this->assertEquals([
@@ -1461,7 +1461,7 @@ class BrowsershotTest extends TestCase
                 'args' => [],
                 'type' => 'png',
                 'env' => [
-                    'TZ' => 'Pacific/Auckland'
+                    'TZ' => 'Pacific/Auckland',
                 ]
             ],
         ], $instance->createScreenshotCommand('screenshot.png'));
