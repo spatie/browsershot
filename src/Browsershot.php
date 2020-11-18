@@ -670,6 +670,11 @@ class Browsershot
         return $this;
     }
 
+    public function setEnvironmentOptions(array $options = []): self
+    {
+        return $this->setOption('env', $options);
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;

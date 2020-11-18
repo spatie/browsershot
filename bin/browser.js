@@ -70,7 +70,11 @@ const callChrome = async pup => {
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
                 args: request.options.args || [],
-                pipe: request.options.pipe || false
+                pipe: request.options.pipe || false,
+                env: {
+                    ...(request.options.env || {}),
+                    ...process.env
+                },
             });
         }
 

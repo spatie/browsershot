@@ -1440,4 +1440,30 @@ class BrowsershotTest extends TestCase
         file_put_contents($targetPath, $instance->screenshot());
         $this->assertFileExists($targetPath);
     }
+
+    /** @test */
+    public function it_will_allow_passing_environment_variables()
+    {
+        $instance = Browsershot::url('https://example.com')
+            ->setEnvironmentOptions([
+                'TZ' => 'Pacific/Auckland',
+            ]);
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+                'env' => [
+                    'TZ' => 'Pacific/Auckland',
+                ],
+            ],
+        ], $instance->createScreenshotCommand('screenshot.png'));
+    }
 }
