@@ -219,7 +219,7 @@ const callChrome = async pup => {
         }
 
         if (request.options.delay) {
-            await page.waitFor(request.options.delay);
+            await page.waitForTimeout(request.options.delay);
         }
 
         if (request.options.selector) {
