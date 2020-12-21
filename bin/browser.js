@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer');
 const fs = require('fs');
 const URL = require('url').URL;
 const URLParse = require('url').parse;
@@ -42,7 +41,7 @@ const callChrome = async pup => {
     let page;
     let output;
     let remoteInstance;
-	const puppet = (pup || puppeteer);
+	const puppet = (pup || require('puppeteer'));
 
     try {
         if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
@@ -134,7 +133,7 @@ const callChrome = async pup => {
         }
 
         if (request.options && request.options.device) {
-            const devices = puppeteer.devices;
+            const devices = puppet.devices;
             const device = devices[request.options.device];
             await page.emulate(device);
         }
