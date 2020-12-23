@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.41.2 - 2020-12-27
+
+- improve local require for puppeteer (#461)
+
 ## 3.41.1 - 2020-12-08
 
 - replace `waitFor` with `waitForTimeout` (#452)
