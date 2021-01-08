@@ -222,12 +222,12 @@ const callChrome = async pup => {
         }
 
         if (request.options.selector) {
-            const element = await page.$(request.options.selector);
-            if (element === null) {
+            const element = await page.$$(request.options.selector);
+            if (element[request.options.selectorIndex || 0] === null) {
                 throw {type: 'ElementNotFound'};
             }
 
-            request.options.clip = await element.boundingBox();
+            request.options.clip = await element[request.options.selectorIndex || 0].boundingBox();
         }
 
         if (request.options.function) {
