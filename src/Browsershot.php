@@ -239,7 +239,8 @@ class Browsershot
 
     public function select($selector, $index = 0)
     {
-        return $this->setOption('selector', $selector) && $this->setOption('selectorIndex', $index);
+        $this->setOption('selectorIndex', $index);
+        return $this->setOption('selector', $selector);
     }
 
     public function showBrowserHeaderAndFooter()
