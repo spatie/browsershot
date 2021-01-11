@@ -240,6 +240,7 @@ class Browsershot
     public function select($selector, $index = 0)
     {
         $this->selectorIndex($index);
+
         return $this->setOption('selector', $selector);
     }
 
