@@ -237,9 +237,15 @@ class Browsershot
         return $this->setOption('clip', compact('x', 'y', 'width', 'height'));
     }
 
-    public function select($selector)
+    public function select($selector, $index = 0)
     {
+        $this->selectorIndex($index);
         return $this->setOption('selector', $selector);
+    }
+
+    public function selectorIndex(int $index)
+    {
+        return $this->setOption('selectorIndex', $index);
     }
 
     public function showBrowserHeaderAndFooter()

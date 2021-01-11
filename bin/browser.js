@@ -222,7 +222,18 @@ const callChrome = async pup => {
         }
 
         if (request.options.selector) {
-            const element = await page.$(request.options.selector);
+        	var element;
+            const index = request.options.selectorIndex || 0;
+            if(index){
+            	element = await page.$$(request.options.selector);
+            	if(!element.length || typeof element[index] === 'undefined'){
+            		element = null;
+            	}else{
+            		element = element[index];
+            	}
+            }else{
+            	element = await page.$(request.options.selector);
+            }
             if (element === null) {
                 throw {type: 'ElementNotFound'};
             }

@@ -227,11 +227,11 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-You can take a screenshot of an element matching a selector using `select`.
+You can take a screenshot of an element matching a selector using `select` and an optional `$selectorIndex` which is used to select the nth element (e.g. use `$selectorIndex = 3` to get the fourth element like `div:eq(3)`). By default `$selectorIndex` is `0` which represents the first matching element.
 
 ```php
 Browsershot::url('https://example.com')
-    ->select('.some-selector')
+    ->select('.some-selector', $selectorIndex)
     ->save($pathToImage);
 ```
 
