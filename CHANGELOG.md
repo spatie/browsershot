@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.42.0 - 2021-01-11
+
+- introduce a selectorIndex to bypass querySelector restrictions (#468)
+
 ## 3.41.2 - 2020-12-27
 
 - improve local require for puppeteer (#461)
