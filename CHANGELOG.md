@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.43.0 - 2021-01-29
+
+- add support for scale option in PDF (#478)
+
 ## 3.42.0 - 2021-01-11
 
 - introduce a selectorIndex to bypass querySelector restrictions (#468)
