@@ -537,6 +537,16 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
+#### Scale
+
+Scale can be set. Defaults to 1. Scale amount must be between 0.1 and 2.
+
+```php
+Browsershot::html($someHtml)
+    ->scale(0.5)
+    ->save('example.pdf');
+```
+
 #### Only export specific pages
 
 You can control which pages should be export by passing a print range to the `pages` method.  Here are some examples of valid print ranges: `1`, `1-3`,  `1-5, 8, 11-13`.

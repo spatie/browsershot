@@ -1466,4 +1466,16 @@ class BrowsershotTest extends TestCase
             ],
         ], $instance->createScreenshotCommand('screenshot.png'));
     }
+
+    /** @test */
+    public function it_can_take_a_scaled_screenshot()
+    {
+        $targetPath = __DIR__.'/temp/testScreenshot.pdf';
+
+        Browsershot::url('https://example.com')
+            ->scale(0.5)
+            ->save($targetPath);
+
+        $this->assertFileExists($targetPath);
+    }
 }
