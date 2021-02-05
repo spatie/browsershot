@@ -23,6 +23,7 @@ class Browsershot
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
+    protected $scale = null;
     protected $screenshotType = 'png';
     protected $screenshotQuality = null;
     protected $temporaryHtmlDirectory;
@@ -240,6 +241,7 @@ class Browsershot
     public function select($selector, $index = 0)
     {
         $this->selectorIndex($index);
+
         return $this->setOption('selector', $selector);
     }
 
@@ -394,6 +396,13 @@ class Browsershot
     public function format(string $format)
     {
         return $this->setOption('format', $format);
+    }
+
+    public function scale(float $scale)
+    {
+        $this->scale = $scale;
+
+        return $this;
     }
 
     public function timeout(int $timeout)
@@ -619,6 +628,7 @@ class Browsershot
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
         $options = [];
+
         if ($targetPath) {
             $options['path'] = $targetPath;
         }
@@ -627,6 +637,10 @@ class Browsershot
 
         if ($this->showBackground) {
             $command['options']['printBackground'] = true;
+        }
+
+        if ($this->scale) {
+            $command['options']['scale'] = $this->scale;
         }
 
         return $command;
