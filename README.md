@@ -636,6 +636,8 @@ Browsershot::url('https://example.com')
     ->savePdf($pathToPdf);
 ```
 
+#### Setting the timeout
+
 The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
 
 ```php
