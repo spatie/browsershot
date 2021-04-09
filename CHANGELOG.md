@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.44.1. - 2021-04-09
+
+- bump temporary-directory to version 2.0 (#495)
+
 ## 3.44.0 - 2021-02-05
 
 - add scale option (#478)
