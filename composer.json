@@ -24,7 +24,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "spatie/image": "^1.5.3",
-        "spatie/temporary-directory": "^2.0",
+        "spatie/temporary-directory": "^1.1|^2.0",
         "symfony/process": "^5.0"
     },
     "require-dev": {
