@@ -85,6 +85,23 @@ const callChrome = async pup => {
 
         await page.setRequestInterception(true);
 
+        if (request.postParams) {
+            const postParamsArray = request.postParams;
+            const queryString = Object.keys(postParamsArray)
+                .map(key => `${key}=${postParamsArray[key]}`)
+                .join('&');
+            page.once("request", interceptedRequest => {
+                interceptedRequest.continue({
+                    method: "POST",
+                    postData: queryString,
+                    headers: {
+                        ...interceptedRequest.headers(),
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+            });
+        }
+
         page.on('request', request => {
             requestsList.push({
                 url: request.url(),
