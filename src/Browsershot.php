@@ -114,7 +114,7 @@ class Browsershot
         return $this;
     }
 
-    public function postParams($postParams)
+    public function post(array $postParams = [])
     {
         if (array_keys($postParams) === range(0, count($postParams) - 1)) {
             throw CouldNotTakeBrowsershot::postParamsArrayIsNotAssoc();
@@ -728,9 +728,18 @@ class Browsershot
 
         $command['options']['args'] = $this->getOptionArgs();
 
-        if (! empty($this->postParams) &&
-            isset(parse_url($url)['scheme']) &&
-            strpos(parse_url($url)['scheme'],'http')===0) {
+        if (parse_url($url, PHP_URL_SCHEME) === null) {
+            throw CouldNotTakeBrowsershot::urlHasNoScheme();
+        }
+
+        if (! empty($this->postParams)) {
+
+            $urlScheme = parse_url($url, PHP_URL_SCHEME);
+
+            if ($urlScheme !== 'http' && $urlScheme !== 'https') {
+                throw CouldNotTakeBrowsershot::postRequestsNotSupportedByResource();
+            }
+
             $command['postParams'] = $this->postParams;
         }
 

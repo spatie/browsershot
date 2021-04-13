@@ -716,12 +716,12 @@ Browsershot::url('https://example.com')
 
 #### Sending POST requests
 
-By default, all requests sent using GET method. You can make POST request to the given url by using the `postParams` method.
+By default, all requests sent using GET method. You can make POST request to the given url by using the `post` method.
 Note: POST request sent using `application/x-www-form-urlencoded` content type.
 
 ```php
 Browsershot::url('https://example.com')
-    ->postParams(['foo' => 'bar'])
+    ->post(['foo' => 'bar'])
    ...
 ```
 

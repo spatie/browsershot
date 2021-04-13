@@ -983,7 +983,7 @@ class BrowsershotTest extends TestCase
     public function it_can_send_post_request()
     {
         $command = Browsershot::url('https://example.com')
-            ->postParams(['foo' => 'bar'])
+            ->post(['foo' => 'bar'])
             ->createScreenshotCommand('screenshot.png');
 
         $this->assertEquals([
