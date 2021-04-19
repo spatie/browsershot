@@ -1,3 +1,7 @@
+# This is a fork of the package browsershot
+
+forked from [spatie/browsershot](https://github.com/spatie/browsershot)
+
 <p align="center"><img src="/art/socialcard.png" alt="Social Card of Spatie's Browsershot"></p>
 
 # Convert a webpage to an image or pdf using headless Chrome
@@ -168,10 +172,30 @@ Browsershot::html('Foo')
 
 ## Installation
 
+### Original Package
+
 This package can be installed through Composer.
 
 ```bash
 composer require spatie/browsershot
+```
+
+### This Fork of Package
+
+Add repository to composer.json
+
+```bash
+"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Haendlerbund/browsershot.git"
+        }
+    ]
+```
+Afterwards, the package can be installed via Composer.
+
+```bash
+composer require spatie/browsershot:dev-itmsa-163-task/extend-functionality-browsershot
 ```
 
 ## Usage
