@@ -116,10 +116,6 @@ class Browsershot
 
     public function post(array $postParams = [])
     {
-        if (array_keys($postParams) === range(0, count($postParams) - 1)) {
-            throw CouldNotTakeBrowsershot::postParamsArrayIsNotAssoc();
-        }
-
         $this->postParams = $postParams;
 
         return $this;
@@ -728,18 +724,7 @@ class Browsershot
 
         $command['options']['args'] = $this->getOptionArgs();
 
-        if (parse_url($url, PHP_URL_SCHEME) === null) {
-            throw CouldNotTakeBrowsershot::urlHasNoScheme();
-        }
-
         if (! empty($this->postParams)) {
-
-            $urlScheme = parse_url($url, PHP_URL_SCHEME);
-
-            if ($urlScheme !== 'http' && $urlScheme !== 'https') {
-                throw CouldNotTakeBrowsershot::postRequestsNotSupportedByResource();
-            }
-
             $command['postParams'] = $this->postParams;
         }
 

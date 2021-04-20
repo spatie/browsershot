@@ -977,9 +977,7 @@ class BrowsershotTest extends TestCase
         ], $command);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_can_send_post_request()
     {
         $command = Browsershot::url('https://example.com')
