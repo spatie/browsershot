@@ -29,6 +29,7 @@ class Browsershot
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
+    protected $postParams = [];
     protected $additionalOptions = [];
     protected $temporaryOptionsDirectory;
     protected $writeOptionsToFile = false;
@@ -109,6 +110,13 @@ class Browsershot
     public function setChromePath(string $executablePath)
     {
         $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
+    public function post(array $postParams = [])
+    {
+        $this->postParams = $postParams;
 
         return $this;
     }
@@ -715,6 +723,10 @@ class Browsershot
         $command = compact('url', 'action', 'options');
 
         $command['options']['args'] = $this->getOptionArgs();
+
+        if (! empty($this->postParams)) {
+            $command['postParams'] = $this->postParams;
+        }
 
         if (! empty($this->additionalOptions)) {
             $command['options'] = array_merge_recursive($command['options'], $this->additionalOptions);

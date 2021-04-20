@@ -978,6 +978,29 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_send_post_request()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->post(['foo' => 'bar'])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'postParams' => ['foo' => 'bar'],
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
     public function it_can_click_on_the_page()
     {
         $command = Browsershot::url('https://example.com')
