@@ -579,6 +579,14 @@ class Browsershot
         }
     }
 
+    public function base64pdf(): string
+    {
+        $command = $this->createPdfCommand();
+
+        return $this->callBrowser($command);
+    }
+
+
     public function evaluate(string $pageFunction): string
     {
         $command = $this->createEvaluateCommand($pageFunction);
