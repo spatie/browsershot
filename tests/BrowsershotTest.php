@@ -217,6 +217,15 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_can_return_a_pdf_as_base_64()
+    {
+        $base64 = Browsershot::url('https://example.com')
+            ->base64pdf();
+
+        $this->assertTrue(is_string($base64));
+    }
+
+    /** @test */
     public function it_can_handle_a_permissions_error()
     {
         $targetPath = '/cantWriteThisPdf.png';

@@ -447,6 +447,12 @@ You can also pass some html which will be converted to a pdf.
 Browsershot::html($someHtml)->savePdf('example.pdf');
 ```
 
+If you need the base64 version of a PDF you can use the `base64pdf` method. This can come in handy when you don't want to save the screenshot on disk in environments like Heroku that don't allow you to save a file. You can then proceed to create the file and upload it directly as a base64 string using a package like [Laravel Media Library](https://spatie.be/docs/laravel-medialibrary/v9/api/adding-files#addmediafrombase64).
+
+```php
+$base64Data = Browsershot::url('https://example.com')
+    ->base64pdf();
+```
 #### Sizing the pdf
 
 You can specify the width and the height.
