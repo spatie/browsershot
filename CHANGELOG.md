@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.46.0 - 2021-25-24
+
+- add `base64pdf` method (#512)
+
 ## 3.45.0 - 2021-04-20
 
 - add ability to make POST requests (#496)
