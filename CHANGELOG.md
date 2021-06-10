@@ -2,7 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-## 3.46.0 - 2021-25-24
+## 3.47.0 - 2021-06-10
+
+- re-add support for symfony/process:^4.2
+
+## 3.46.0 - 2021-05-24
 
 - add `base64pdf` method (#512)
 
