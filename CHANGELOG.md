@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.48.0 - 2021-07-28
+
+- support spatie/image v2
+
 ## 3.47.0 - 2021-06-10
 
 - re-add support for symfony/process:^4.2
