@@ -8,7 +8,7 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                os: [ubuntu-latest, windows-latest]
+                os: [ubuntu-latest]
                 php: [8.0, 7.4]
                 stability: [prefer-lowest, prefer-stable]
 
