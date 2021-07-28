@@ -38,8 +38,8 @@ class Browsershot
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
 
-    const POLLING_REQUEST_ANIMATION_FRAME = 'raf';
-    const POLLING_MUTATION = 'mutation';
+    public const POLLING_REQUEST_ANIMATION_FRAME = 'raf';
+    public const POLLING_MUTATION = 'mutation';
 
     /**
      * @param string $url
@@ -48,7 +48,7 @@ class Browsershot
      */
     public static function url(string $url)
     {
-        return (new static)->setUrl($url);
+        return (new static())->setUrl($url);
     }
 
     /**
@@ -58,7 +58,7 @@ class Browsershot
      */
     public static function html(string $html)
     {
-        return (new static)->setHtml($html);
+        return (new static())->setHtml($html);
     }
 
     public function __construct(string $url = '', bool $deviceEmulate = false)
@@ -585,7 +585,6 @@ class Browsershot
 
         return $this->callBrowser($command);
     }
-
 
     public function evaluate(string $pageFunction): string
     {

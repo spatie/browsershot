@@ -1,57 +1,39 @@
-name: run-tests
+name: Tests
 
-on:
-    push:
-    pull_request:
-    schedule:
-        -   cron: '0 0 * * *'
+on: [push, pull_request]
 
 jobs:
     test:
-
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
         strategy:
             fail-fast: true
             matrix:
+                os: [ubuntu-latest]
                 php: [8.0, 7.4]
-                dependency-version: [prefer-lowest, prefer-stable]
+                stability: [prefer-lowest, prefer-stable]
 
-        env:
-            extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-
-        name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+        name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
         steps:
-            -   name: Checkout code
-                uses: actions/checkout@v1
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-            -   name: Cache dependencies
-                uses: actions/cache@v1
-                with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                  coverage: none
 
-            -   name: Setup PHP extensions
-                id: cache-env
-                uses: shivammathur/cache-extensions@v1
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: ${{ env.extensions }}
-                    key: php-extensions-cache-v1
+            - name: Setup problem matchers
+              run: |
+                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            - name: Install dependencies
+              run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v1
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: ${{ env.extensions }}
-                    coverage: none
+            - name: Install Puppeteer
+              run: npm install puppeteer
 
-            -   name: Install dependencies
-                run: |
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
-
-            -   name: Install Puppeteer
-                run: npm install puppeteer
-
-            -   name: Execute tests
-                run: vendor/bin/phpunit
+            - name: Execute tests
+              run: vendor/bin/phpunit
