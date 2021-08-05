@@ -459,6 +459,16 @@ class Browsershot
         return $this->setDelay($delayInMilliseconds);
     }
 
+    public function setUserDataDir(string $absolutePath)
+    {
+        return $this->addChromiumArguments(['user-data-dir' => $absolutePath]);
+    }
+
+    public function userDataDir(string $absolutePath)
+    {
+        return $this->setUserDataDir($absolutePath);
+    }
+
     public function writeOptionsToFile()
     {
         $this->writeOptionsToFile = true;
