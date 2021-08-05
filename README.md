@@ -426,6 +426,16 @@ $image = Browsershot::url('https://example.com')
     ->screenshot()
 ```
 
+#### Setting the user data directory
+
+You can set the [user data directory](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/user_data_dir.md) that is used to store the browser session and additional data. Setting this to a static value may introduce cache problems, could also increase performance. It needs to be an absolute path.
+
+```php
+$image = Browsershot::url('https://example.com')
+    ->userDataDir('/tmp/session-1')
+    ->screenshot()
+```
+
 ### PDFs
 
 Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.

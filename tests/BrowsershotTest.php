@@ -1353,6 +1353,31 @@ class BrowsershotTest extends TestCase
     }
 
     /** @test */
+    public function it_will_set_user_data_dir_arg_flag()
+    {
+        $dataDir = __DIR__.'/temp/session';
+        $command = Browsershot::url('https://example.com')
+            ->userDataDir($dataDir)
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [
+                    "--user-data-dir={$dataDir}",
+                ],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
     public function it_will_apply_manipulations_when_taking_screen_shots()
     {
         $screenShot = Browsershot::url('https://example.com')
