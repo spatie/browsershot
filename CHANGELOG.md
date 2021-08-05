@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.49.0 - 2021-08-05
+
+- add support for the --user-data-dir flag (#540)
+
 ## 3.48.0 - 2021-07-28
 
 - support spatie/image v2
