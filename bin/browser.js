@@ -41,7 +41,7 @@ const callChrome = async pup => {
     let page;
     let output;
     let remoteInstance;
-	const puppet = (pup || require('puppeteer'));
+    const puppet = (pup || require('puppeteer'));
 
     try {
         if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
@@ -163,6 +163,22 @@ const callChrome = async pup => {
             await page.setViewport(request.options.viewport);
         }
 
+        if (request.options && request.options.extraNavigationHTTPHeaders) {
+            page.on('request', request => {
+                // Do nothing in case of non-navigation requests.
+                if (!request.isNavigationRequest()) {
+                    request.continue();
+                    return;
+                }
+                // Add the extra headers for the navigation request.
+                request.continue({ headers: {
+                        ...request.headers(),
+                        ...request.options.extraNavigationHTTPHeaders
+                    } 
+                });
+            });
+        }
+
         if (request.options && request.options.extraHTTPHeaders) {
             await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
         }
@@ -239,17 +255,17 @@ const callChrome = async pup => {
         }
 
         if (request.options.selector) {
-        	var element;
+            var element;
             const index = request.options.selectorIndex || 0;
             if(index){
-            	element = await page.$$(request.options.selector);
-            	if(!element.length || typeof element[index] === 'undefined'){
-            		element = null;
-            	}else{
-            		element = element[index];
-            	}
+                element = await page.$$(request.options.selector);
+                if(!element.length || typeof element[index] === 'undefined'){
+                    element = null;
+                }else{
+                    element = element[index];
+                }
             }else{
-            	element = await page.$(request.options.selector);
+                element = await page.$(request.options.selector);
             }
             if (element === null) {
                 throw {type: 'ElementNotFound'};
@@ -298,7 +314,7 @@ const callChrome = async pup => {
 };
 
 if (require.main === module) {
-	callChrome();
+    callChrome();
 }
 
 exports.callChrome = callChrome;

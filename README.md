@@ -702,6 +702,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Setting extraNavigationHTTPHeaders
+
+To only send custom HTTP headers with navigational http requests, set the extraNavigationHTTPHeaders option like so:
+
+```php
+Browsershot::url('https://example.com')
+    ->setExtraNavigationHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
+   ...
+```
+
 #### Using HTTP Authentication
 
 You can provide credentials for HTTP authentication:
