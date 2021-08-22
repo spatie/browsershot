@@ -151,6 +151,13 @@ class Browsershot
         return $this;
     }
 
+    public function setExtraNavigationHttpHeaders(array $extraNavigationHTTPHeaders)
+    {
+        $this->setOption('extraNavigationHTTPHeaders', $extraNavigationHTTPHeaders);
+
+        return $this;
+    }
+
     public function authenticate(string $username, string $password)
     {
         $this->setOption('authentication', compact('username', 'password'));
