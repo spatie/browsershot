@@ -692,23 +692,25 @@ Browsershot::url('https://example.com')
    ...
 ```
 
-#### Setting extraHTTPHeaders
+#### Added extra headers to the navigational request
 
-To send custom HTTP headers, set the extraHTTPHeaders option like so:
-
-```php
-Browsershot::url('https://example.com')
-    ->setExtraHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
-   ...
-```
-
-#### Setting extraNavigationHTTPHeaders
-
-To only send custom HTTP headers with navigational http requests, set the extraNavigationHTTPHeaders option like so:
+To add custom HTTP headers to a navigational HTTP request, use `extraNavigationHTTPHeaders` like so:
 
 ```php
 Browsershot::url('https://example.com')
     ->setExtraNavigationHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
+   ...
+```
+
+This will add the header to the page you want to render, but those headers will not be added to any external resources that make up that page.
+
+#### Adding extra headers to every request
+
+To add custom HTTP headers to the navigational HTTP request and all resources that make up the page, use `setExtraHttpHeaders`:
+
+```php
+Browsershot::url('https://example.com')
+    ->setExtraHttpHeaders(['Custom-Header-Name' => 'Custom-Header-Value'])
    ...
 ```
 
