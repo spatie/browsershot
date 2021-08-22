@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.50.0 - 2021-08-21
+
+- added functionality to only send headers with navigational requests (#542)
+
 ## 3.49.0 - 2021-08-05
 
 - add support for the --user-data-dir flag (#540)
