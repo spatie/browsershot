@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.50.1 - 2021-08-27
+
+- fix browser.js to only abort or continue the request once (#548)
+
 ## 3.50.0 - 2021-08-21
 
 - added functionality to only send headers with navigational requests (#542)
