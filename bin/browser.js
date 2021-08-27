@@ -102,42 +102,49 @@ const callChrome = async pup => {
             });
         }
 
-        page.on('request', request => {
+        page.on('request', interceptedRequest => {
+            var headers = interceptedRequest.headers();
+
             requestsList.push({
-                url: request.url(),
+                url: interceptedRequest.url(),
             });
-            request.continue();
-        });
 
-        if (request.options && request.options.disableImages) {
-            page.on('request', request => {
-                if (request.resourceType() === 'image')
-                    request.abort();
-                else
-                    request.continue();
-            });
-        }
+            if (request.options && request.options.disableImages) {
+                if (interceptedRequest.resourceType() === 'image') {
+                    interceptedRequest.abort();
+                    return;
+                }
+            }
 
-        if (request.options && request.options.blockDomains) {
-            var domainsArray = JSON.parse(request.options.blockDomains);
-            page.on('request', request => {
+            if (request.options && request.options.blockDomains) {
                 const hostname = URLParse(request.url()).hostname;
                 domainsArray.forEach(function(value){
-                    if (hostname.indexOf(value) >= 0) request.abort();
+                    if (hostname.indexOf(value) >= 0) {
+                        interceptedRequest.abort();
+                        return;
+                    }
                 });
-                request.continue();
-            });
-        }
+            }
 
-        if (request.options && request.options.blockUrls) {
-            var urlsArray = JSON.parse(request.options.blockUrls);
-            page.on('request', request => {
+            if (request.options && request.options.blockUrls) {
+                var urlsArray = JSON.parse(request.options.blockUrls);
                 urlsArray.forEach(function(value){
-                    if (request.url().indexOf(value) >= 0) request.abort();
+                    if (interceptedRequest.url().indexOf(value) >= 0) {
+                        interceptedRequest.abort();
+                        return;
+                    }
                 });
-                request.continue();
-            });
-        }
+            }
+
+            if (request.options && request.options.extraNavigationHTTPHeaders) {
+                // Do nothing in case of non-navigation requests.
+                if (interceptedRequest.isNavigationRequest()) {
+                    headers = Object.assign({}, headers, request.options.extraNavigationHTTPHeaders);
+                }
+            }
+    
+            interceptedRequest.continue({headers});
+        });
 
         if (request.options && request.options.dismissDialogs) {
             page.on('dialog', async dialog => {
@@ -161,22 +168,6 @@ const callChrome = async pup => {
 
         if (request.options && request.options.viewport) {
             await page.setViewport(request.options.viewport);
-        }
-
-        if (request.options && request.options.extraNavigationHTTPHeaders) {
-            page.on('request', request => {
-                // Do nothing in case of non-navigation requests.
-                if (!request.isNavigationRequest()) {
-                    request.continue();
-                    return;
-                }
-                // Add the extra headers for the navigation request.
-                request.continue({ headers: {
-                        ...request.headers(),
-                        ...request.options.extraNavigationHTTPHeaders
-                    } 
-                });
-            });
         }
 
         if (request.options && request.options.extraHTTPHeaders) {
