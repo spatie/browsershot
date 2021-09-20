@@ -727,6 +727,64 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
+    
+    /** @test */
+    public function it_can_block_urls()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->blockUrls([
+                'example.com/cm-notify?pi=outbrain',
+                'sync.outbrain.com/cookie-sync?p=bidswitch',
+            ])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'blockUrls' => [
+                    'example.com/cm-notify?pi=outbrain',
+                    'sync.outbrain.com/cookie-sync?p=bidswitch',
+                ],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
+
+    /** @test */
+    public function it_can_block_domains()
+    {
+        $command = Browsershot::url('https://example.com')
+            ->blockDomains([
+                'googletagmanager.com',
+                'google-analytics.com',
+            ])
+            ->createScreenshotCommand('screenshot.png');
+
+        $this->assertEquals([
+            'url' => 'https://example.com',
+            'action' => 'screenshot',
+            'options' => [
+                'blockDomains' => [
+                    'googletagmanager.com',
+                    'google-analytics.com',
+                ],
+                'path' => 'screenshot.png',
+                'viewport' => [
+                    'width' => 800,
+                    'height' => 600,
+                ],
+                'args' => [],
+                'type' => 'png',
+            ],
+        ], $command);
+    }
 
     /** @test */
     public function it_can_ignore_https_errors()
