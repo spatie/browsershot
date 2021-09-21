@@ -117,18 +117,15 @@ const callChrome = async pup => {
             }
 
             if (request.options && request.options.blockDomains) {
-                const hostname = URLParse(request.url()).hostname;
-                domainsArray.forEach(function(value){
-                    if (hostname.indexOf(value) >= 0) {
-                        interceptedRequest.abort();
-                        return;
-                    }
-                });
+                const hostname = URLParse(interceptedRequest.url()).hostname;
+                if (request.options.blockDomains.includes(hostname)) {
+                    interceptedRequest.abort();
+                    return;
+                }
             }
 
             if (request.options && request.options.blockUrls) {
-                var urlsArray = JSON.parse(request.options.blockUrls);
-                urlsArray.forEach(function(value){
+                request.options.blockUrls.forEach(function(value) {
                     if (interceptedRequest.url().indexOf(value) >= 0) {
                         interceptedRequest.abort();
                         return;
