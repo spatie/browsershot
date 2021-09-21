@@ -2,6 +2,10 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.50.2 - 2021-09-22
+
+- fix `blockDomains` and `blockUrls` methods (#564)
+
 ## 3.50.1 - 2021-08-27
 
 - fix browser.js to only abort or continue the request once (#548)
