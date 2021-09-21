@@ -727,7 +727,7 @@ class BrowsershotTest extends TestCase
             ],
         ], $command);
     }
-    
+
     /** @test */
     public function it_can_block_urls()
     {
