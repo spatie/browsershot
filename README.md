@@ -480,7 +480,7 @@ Optionally you can give a custom unit to the `paperSize` as the third parameter.
 You can use the `format` method and provide a format size:
 
 ```php
-Browsershot::html('https://example.com')->format('A4')->save('example.pdf');
+Browsershot::url('https://example.com')->format('A4')->save('example.pdf');
 ```
 
 The `format` options available by puppeteer are:
