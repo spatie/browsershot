@@ -139,7 +139,7 @@ const callChrome = async pup => {
                     headers = Object.assign({}, headers, request.options.extraNavigationHTTPHeaders);
                 }
             }
-    
+
             interceptedRequest.continue({headers});
         });
 
@@ -192,7 +192,15 @@ const callChrome = async pup => {
             requestOptions.waitUntil = request.options.waitUntil;
         }
 
-        await page.goto(request.url, requestOptions);
+        const response = await page.goto(request.url, requestOptions);
+
+        if (request.options.preventUnsuccessfulResponse) {
+            const status = response.status()
+
+            if (status >= 400 && status < 600) {
+                throw {type: "UnsuccessfulResponse", status};
+            }
+        }
 
         if (request.options && request.options.disableImages) {
             await page.evaluate(() => {
@@ -289,6 +297,12 @@ const callChrome = async pup => {
             }
 
             await remoteInstance ? browser.disconnect() : browser.close();
+        }
+
+        if (exception.type === 'UnsuccessfulResponse') {
+            console.error(exception.status)
+
+            process.exit(3);
         }
 
         console.error(exception);
