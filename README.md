@@ -682,6 +682,16 @@ Browsershot::url('https://example.com')
    ...
 ```
 
+#### Prevent unsuccessful response
+
+You may want to throw an error when the page response is unsuccessful, you can use the following method :
+
+```php
+Browsershot::url('https://example.com')
+   ->preventUnsuccessfulResponse()
+    ...
+```
+
 #### Specify a proxy Server
 
 You can specify a proxy server to use when connecting. The argument passed to `setProxyServer` will be passed to the `--proxy-server=` option of Chromium. More info here: https://www.chromium.org/developers/design-documents/network-settings#TOC-Command-line-options-for-proxy-settings

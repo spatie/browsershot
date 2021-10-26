@@ -5,6 +5,7 @@ namespace Spatie\Browsershot\Test;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
+use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -1615,5 +1616,22 @@ class BrowsershotTest extends TestCase
             ->save($targetPath);
 
         $this->assertFileExists($targetPath);
+    }
+
+    /** @test */
+    public function it_can_throw_an_error_when_response_is_unsuccessful()
+    {
+        $url = 'https://google.com/404';
+
+        $this->expectException(UnsuccessfulResponse::class);
+        $this->expectExceptionMessage("The given url `{$url}` responds with code 404");
+
+        $targetPath = __DIR__.'/temp/notExists.pdf';
+
+        Browsershot::url($url)
+            ->preventUnsuccessfulResponse()
+            ->save($targetPath);
+
+        $this->assertFileDoesNotExist($targetPath);
     }
 }
