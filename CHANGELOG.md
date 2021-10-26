@@ -2,6 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.51.0 - 2021-10-27
+
+- 🚀 Support PHP 8.1 by @Nielsvanpach in https://github.com/spatie/browsershot/pull/567
+- Fix incorrect method reference in README by @intrepidws in https://github.com/spatie/browsershot/pull/570
+
 ## 3.50.2 - 2021-09-22
 
 - fix `blockDomains` and `blockUrls` methods (#564)
