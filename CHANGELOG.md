@@ -2,6 +2,11 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+## 3.52.0 - 2021-10-27
+
+- Prevent unsuccessful response by @mikaelpopowicz in https://github.com/spatie/browsershot/pull/576
+
+
 ## 3.51.0 - 2021-10-27
 
 - 🚀 Support PHP 8.1 by @Nielsvanpach in https://github.com/spatie/browsershot/pull/567
