@@ -17,7 +17,7 @@ class Browsershot
     protected $nodeBinary = null;
     protected $npmBinary = null;
     protected $nodeModulePath = null;
-    protected $includePath = '$PATH:/usr/local/bin';
+    protected $includePath = '$PATH:/usr/local/bin:/opt/homebrew/bin';
     protected $binPath = null;
     protected $html = '';
     protected $noSandbox = false;
