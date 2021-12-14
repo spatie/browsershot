@@ -6,9 +6,11 @@ use Exception;
 
 class CouldNotTakeBrowsershot extends Exception
 {
-    public static function chromeOutputEmpty(string $screenShotPath)
+    public static function chromeOutputEmpty(string $screenShotPath, array $command = [])
     {
-        return new static("For some reason Chrome did not write a file at `{$screenShotPath}`.");
+        $command = json_encode($command);
+
+        return new static("For some reason Chrome did not write a file at `{$screenShotPath}`. Command payload: {$command}");
     }
 
     public static function outputFileDidNotHaveAnExtension(string $path)

@@ -535,7 +535,7 @@ class Browsershot
         $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $command);
         }
 
         if (! $this->imageManipulations->isEmpty()) {
@@ -812,7 +812,6 @@ class Browsershot
         $this->cleanupTemporaryOptionsFile();
         $process->clearOutput();
         $exitCode = $process->getExitCode();
-
 
         if ($exitCode === 3) {
             throw new UnsuccessfulResponse($this->url, $process->getErrorOutput());
