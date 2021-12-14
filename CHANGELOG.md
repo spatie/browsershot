@@ -1,3 +1,9 @@
+## 3.52.2 - 2021-12-14
+
+- Add debug output to vague `CouldNotTakeBrowsershot` exception
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.1...3.52.2
+
 ## 3.52.1 - 2021-11-24
 
 ## What's Changed
