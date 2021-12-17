@@ -1,3 +1,15 @@
+## 3.52.3 - 2021-12-17
+
+## What's Changed
+
+- Adding compatibility to Symfony 6 by @spackmat in https://github.com/spatie/browsershot/pull/589
+
+## New Contributors
+
+- @spackmat made their first contribution in https://github.com/spatie/browsershot/pull/589
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.2...3.52.3
+
 ## 3.52.2 - 2021-12-14
 
 - Add debug output to vague `CouldNotTakeBrowsershot` exception
