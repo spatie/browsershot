@@ -64,7 +64,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 
 This package requires node 7.6.0 or higher and the Puppeteer Node library.
 
-### On MacOS
+### Installing puppeteer on MacOS
 
 On MacOS you can install Puppeteer in your project via NPM:
 
@@ -78,7 +78,7 @@ Or you could opt to just install it globally
 npm install puppeteer --global
 ```
 
-### On a Forge provisioned server
+### Installing puppeteer a Forge provisioned server
 
 On a [Forge](https://forge.laravel.com) provisioned Ubuntu 20.04 server you can install the latest stable version of Chrome like this:
 
@@ -88,10 +88,6 @@ sudo apt-get install -y nodejs gconf-service libasound2 libatk1.0-0 libc6 libcai
 sudo npm install --global --unsafe-perm puppeteer
 sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 ```
-
-### On AWS Lambda
-
-You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lamba.
 
 ### Custom node and npm binaries
 
@@ -175,6 +171,10 @@ Browsershot::html('Foo')
       'font-render-hinting' => 'none',
   ]);
 ```
+
+### Using Browsershot on AWS Lambda
+
+You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lamba.
 
 ## Installation
 
