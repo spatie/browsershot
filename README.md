@@ -91,7 +91,7 @@ sudo chmod -R o+rx /usr/lib/node_modules/puppeteer/.local-chromium
 
 ### On AWS Lambda
 
-You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lamba
+You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lamba.
 
 ### Custom node and npm binaries
 
