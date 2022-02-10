@@ -3,7 +3,7 @@ title: Introduction
 weight: 1
 ---
 
-The package can convert a webpage to an image or pdf. The conversion is done behind the scenes by [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless version of Google Chrome.
+The package can convert a webpage to an image or pdf. The conversion is done behind the scenes by [Puppeteer](https://github.com/puppeteer/puppeteer) which controls a headless version of Google Chrome.
 
 Here's a quick example:
 
