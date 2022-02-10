@@ -48,8 +48,6 @@ foreach ($requests as $request) {
 }
 ```
 
-**`triggeredRequests()` works well with `waitUntilNetworkIdle` as described [here](#waiting-for-lazy-loaded-resources)**
-
 ## Support us
 
 Learn how to create a package like this one, by watching our premium video course:
