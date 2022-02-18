@@ -13,4 +13,4 @@ This packages requires puppeteer to be installed. You can find installation inst
 
 ### Using Browsershot on AWS Lambda
 
-You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lamba.
+You can use [sidecar-browsershot](https://github.com/stefanzweifel/sidecar-browsershot) to easily run Browsershot on Lambda.
