@@ -346,12 +346,12 @@ class Browsershot
 
     public function mobile(bool $mobile = true)
     {
-        return $this->setOption('viewport.isMobile', true);
+        return $this->setOption('viewport.isMobile', $mobile);
     }
 
     public function touch(bool $touch = true)
     {
-        return $this->setOption('viewport.hasTouch', true);
+        return $this->setOption('viewport.hasTouch', $touch);
     }
 
     public function landscape(bool $landscape = true)
