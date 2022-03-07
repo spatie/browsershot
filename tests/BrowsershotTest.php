@@ -17,7 +17,7 @@ it('can get the body html', function () {
     $html = Browsershot::url('https://example.com')
         ->bodyHtml();
 
-    $this->assertStringContainsString('<h1>Example Domain</h1>', $html);
+    expect($html)->toContain('<h1>Example Domain</h1>');
 });
 
 it('can get the body html when using pipe', function () {
@@ -25,14 +25,14 @@ it('can get the body html when using pipe', function () {
         ->usePipe()
         ->bodyHtml();
 
-    $this->assertStringContainsString('<h1>Example Domain</h1>', $html);
+    expect($html)->toContain('<h1>Example Domain</h1>');
 });
 
 it('can get the requests list', function () {
     $list = Browsershot::url('https://example.com')
         ->triggeredRequests();
 
-    $this->assertCount(1, $list);
+    expect($list)->toHaveCount(1);
 
     $this->assertEquals(
         [['url' => 'https://example.com/']],
@@ -46,14 +46,14 @@ it('can take a screenshot', function () {
     Browsershot::url('https://example.com')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can return a screenshot as base 64', function () {
     $base64 = Browsershot::url('https://example.com')
         ->base64Screenshot();
 
-    $this->assertTrue(is_string($base64));
+    expect(is_string($base64))->toBeTrue();
 });
 
 it('can take a screenshot when using pipe', function () {
@@ -63,7 +63,7 @@ it('can take a screenshot when using pipe', function () {
         ->usePipe()
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can take a screenshot of arbitrary html', function () {
@@ -72,7 +72,7 @@ it('can take a screenshot of arbitrary html', function () {
     Browsershot::html('<h1>Hello world!!</h1>')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can take a high density screenshot', function () {
@@ -82,7 +82,7 @@ it('can take a high density screenshot', function () {
         ->deviceScaleFactor(2)
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('cannot save without an extension', function () {
@@ -101,7 +101,7 @@ it('can take a full page screenshot', function () {
         ->fullPage()
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can take a highly customized screenshot', function () {
@@ -116,7 +116,7 @@ it('can take a highly customized screenshot', function () {
         ->windowSize(1280, 800)
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can take a screenshot of an element matching a selector', function () {
@@ -126,7 +126,7 @@ it('can take a screenshot of an element matching a selector', function () {
         ->select('div')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('throws an exception if the selector does not match any elements', function () {
@@ -144,9 +144,9 @@ it('can save a pdf by using the pdf extension', function () {
     Browsershot::url('https://example.com')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 
-    $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
 it('can save a highly customized pdf', function () {
@@ -160,9 +160,9 @@ it('can save a highly customized pdf', function () {
         ->pages('1')
         ->savePdf($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 
-    $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
 it('can save a highly customized pdf when using pipe', function () {
@@ -177,16 +177,16 @@ it('can save a highly customized pdf when using pipe', function () {
         ->pages('1')
         ->savePdf($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 
-    $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
 it('can return a pdf as base 64', function () {
     $base64 = Browsershot::url('https://example.com')
         ->base64pdf();
 
-    $this->assertTrue(is_string($base64));
+    expect(is_string($base64))->toBeTrue();
 });
 
 it('can handle a permissions error', function () {
@@ -562,7 +562,7 @@ it('can set the include path and still works', function () {
         ->setIncludePath('$PATH:/usr/local/bin:/mypath')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can run without sandbox', function () {
@@ -784,7 +784,7 @@ it('can add a delay before taking a screenshot', function () {
 
     $end = round(microtime(true) * 1000);
 
-    $this->assertGreaterThanOrEqual($delay, $end - $start);
+    expect($end - $start)->toBeGreaterThanOrEqual($delay);
 });
 
 it('can get the output of a screenshot', function () {
@@ -795,7 +795,7 @@ it('can get the output of a screenshot', function () {
 
     $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
 
-    $this->assertEquals($mimeType, 'image/png');
+    expect('image/png')->toEqual($mimeType);
 });
 
 it('can get the output of a pdf', function () {
@@ -806,7 +806,7 @@ it('can get the output of a pdf', function () {
 
     $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
 
-    $this->assertEquals($mimeType, 'application/pdf');
+    expect('application/pdf')->toEqual($mimeType);
 });
 
 it('can save to temp dir with background', function () {
@@ -815,7 +815,7 @@ it('can save to temp dir with background', function () {
         ->background('white')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can wait until network idle', function () {
@@ -1022,7 +1022,7 @@ it('can set type of screenshot', function () {
         ->setScreenshotType('jpeg')
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 
     $this->assertMimeType('image/jpeg', $targetPath);
 });
@@ -1031,7 +1031,7 @@ it('can evaluate page', function () {
     $result = Browsershot::url('https://example.com')
         ->evaluate('1 + 1');
 
-    $this->assertEquals('2', $result);
+    expect($result)->toEqual('2');
 });
 
 it('can add a timeout to puppeteer', function () {
@@ -1204,7 +1204,7 @@ it('can write options to a file and generate a screenshot', function () {
         ->writeOptionsToFile()
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can write options to a file and generate a pdf', function () {
@@ -1214,9 +1214,9 @@ it('can write options to a file and generate a pdf', function () {
         ->writeOptionsToFile()
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 
-    $this->assertEquals('application/pdf', mime_content_type($targetPath));
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
 it('can generate a pdf with custom paper size unit', function () {
@@ -1330,9 +1330,9 @@ it('will apply manipulations when taking screen shots', function () {
 
     file_put_contents($targetPath, $screenShot);
 
-    $this->assertFileExists($targetPath);
-    $this->assertEquals(200, getimagesize($targetPath)[0]);
-    $this->assertEquals(200, getimagesize($targetPath)[1]);
+    expect($targetPath)->toBeFile();
+    expect(getimagesize($targetPath)[0])->toEqual(200);
+    expect(getimagesize($targetPath)[1])->toEqual(200);
 });
 
 it('will connect to remote instance and take screenshot', function () {
@@ -1362,7 +1362,7 @@ it('will connect to remote instance and take screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
     file_put_contents($targetPath, $instance->screenshot());
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
     */
 });
 
@@ -1393,7 +1393,7 @@ it('will connect to a custom remote instance and take screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
     file_put_contents($targetPath, $instance->screenshot());
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
     */
 });
 
@@ -1421,7 +1421,7 @@ it('will connect to a custom ws endpoint and take screenshot', function () {
         ->bodyHtml();
 
     // If it's offline then this will fail.
-    $this->assertStringContainsString('chrome.browserless.io', $html);
+    expect($html)->toContain('chrome.browserless.io');
 
     /* Now that we now the domain is online, assert the screenshot.
      * Although we can't be sure, because Browsershot itself falls back to launching a chromium instance in browser.js
@@ -1430,7 +1430,7 @@ it('will connect to a custom ws endpoint and take screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
     file_put_contents($targetPath, $instance->screenshot());
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('will allow passing environment variables', function () {
@@ -1464,7 +1464,7 @@ it('can take a scaled screenshot', function () {
         ->scale(0.5)
         ->save($targetPath);
 
-    $this->assertFileExists($targetPath);
+    expect($targetPath)->toBeFile();
 });
 
 it('can throw an error when response is unsuccessful', function () {
