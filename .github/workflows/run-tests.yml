@@ -36,4 +36,4 @@ jobs:
               run: npm install puppeteer
 
             - name: Execute tests
-              run: vendor/bin/phpunit
+              run: vendor/bin/pest
