@@ -7,8 +7,6 @@ use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-uses(TestCase::class);
-
 beforeEach(function () {
     $this->emptyTempDirectory();
 });
