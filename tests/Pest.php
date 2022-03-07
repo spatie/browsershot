@@ -1,5 +1,7 @@
 <?php
 
+uses(\Spatie\Browsershot\Test\TestCase::class)->in('tests', 'temp');
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
