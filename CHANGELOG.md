@@ -1,3 +1,22 @@
+## 3.52.4 - 2022-04-01
+
+## What's Changed
+
+- Improve exception output when output file is missing
+- Use function arguments for `mobile` and `touch` by @orkhanahmadov in https://github.com/spatie/browsershot/pull/610
+- Update Puppeteer GitHub link by @ioanschmitt in https://github.com/spatie/browsershot/pull/598
+- Add missing 'to' by @ioanschmitt in https://github.com/spatie/browsershot/pull/599
+- Fix typo by @noreason in https://github.com/spatie/browsershot/pull/604
+- PHPUnit to Pest Converter by @freekmurze in https://github.com/spatie/browsershot/pull/611
+
+## New Contributors
+
+- @ioanschmitt made their first contribution in https://github.com/spatie/browsershot/pull/598
+- @noreason made their first contribution in https://github.com/spatie/browsershot/pull/604
+- @orkhanahmadov made their first contribution in https://github.com/spatie/browsershot/pull/610
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.3...3.52.4
+
 ## 3.52.3 - 2021-12-17
 
 ## What's Changed
