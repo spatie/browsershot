@@ -530,12 +530,12 @@ class Browsershot
 
         $command = $this->createScreenshotCommand($targetPath);
 
-        $this->callBrowser($command);
+        $output = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $command);
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
         }
 
         if (! $this->imageManipulations->isEmpty()) {
@@ -797,7 +797,7 @@ class Browsershot
         }
     }
 
-    protected function callBrowser(array $command)
+    protected function callBrowser(array $command): string
     {
         $fullCommand = $this->getFullCommand($command);
 
