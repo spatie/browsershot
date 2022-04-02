@@ -593,12 +593,12 @@ class Browsershot
     {
         $command = $this->createPdfCommand($targetPath);
 
-        $this->callBrowser($command);
+        $output = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
-            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath);
+            throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output);
         }
     }
 
