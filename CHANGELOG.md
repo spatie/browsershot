@@ -1,3 +1,15 @@
+## 3.52.5 - 2022-04-04
+
+## What's Changed
+
+- Update savePdf to comply with 50eae92 by @marksalmon in https://github.com/spatie/browsershot/pull/622
+
+## New Contributors
+
+- @marksalmon made their first contribution in https://github.com/spatie/browsershot/pull/622
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.4...3.52.5
+
 ## 3.52.4 - 2022-04-01
 
 ## What's Changed
