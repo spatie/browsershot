@@ -127,7 +127,6 @@ const callChrome = async pup => {
             if (request.options && request.options.blockUrls) {
                 for (const element of request.options.blockUrls) {
                     if (interceptedRequest.url().indexOf(element) >= 0) {
-                        console.log("URL " + interceptedRequest.url() + " blocked by blockUrls");
                         interceptedRequest.abort();
                         return;
                     }
