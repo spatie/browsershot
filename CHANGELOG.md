@@ -1,3 +1,11 @@
+## 3.52.6 - 2022-04-06
+
+## What's Changed
+
+- Fixed issue Error: Request is already handled! in NodeJs v17.8.0 by @webaddicto in https://github.com/spatie/browsershot/pull/623
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.5...3.52.6
+
 ## 3.52.5 - 2022-04-04
 
 ## What's Changed
