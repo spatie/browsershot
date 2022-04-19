@@ -29,6 +29,7 @@ class Browsershot
     protected $screenshotQuality = null;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
+    protected $transparentBackground = false;
     protected $url = '';
     protected $postParams = [];
     protected $additionalOptions = [];
@@ -324,6 +325,13 @@ class Browsershot
     {
         $this->showBackground = false;
         $this->showScreenshotBackground = false;
+
+        return $this;
+    }
+
+    public function transparentBackground()
+    {
+        $this->transparentBackground = true;
 
         return $this;
     }
@@ -675,6 +683,10 @@ class Browsershot
 
         if ($this->showBackground) {
             $command['options']['printBackground'] = true;
+        }
+
+        if ($this->transparentBackground) {
+            $command['options']['omitBackground'] = true;
         }
 
         if ($this->scale) {

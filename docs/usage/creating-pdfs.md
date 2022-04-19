@@ -108,6 +108,14 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
+If you want a transparent background color instead of the default white, you can call `transparentBackground`:
+
+```php
+Browsershot::html($someHtml)
+   ->transparentBackground()
+   ->save('example.pdf');
+```
+
 ## Landscape orientation
 
 Call `landscape` if you want to resulting pdf to be landscape oriented.

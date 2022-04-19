@@ -253,6 +253,7 @@ it('can create a command to generate a screenshot and omit the background', func
 it('can create a command to generate a pdf', function () {
     $command = Browsershot::url('https://example.com')
         ->showBackground()
+        ->transparentBackground()
         ->landscape()
         ->margins(10, 20, 30, 40)
         ->pages('1-3')
@@ -265,6 +266,7 @@ it('can create a command to generate a pdf', function () {
         'options' => [
             'path' => 'screenshot.pdf',
             'printBackground' => true,
+            'omitBackground' => true,
             'landscape' => true,
             'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
             'pageRanges' => '1-3',
