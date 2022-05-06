@@ -249,6 +249,25 @@ const callChrome = async pup => {
         if (request.options.delay) {
             await page.waitForTimeout(request.options.delay);
         }
+        
+        if (request.options.initialPageNumber) {
+            await page.evaluate((initialPageNumber) => {
+                window.pageStart = initialPageNumber;
+
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = '.empty-page { page-break-after: always; visibility: hidden; }';
+                document.getElementsByTagName('head')[0].appendChild(style);
+
+                const emptyPages = Array.from({length: window.pageStart}).map(() => {
+                    const emptyPage = document.createElement('div');
+                    emptyPage.className = "empty-page";
+                    emptyPage.textContent = "empty";
+                    return emptyPage;
+                });
+                document.body.prepend(...emptyPages);
+            }, request.options.initialPageNumber);
+        }
 
         if (request.options.selector) {
             var element;
