@@ -913,4 +913,11 @@ class Browsershot
 
         return $array;
     }
+    
+    public function initialPageNumber(int $initialPage = 1)
+    {
+        return $this
+            ->setOption('initialPageNumber', --$initialPage)
+            ->pages(($initialPage+1).'-');
+    }
 }
