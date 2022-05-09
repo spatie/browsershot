@@ -1,3 +1,17 @@
+## 3.53.0 - 2022-05-09
+
+## What's Changed
+
+- Add support for `omitBackground` by @Ugoku in https://github.com/spatie/browsershot/pull/629
+- Ability to set initial page Number for template Headers by @leonelvsc in https://github.com/spatie/browsershot/pull/632
+
+## New Contributors
+
+- @Ugoku made their first contribution in https://github.com/spatie/browsershot/pull/629
+- @leonelvsc made their first contribution in https://github.com/spatie/browsershot/pull/632
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.52.6...3.53.0
+
 ## 3.52.6 - 2022-04-06
 
 ## What's Changed
