@@ -146,9 +146,9 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
-## Modify the initial page number
+## Set the initial page number
 
-You can control the initialPageNumber
+You can set the initial page number with `initialPageNumber`. Here's an example that shows how to set the first page to number 8.
 
 ```php
 Browsershot::html($someHtml)
