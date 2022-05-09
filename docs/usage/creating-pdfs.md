@@ -146,6 +146,20 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
+## Modify the initial page number
+
+You can control the initialPageNumber
+
+```php
+Browsershot::html($someHtml)
+   ->showBrowserHeaderAndFooter()
+   ->hideFooter()
+   ->headerHtml('<span class="pageNumber"></span>')
+   ->initialPageNumber(8)
+   ->save('example.pdf');
+```
+
+
 ## Output directly to the browser
 You can output the PDF directly to the browser using the `pdf()` method.
 
