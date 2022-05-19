@@ -102,6 +102,15 @@ const callChrome = async pup => {
             });
         }
 
+        const contentUrl = request.options.contentUrl;
+        const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
+        let pageContent;
+
+        if (contentUrl) {
+            pageContent = fs.readFileSync(request.url.replace('file://', ''));
+            request.url = contentUrl;
+        }
+
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
@@ -140,7 +149,20 @@ const callChrome = async pup => {
                 }
             }
 
-            interceptedRequest.continue({headers});
+            if (pageContent) {
+                const interceptedUrl = interceptedRequest.url().replace(/\/$/, "");
+
+                // if content url matches the intercepted request url, will return the content fetched from the local file system
+                if (interceptedUrl === parsedContentUrl) {
+                    interceptedRequest.respond({
+                        headers,
+                        body: pageContent,
+                    });
+                    return;
+                }
+            }
+
+            interceptedRequest.continue({ headers });
         });
 
         if (request.options && request.options.dismissDialogs) {

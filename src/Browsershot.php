@@ -745,6 +745,11 @@ class Browsershot
         return $this->setOption('env', $options);
     }
 
+    public function setContentUrl(string $contentUrl): self
+    {
+        return $this->html ? $this->setOption('contentUrl', $contentUrl) : $this;
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;

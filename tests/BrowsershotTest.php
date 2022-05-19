@@ -1481,3 +1481,30 @@ it('can throw an error when response is unsuccessful', function () {
 
     $this->assertFileDoesNotExist($targetPath);
 });
+
+it('will allow passing a content url', function () {
+    $instance = Browsershot::html('<h1>Hello world!!</h1>')
+        ->setContentUrl('https://example.com');
+
+    $response = $instance->createScreenshotCommand('screenshot.png');
+
+    $responseUrl = $response['url'];
+    unset($response['url']);
+
+    $this->assertEquals([
+        'action' => 'screenshot',
+        'options' => [
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'type' => 'png',
+            'displayHeaderFooter' => false,
+            'contentUrl' => 'https://example.com',
+        ],
+    ], $response);
+
+    $this->assertStringContainsString("file://", $responseUrl);
+});
