@@ -1,3 +1,11 @@
+## 3.54.0 - 2022-05-19
+
+## What's Changed
+
+- Added method setContentUrl to set url when using html method by @vitorsemeano in https://github.com/spatie/browsershot/pull/635
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.53.0...3.54.0
+
 ## 3.53.0 - 2022-05-09
 
 ## What's Changed
