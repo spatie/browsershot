@@ -1508,3 +1508,12 @@ it('will allow passing a content url', function () {
 
     $this->assertStringContainsString("file://", $responseUrl);
 });
+
+it('can get the console messages', function() {
+    $consoleMessages = Browsershot::url('https://bitsofco.de/styling-broken-images/')->consoleMessages();
+
+    expect($consoleMessages)->toBeArray()
+        ->and($consoleMessages[0]['type'])->toEqual('log')
+        ->and($consoleMessages[0]['message'])->toEqual('👀 I 👀 see 👀 you 👀')
+        ->and($consoleMessages[0]['location']['url'])->toStartWith('https://bitsofco.de/assets');
+});

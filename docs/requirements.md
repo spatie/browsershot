@@ -16,7 +16,7 @@ npm install puppeteer
 Or you could opt to just install it globally
 
 ```bash
-npm install puppeteer --global
+npm install puppeteer --location=global
 ```
 
 ### Installing puppeteer a Forge provisioned server

@@ -1,6 +1,6 @@
 ---
 title: Typing on the page
-weight: 18
+weight: 19
 ---
 
 You can type on the page (you can use this to fill form fields).

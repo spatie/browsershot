@@ -1,6 +1,6 @@
 ---
 title: Specifying-a-proxy-server
-weight: 17
+weight: 18
 ---
 
 You can specify a proxy server to use when connecting. The argument passed to `setProxyServer` will be passed to the `--proxy-server=` option of Chromium. More info here: https://www.chromium.org/developers/design-documents/network-settings#TOC-Command-line-options-for-proxy-settings

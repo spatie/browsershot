@@ -1,6 +1,6 @@
 ---
 title: Writing options to a file
-weight: 21
+weight: 24
 ---
 
 When the amount of options given to puppeteer becomes too big, Browsershot will fail because of an overflow of characters in the command line.
