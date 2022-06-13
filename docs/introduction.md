@@ -27,13 +27,13 @@ You can also use an arbitrary html input, simply replace the `url` method with `
 Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 ```
 
-Browsershot also can get the body of an html page after JavaScript has been executed:
+Browsershot also can get the body of an HTML page after JavaScript has been executed:
 
 ```php
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
-If you wish to retrieve an array list with all of the requests that the page triggered you can do so:
+If you wish to retrieve an array list with all the requests that the page triggered you can do so:
 
 ```php
 $requests = Browsershot::url('https://example.com')
