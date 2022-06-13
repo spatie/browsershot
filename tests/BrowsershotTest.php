@@ -1509,7 +1509,7 @@ it('will allow passing a content url', function () {
     $this->assertStringContainsString("file://", $responseUrl);
 });
 
-it('can get the console messages', function() {
+it('can get the console messages', function () {
     $consoleMessages = Browsershot::url('https://bitsofco.de/styling-broken-images/')->consoleMessages();
 
     expect($consoleMessages)->toBeArray()
