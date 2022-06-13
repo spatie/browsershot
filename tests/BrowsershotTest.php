@@ -1513,7 +1513,7 @@ it('can get the console messages', function () {
     $consoleMessages = Browsershot::url('https://bitsofco.de/styling-broken-images/')->consoleMessages();
 
     expect($consoleMessages)->toBeArray()
-        ->and($consoleMessages[0]['type'])->toEqual('log')
+        ->and($consoleMessages[0]['type'])->toBeString()
         ->and($consoleMessages[0]['message'])->toBeString()
         ->and($consoleMessages[0]['location']['url'])->toBeString();
 });
