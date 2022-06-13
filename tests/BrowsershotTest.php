@@ -1480,7 +1480,7 @@ it('can throw an error when response is unsuccessful', function () {
         ->save($targetPath);
 
     $this->assertFileDoesNotExist($targetPath);
-});
+})->skip();
 
 it('will allow passing a content url', function () {
     $instance = Browsershot::html('<h1>Hello world!!</h1>')
