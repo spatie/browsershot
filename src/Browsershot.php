@@ -631,6 +631,16 @@ class Browsershot
         return json_decode($this->callBrowser($command), true);
     }
 
+    /**
+     * @return array{type: string, message: string, location:array}
+     */
+    public function consoleMessages(): array
+    {
+        $command = $this->createConsoleMessagesCommand();
+
+        return json_decode($this->callBrowser($command), true);
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -709,9 +719,20 @@ class Browsershot
 
     public function createTriggeredRequestsListCommand(): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
 
         return $this->createCommand($url, 'requestsList');
+    }
+
+    public function createConsoleMessagesCommand(): array
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        return $this->createCommand($url, 'consoleMessages');
     }
 
     public function setRemoteInstance(string $ip = '127.0.0.1', int $port = 9222): self

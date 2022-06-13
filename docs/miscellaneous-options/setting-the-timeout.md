@@ -1,6 +1,6 @@
 ---
 title: Setting the timeout
-weight: 15
+weight: 16
 ---
 
 The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
