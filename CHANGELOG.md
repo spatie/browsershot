@@ -1,3 +1,11 @@
+## 3.55.0 - 2022-06-13
+
+### What's Changed
+
+- Add console messages method by @freekmurze in https://github.com/spatie/browsershot/pull/641
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.54.0...3.55.0
+
 ## 3.54.0 - 2022-05-19
 
 ## What's Changed
