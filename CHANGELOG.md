@@ -1,3 +1,7 @@
+## 3.56.0 - 2022-06-21
+
+- add `failedRequests` method
+
 ## 3.55.0 - 2022-06-13
 
 ### What's Changed
