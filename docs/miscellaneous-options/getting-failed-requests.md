@@ -1,5 +1,5 @@
 ---
-title: Getting console output
+title: Getting failed requests
 weight: 10
 ---
 
