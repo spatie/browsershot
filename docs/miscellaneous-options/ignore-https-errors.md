@@ -1,6 +1,6 @@
 ---
 title: Ignore HTTPS errors
-weight: 10
+weight: 11
 ---
 
 You can ignore HTTPS errors, if necessary.

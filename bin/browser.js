@@ -18,6 +18,8 @@ const requestsList = [];
 
 const consoleMessages = [];
 
+const failedRequests = [];
+
 const getOutput = async (page, request) => {
     let output;
 
@@ -29,6 +31,12 @@ const getOutput = async (page, request) => {
 
     if (request.action == 'consoleMessages') {
         output = JSON.stringify(consoleMessages);
+
+        return output;
+    }
+
+    if (request.action == 'failedRequests') {
+        output = JSON.stringify(failedRequests);
 
         return output;
     }
@@ -124,6 +132,17 @@ const callChrome = async pup => {
             message: message.text(),
             location: message.location()
         }));
+
+        page.on('response', function (response) {
+            if (response.status() >= 200 && response.status() <= 399) {
+                return;
+            }
+
+            failedRequests.push({
+                status: response.status(),
+                url: response.url(),
+            });
+        })
 
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();

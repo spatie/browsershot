@@ -1,6 +1,6 @@
 ---
 title: Sending POST requests
-weight: 13
+weight: 14
 ---
 
 By default, all requests sent using GET method. You can make POST request to the given url by using the `post` method.

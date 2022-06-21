@@ -1,6 +1,6 @@
 ---
 title: Setting an arbitrary option
-weight: 14
+weight: 15
 ---
 
 You can set any arbitrary options by calling `setOption`:

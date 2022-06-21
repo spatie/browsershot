@@ -1,6 +1,6 @@
 ---
 title: Setting the user agent
-weight: 17
+weight: 18
 ---
 
 If you want to set the user agent Google Chrome should use when taking the screenshot you can do so:

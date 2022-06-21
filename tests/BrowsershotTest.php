@@ -1517,3 +1517,11 @@ it('can get the console messages', function () {
         ->and($consoleMessages[0]['message'])->toBeString()
         ->and($consoleMessages[0]['location']['url'])->toBeString();
 });
+
+it('can get the failed requests', function () {
+    $failedRequests = Browsershot::url('https://bitsofco.de/styling-broken-images/')->failedRequests();
+
+    expect($failedRequests)->toBeArray()
+        ->and($failedRequests[0]['status'])->toBe(404)
+        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg/');
+});
