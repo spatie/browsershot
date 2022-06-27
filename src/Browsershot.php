@@ -117,7 +117,7 @@ class Browsershot
         return $this;
     }
 
-    public function setTempPath(string $tempPath)
+    public function setCustomTempPath(string $tempPath)
     {
         $this->tempPath = $tempPath;
 
