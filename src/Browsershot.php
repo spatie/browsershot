@@ -34,6 +34,7 @@ class Browsershot
     protected $postParams = [];
     protected $additionalOptions = [];
     protected $temporaryOptionsDirectory;
+    protected $tempPath = '';
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
 
@@ -112,6 +113,13 @@ class Browsershot
     public function setChromePath(string $executablePath)
     {
         $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
+    public function setTempPath(string $tempPath)
+    {
+        $this->tempPath = $tempPath;
 
         return $this;
     }
@@ -575,7 +583,7 @@ class Browsershot
             return base64_decode($encodedImage);
         }
 
-        $temporaryDirectory = (new TemporaryDirectory())->create();
+        $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         $this->save($temporaryDirectory->path('screenshot.png'));
 
@@ -821,7 +829,7 @@ class Browsershot
 
     protected function createTemporaryHtmlFile(): string
     {
-        $this->temporaryHtmlDirectory = (new TemporaryDirectory())->create();
+        $this->temporaryHtmlDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         file_put_contents($temporaryHtmlFile = $this->temporaryHtmlDirectory->path('index.html'), $this->html);
 
@@ -837,7 +845,7 @@ class Browsershot
 
     protected function createTemporaryOptionsFile(string $command): string
     {
-        $this->temporaryOptionsDirectory = (new TemporaryDirectory())->create();
+        $this->temporaryOptionsDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         file_put_contents($temporaryOptionsFile = $this->temporaryOptionsDirectory->path('command.js'), $command);
 
