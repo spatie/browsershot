@@ -1,3 +1,15 @@
+## 3.57.0 - 2022-06-28
+
+### What's Changed
+
+- Set custom temp path by @mtawil in https://github.com/spatie/browsershot/pull/648
+
+### New Contributors
+
+- @mtawil made their first contribution in https://github.com/spatie/browsershot/pull/648
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.56.0...3.57.0
+
 ## 3.56.0 - 2022-06-21
 
 - add `failedRequests` method
