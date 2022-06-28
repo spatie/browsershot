@@ -40,14 +40,6 @@ Browsershot also can get the body of an html page after JavaScript has been exec
 Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the body
 ```
 
-If you want to set a custom temp path, you can use the `setCustomTempPath` method:
-
-```php
-Browsershot::url('https://example.com')
-    ->setCustomTempPath(storage_path('browsershot'))
-    ->pdf();
-```
-
 If you wish to retrieve an array list with all of the requests that the page triggered you can do so:
 
 ```php
