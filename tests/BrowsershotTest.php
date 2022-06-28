@@ -1525,3 +1525,15 @@ it('can get the failed requests', function () {
         ->and($failedRequests[0]['status'])->toBe(404)
         ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg/');
 });
+
+it('can set the custom temp path', function () {
+    $output = Browsershot::url('https://example.com')
+        ->setCustomTempPath(__DIR__.'/temp/')
+        ->pdf();
+
+    $finfo = finfo_open();
+
+    $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
+
+    expect('application/pdf')->toEqual($mimeType);
+});
