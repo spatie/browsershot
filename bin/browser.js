@@ -297,8 +297,84 @@ const callChrome = async pup => {
             await page.addStyleTag(JSON.parse(request.options.addStyleTag));
         }
 
+        if (request.options && request.options.pagedjs) {
+            await page.addScriptTag({
+				url: request.options.pagedjs
+			});
+        }
+
         if (request.options && request.options.addScriptTag) {
             await page.addScriptTag(JSON.parse(request.options.addScriptTag));
+        }
+
+        if (request.options && request.options.pagedjs) {
+            await page.exposeFunction("onSize", (size) => {
+                this.emit("size", size);
+            });
+    
+            await page.exposeFunction("onPage", (page) => {
+    
+                this.pages.push(page);
+    
+                this.emit("page", page);
+            });
+    
+            await page.exposeFunction("onRendered", (msg, width, height, orientation) => {
+                this.emit("rendered", msg, width, height, orientation);
+                resolver({msg, width, height, orientation});
+            });
+    
+            await page.evaluate(async () => {
+                let done;
+                window.PagedPolyfill.on("page", (page) => {
+                    const { id, width, height, startToken, endToken, breakAfter, breakBefore, position } = page;
+    
+                    const mediabox = page.element.getBoundingClientRect();
+                    const cropbox = page.pagebox.getBoundingClientRect();
+    
+                    function getPointsValue(value) {
+                        return (Math.round(CSS.px(value).to("pt").value * 100) / 100);
+                    }
+    
+                    let boxes = {
+                        media: {
+                            width: getPointsValue(mediabox.width),
+                            height: getPointsValue(mediabox.height),
+                            x: 0,
+                            y: 0
+                        },
+                        crop: {
+                            width: getPointsValue(cropbox.width),
+                            height: getPointsValue(cropbox.height),
+                            x: getPointsValue(cropbox.x) - getPointsValue(mediabox.x),
+                            y: getPointsValue(cropbox.y) - getPointsValue(mediabox.y)
+                        }
+                    };
+    
+                    window.onPage({ id, width, height, startToken, endToken, breakAfter, breakBefore, position, boxes });
+                });
+    
+                window.PagedPolyfill.on("size", (size) => {
+                    window.onSize(size);
+                });
+    
+                window.PagedPolyfill.on("rendered", (flow) => {
+                    let msg = "Rendering " + flow.total + " pages took " + flow.performance + " milliseconds.";
+                    window.onRendered(msg, flow.width, flow.height, flow.orientation);
+                });
+    
+                if (window.PagedConfig.before) {
+                    await window.PagedConfig.before();
+                }
+    
+                done = await window.PagedPolyfill.preview();
+    
+                if (window.PagedConfig.after) {
+                    await window.PagedConfig.after(done);
+                }
+            })
+    
+            await page.waitForSelector(".pagedjs_pages");
         }
 
         if (request.options.delay) {

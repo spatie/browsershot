@@ -1034,6 +1034,27 @@ it('can evaluate page', function () {
     expect($result)->toEqual('2');
 });
 
+it('can use pagedjs', function () {
+    $command = Browsershot::url('https://example.com')
+        ->usePagedJS()
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'pagedjs' => '//unpkg.com/pagedjs/dist/paged.polyfill.js',
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'type' => 'png',
+        ],
+    ], $command);
+});
+
 it('can add a timeout to puppeteer', function () {
     $command = Browsershot::url('https://example.com')
         ->timeout(123)

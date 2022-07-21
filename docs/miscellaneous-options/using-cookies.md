@@ -1,6 +1,6 @@
 ---
 title: Using cookies
-weight: 22
+weight: 23
 ---
 
 You can add cookies to the request to the given url:

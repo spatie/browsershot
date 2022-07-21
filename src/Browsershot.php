@@ -632,6 +632,10 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function usePagedJS(string $url = '//unpkg.com/pagedjs/dist/paged.polyfill.js') {
+        $this->setOption('pagedjs', $url);
+    }
+
     public function triggeredRequests(): array
     {
         $command = $this->createTriggeredRequestsListCommand();

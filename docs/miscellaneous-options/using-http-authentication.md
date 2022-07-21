@@ -1,6 +1,6 @@
 ---
 title: Using HTTP Authentication
-weight: 23
+weight: 24
 ---
 
 You can provide credentials for HTTP authentication:
