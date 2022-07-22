@@ -298,6 +298,11 @@ const callChrome = async pup => {
         }
 
         if (request.options && request.options.pagedjs) {
+            await page.evaluate(() => {
+                window.PagedConfig = window.PagedConfig || {};
+                window.PagedConfig.auto = false;
+            });
+            
             await page.addScriptTag({
 				url: request.options.pagedjs
 			});
