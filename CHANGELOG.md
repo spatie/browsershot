@@ -1,3 +1,15 @@
+## 3.57.1 - 2022-08-03
+
+### What's Changed
+
+- Enable writeOptionsToFile for Windows by @moisish in https://github.com/spatie/browsershot/pull/660
+
+### New Contributors
+
+- @moisish made their first contribution in https://github.com/spatie/browsershot/pull/660
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.0...3.57.1
+
 ## 3.57.0 - 2022-06-28
 
 ### What's Changed
