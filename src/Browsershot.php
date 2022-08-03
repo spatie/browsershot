@@ -892,11 +892,15 @@ class Browsershot
 
         $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $optionsCommand = $this->getOptionsCommand(json_encode($command));
+
+        if ($this->isWindows()) {
             $fullCommand =
                 $nodeBinary.' '
                 .escapeshellarg($binPath).' '
-                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+                .'"'
+                .$optionsCommand
+                .'"';
 
             return escapeshellcmd($fullCommand);
         }
@@ -904,8 +908,6 @@ class Browsershot
         $setIncludePathCommand = "PATH={$this->includePath}";
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
-
-        $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
         return
             $setIncludePathCommand.' '
@@ -931,8 +933,11 @@ class Browsershot
     {
         if ($this->writeOptionsToFile) {
             $temporaryOptionsFile = $this->createTemporaryOptionsFile($command);
+            $command = "-f {$temporaryOptionsFile}";
+        }
 
-            return escapeshellarg("-f {$temporaryOptionsFile}");
+        if ($this->isWindows()) {
+            return str_replace('"', '\"', $command);
         }
 
         return escapeshellarg($command);
@@ -969,5 +974,10 @@ class Browsershot
         return $this
             ->setOption('initialPageNumber', ($initialPage - 1))
             ->pages($initialPage.'-');
+    }
+
+    private function isWindows()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
 }
