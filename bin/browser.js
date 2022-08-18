@@ -101,23 +101,6 @@ const callChrome = async pup => {
 
         await page.setRequestInterception(true);
 
-        if (request.postParams) {
-            const postParamsArray = request.postParams;
-            const queryString = Object.keys(postParamsArray)
-                .map(key => `${key}=${postParamsArray[key]}`)
-                .join('&');
-            page.once("request", interceptedRequest => {
-                interceptedRequest.continue({
-                    method: "POST",
-                    postData: queryString,
-                    headers: {
-                        ...interceptedRequest.headers(),
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
-            });
-        }
-
         const contentUrl = request.options.contentUrl;
         const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
         let pageContent;
@@ -193,6 +176,22 @@ const callChrome = async pup => {
                     });
                     return;
                 }
+            }
+
+            if (request.postParams) {
+                const postParamsArray = request.postParams;
+                const queryString = Object.keys(postParamsArray)
+                    .map(key => `${key}=${postParamsArray[key]}`)
+                    .join('&');
+                interceptedRequest.continue({
+                    method: "POST",
+                    postData: queryString,
+                    headers: {
+                        ...interceptedRequest.headers(),
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+                return;
             }
 
             interceptedRequest.continue({ headers });
