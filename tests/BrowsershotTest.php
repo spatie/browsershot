@@ -980,6 +980,14 @@ it('can send post request', function () {
     ], $command);
 });
 
+it('can process post request', function () {
+    $html = Browsershot::url('https://httpbin.org/post')
+        ->post(['foo' => 'bar'])
+        ->bodyHtml();
+
+    expect($html)->toContain('"foo": "bar"');
+});
+
 it('can click on the page', function () {
     $command = Browsershot::url('https://example.com')
         ->click('#selector1')
