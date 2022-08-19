@@ -1,3 +1,15 @@
+## 3.57.2 - 2022-08-19
+
+### What's Changed
+
+- Prevent double request interception on POST by @JeppeKnockaert in https://github.com/spatie/browsershot/pull/664
+
+### New Contributors
+
+- @JeppeKnockaert made their first contribution in https://github.com/spatie/browsershot/pull/664
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.1...3.57.2
+
 ## 3.57.1 - 2022-08-03
 
 ### What's Changed
