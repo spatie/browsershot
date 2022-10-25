@@ -4,6 +4,7 @@ use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
+use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -77,6 +78,10 @@ it('can take a screenshot of arbitrary html', function () {
 
     expect($targetPath)->toBeFile();
 });
+
+it('will not allow html to contain file://', function () {
+    Browsershot::html('<h1><img src="file://" /></h1>');
+})->throws(HtmlIsNotAllowedToContainFile::class);
 
 it('can take a high density screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
