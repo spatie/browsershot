@@ -1,3 +1,7 @@
+## 3.57.3 - 2022-10-25
+
+- Do not allow `file://` to be used
+
 ## 3.57.2 - 2022-08-19
 
 ### What's Changed
