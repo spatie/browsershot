@@ -11,7 +11,7 @@ it('can determine if a string starts with a substring', function (string $haysta
     ['https://spatie.be', 'file://', false],
 ]);
 
-it('can determine if a string starts contains a substring', function(string $haystack, $needle, $expectedResult) {
+it('can determine if a string starts contains a substring', function (string $haystack, $needle, $expectedResult) {
     expect(Helpers::stringContains($haystack, $needle))->toBe($expectedResult);
 })->with([
     ['heyheyfile://', 'file://', true],
