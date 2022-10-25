@@ -3,6 +3,7 @@
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
+use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -37,6 +38,10 @@ it('can get the requests list', function () {
         $list
     );
 });
+
+it('will not allow a file url', function () {
+    Browsershot::url('file://test');
+})->throws(FileUrlNotAllowed::class);
 
 it('can take a screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
