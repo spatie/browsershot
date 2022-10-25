@@ -2,7 +2,7 @@
 
 use Spatie\Browsershot\Helpers;
 
-it('can determine if a string starts with a substring', function(string $haystack, $needle, $expectedResult) {
+it('can determine if a string starts with a substring', function (string $haystack, $needle, $expectedResult) {
     expect(Helpers::stringStartsWith($haystack, $needle))->toBe($expectedResult);
 })->with([
     ['https://spatie.be', 'https://', true],
