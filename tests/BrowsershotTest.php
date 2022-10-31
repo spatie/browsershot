@@ -5,6 +5,7 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
+use Spatie\Browsershot\Exceptions\JSLinkIsNotInAllowList;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -82,6 +83,19 @@ it('can take a screenshot of arbitrary html', function () {
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
+
+it('will not allow JS import links not in allowList', function () {
+    Browsershot::html('<script src="https://malicious.com"></script>', ["https://safe.com"]);
+})->throws(JSLinkIsNotInAllowList::class);
+
+it('allows importing JS links that are in allowList', function () {
+    $output = Browsershot::html('<script src="https://safe.com"></script>', ["https://safe.com"])
+        ->pdf();
+
+    $finfo = finfo_open();
+    $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
+    expect('application/pdf')->toEqual($mimeType);
+});
 
 it('can take a high density screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';

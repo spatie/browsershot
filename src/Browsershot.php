@@ -6,12 +6,15 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
+use Spatie\Browsershot\Exceptions\JSLinkIsNotInAllowList;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use \DOMDocument;
+use \DOMXPath;
 
 /** @mixin \Spatie\Image\Manipulations */
 class Browsershot
@@ -58,11 +61,13 @@ class Browsershot
 
     /**
      * @param string $html
+     * @param array $allowList
      *
      * @return static
      */
-    public static function html(string $html)
+    public static function html(string $html, $allowList = [])
     {
+        (new static())->jsLinksInAllowlist($html, $allowList);
         return (new static())->setHtml($html);
     }
 
@@ -252,6 +257,26 @@ class Browsershot
         $this->proxyServer = $proxyServer;
 
         return $this;
+    }
+
+    public static function jsLinksInAllowlist(string $html, $allowList = []) {
+        // https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#php
+        libxml_set_external_entity_loader(null);
+
+        $dom = new DOMDocument();
+        $dom->loadHTML($html);
+
+        $xpath = new DOMXPath($dom);
+
+        foreach($xpath->query("//script[@src]") as $queryResult) {
+            $jsLink = $queryResult->getAttribute("src");
+
+            foreach ($allowList as $safeDomain) {
+                if($jsLink !== $safeDomain) {
+                    throw JSLinkIsNotInAllowList::make($jsLink);
+                }
+            }
+        }
     }
 
     public function setHtml(string $html)
