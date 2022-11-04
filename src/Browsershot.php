@@ -912,7 +912,7 @@ class Browsershot
                 .$optionsCommand
                 .'"';
 
-            return escapeshellcmd($fullCommand);
+            return preg_replace('`(?<!^) `', '^ ', escapeshellcmd($fullCommand));
         }
 
         $setIncludePathCommand = "PATH={$this->includePath}";
