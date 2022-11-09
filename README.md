@@ -1,6 +1,3 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
 <p align="center"><img src="/art/socialcard.png" alt="Social Card of Spatie's Browsershot"></p>
 
 # Convert a webpage to an image or pdf using headless Chrome
