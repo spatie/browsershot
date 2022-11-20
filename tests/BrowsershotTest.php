@@ -1555,3 +1555,22 @@ it('can set the custom temp path', function () {
 
     expect('application/pdf')->toEqual($mimeType);
 });
+
+
+it('can set html contents from a file', function () {
+    $inputFile = __DIR__.'/temp/test.html';
+    $inputHtml = '<html><head></head><body><h1>Hello World</h1></body></html>';
+
+    file_put_contents($inputFile, $inputHtml);
+
+
+    $outputHtml = Browsershot::htmlFromFilePath($inputFile)
+        ->usePipe()
+        ->bodyHtml();
+
+    expect($outputHtml)->toEqual($inputHtml);
+});
+
+it('can not set html contents from a non-existent file', function () {
+    Browsershot::htmlFromFilePath(__DIR__.'/temp/non-existent-file.html');
+})->throws(\Spatie\Browsershot\Exceptions\FileDoesNotExistException::class);
