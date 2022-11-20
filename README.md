@@ -31,6 +31,12 @@ You can also use an arbitrary html input, simply replace the `url` method with `
 Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 ```
 
+If your HTML input is already in a file locally use the :
+
+```php
+Browsershot::htmlFromFilePath('/local/path/to/file.html')->save('example.pdf');
+```
+
 Browsershot also can get the body of an html page after JavaScript has been executed:
 
 ```php
