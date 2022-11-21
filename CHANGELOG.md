@@ -1,3 +1,15 @@
+## 3.57.4 - 2022-11-21
+
+### What's Changed
+
+- Allow user to explicitly use a local file for html content. by @daum in https://github.com/spatie/browsershot/pull/687
+
+### New Contributors
+
+- @daum made their first contribution in https://github.com/spatie/browsershot/pull/687
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.3...3.57.4
+
 ## 3.57.3 - 2022-10-25
 
 - Do not allow `file://` to be used
