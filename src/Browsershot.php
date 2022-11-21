@@ -255,7 +255,7 @@ class Browsershot
 
     public function setHtmlFromFilePath(string $filePath): self
     {
-        if(false === file_exists($filePath)){
+        if (false === file_exists($filePath)) {
             throw new FileDoesNotExistException($filePath);
         }
 
@@ -263,7 +263,6 @@ class Browsershot
         $this->html = '';
 
         return $this;
-
     }
 
     public function setProxyServer(string $proxyServer)
@@ -1013,6 +1012,7 @@ class Browsershot
     private function getFinalContentsUrl(): string
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
         return $url;
     }
 }
