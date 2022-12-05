@@ -8,6 +8,6 @@ class FileDoesNotExistException extends Exception
 {
     public function __construct($file)
     {
-        parent::__construct("The file `{$file} does not exist");
+        parent::__construct("The file `{$file}` does not exist");
     }
 }
