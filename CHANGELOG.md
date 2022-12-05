@@ -1,3 +1,20 @@
+## 3.57.5 - 2022-12-05
+
+### What's Changed
+
+- Add PHP 8.2 Tests Support by @patinthehat in https://github.com/spatie/browsershot/pull/688
+- Add Dependabot Automation by @patinthehat in https://github.com/spatie/browsershot/pull/689
+- Bump actions/checkout from 2 to 3 by @dependabot in https://github.com/spatie/browsershot/pull/690
+- Fixed exception message by @PHLAK in https://github.com/spatie/browsershot/pull/692
+
+### New Contributors
+
+- @patinthehat made their first contribution in https://github.com/spatie/browsershot/pull/688
+- @dependabot made their first contribution in https://github.com/spatie/browsershot/pull/690
+- @PHLAK made their first contribution in https://github.com/spatie/browsershot/pull/692
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.4...3.57.5
+
 ## 3.57.4 - 2022-11-21
 
 ### What's Changed
