@@ -1,3 +1,15 @@
+## 3.57.6 - 2023-01-03
+
+### What's Changed
+
+- Docs: Use setEnvironmentOptions to set Browser Language by @stefanzweifel in https://github.com/spatie/browsershot/pull/701
+
+### New Contributors
+
+- @stefanzweifel made their first contribution in https://github.com/spatie/browsershot/pull/701
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.5...3.57.6
+
 ## 3.57.5 - 2022-12-05
 
 ### What's Changed
