@@ -19,7 +19,7 @@ Or you could opt to just install it globally
 npm install puppeteer --location=global
 ```
 
-### Installing puppeteer a Forge provisioned server
+### Installing puppeteer on a Forge provisioned server
 
 On a [Forge](https://forge.laravel.com) provisioned Ubuntu 20.04 server you can install the latest stable version of Chrome like this:
 
