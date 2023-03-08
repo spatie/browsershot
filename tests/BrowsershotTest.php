@@ -1127,6 +1127,49 @@ it('can add a wait for function to puppeteer', function () {
     ], $command);
 });
 
+it('can add a wait for selector', function () {
+    $command = Browsershot::url('https://example.com')
+        ->waitForSelector('.wait_for_me')
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'waitForSelector' => '.wait_for_me',
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'type' => 'png',
+        ],
+    ], $command);
+});
+
+it('can add a wait for selector and provide options', function () {
+    $command = Browsershot::url('https://example.com')
+        ->waitForSelector('.wait_for_me', ['visibile' => true])
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'waitForSelector' => '.wait_for_me',
+            'waitForSelectorOptions' => ['visibile' => true],
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'type' => 'png',
+        ],
+    ], $command);
+});
+
 it('can input form fields and post and get the body html', function () {
     $delay = 2000;
 
