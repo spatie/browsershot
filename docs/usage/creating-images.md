@@ -230,6 +230,17 @@ Browsershot::url('https://example.com')
     ->waitForFunction('window.innerWidth < 100', $pollingInMilliseconds, $timeoutInMilliseconds)
     ->save($pathToImage);
 ```
+
+## Waiting for a selector
+
+You can also wait for a selector by using `waitForSelector()`. This is useful if you need to wait for the selector to appear in page.
+
+```php
+Browsershot::url('https://example.com')
+    ->waitForSelector('#my_selector')
+    ->save($pathToImage);
+```
+
 ## Adding JS
 
 You can add javascript prior to your screenshot or output using the syntax for [Puppeteer's addScriptTag](https://github.com/puppeteer/puppeteer/blob/v1.9.0/docs/api.md#pageaddscripttagoptions).
