@@ -427,6 +427,10 @@ const callChrome = async (pup) => {
             );
         }
 
+        if (request.options.waitForSelector) {
+            await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
+        }
+
         output = await getOutput(page, request);
 
         if (!request.options.path) {

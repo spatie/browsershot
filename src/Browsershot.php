@@ -244,7 +244,18 @@ class Browsershot
         return $this->setOption('function', $function);
     }
 
-    public function waitForSelector(string $selector, array $options = []): static
+    public function waitForSelector(string $selector, array $options = [])
+    {
+        $this->setOption('waitForSelector', $selector);
+
+        if (! empty($options)) {
+            $this->setOption('waitForSelectorOptions', $options);
+        }
+
+        return $this;
+    }
+
+    public function setUrl(string $url)
     {
         $this->setOption('waitForSelector', $selector);
 
