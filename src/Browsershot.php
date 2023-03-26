@@ -40,6 +40,7 @@ class Browsershot
     protected $tempPath = '';
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
+    protected $shellExec = false;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -823,6 +824,12 @@ class Browsershot
         return $this->html ? $this->setOption('contentUrl', $contentUrl) : $this;
     }
 
+    public function useShellExec()
+    {
+        $this->shellExec = true;
+        return $this;
+    }
+
     protected function getOptionArgs(): array
     {
         $args = $this->chromiumArguments;
@@ -890,6 +897,10 @@ class Browsershot
     protected function callBrowser(array $command): string
     {
         $fullCommand = $this->getFullCommand($command);
+
+        if($this->shellExec){
+            return rtrim(shell_exec($fullCommand));
+        }
 
         $process = Process::fromShellCommandline($fullCommand)->setTimeout($this->timeout);
 
