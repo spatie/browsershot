@@ -41,6 +41,9 @@ class Browsershot
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
 
+    /** @var array|null */
+    private $output = null;
+
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
 
@@ -675,6 +678,12 @@ class Browsershot
 
     public function triggeredRequests(): array
     {
+        $requests = $this->output['requestsList'] ?? null;
+
+        if ($requests) {
+            return $requests;
+        }
+
         $command = $this->createTriggeredRequestsListCommand();
         $requests = $this->callBrowser($command);
 
@@ -687,7 +696,9 @@ class Browsershot
     {
         $command = $this->createRedirectHistoryCommand();
 
-        return json_decode($this->callBrowser($command), true);
+        $this->callBrowser($command);
+
+        return $this->output['redirectHistory'] ?? null;
     }
 
     /**
@@ -695,22 +706,36 @@ class Browsershot
      */
     public function consoleMessages(): array
     {
+        $messages = $this->output['consoleMessages'] ?? null;
+
+        if ($messages) {
+            return $messages;
+        }
+
         $command = $this->createConsoleMessagesCommand();
-        $messages = $this->callBrowser($command);
+
+        $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
-        return json_decode($messages, true);
+        return $this->output['consoleMessages'] ?? null;
     }
 
     public function failedRequests(): array
     {
+        $requests = $this->output['failedRequests'] ?? null;
+
+        if ($requests) {
+            return $requests;
+        }
+
         $command = $this->createFailedRequestsCommand();
-        $requests = $this->callBrowser($command);
+
+        $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
-        return json_decode($requests, true);
+        return $this->output['failedRequests'] ?? null;
     }
 
     public function applyManipulations(string $imagePath)
@@ -933,18 +958,26 @@ class Browsershot
 
         $process->setTimeout($this->timeout);
 
+        // clear additional output data fetched on last browser request
+        $this->output = null;
+
         $process->run();
 
-        if ($process->isSuccessful()) {
-            return rtrim($process->getOutput());
+        $rawOutput = rtrim($process->getOutput());
+
+        $this->output = json_decode($rawOutput, true);
+
+        if ($process->isSuccessful() && $this->output) {
+            return $this->output['result'] ?? '';
         }
 
         $this->cleanupTemporaryOptionsFile();
         $process->clearOutput();
         $exitCode = $process->getExitCode();
+        $errorOutput = $process->getErrorOutput();
 
         if ($exitCode === 3) {
-            throw new UnsuccessfulResponse($this->url, $process->getErrorOutput());
+            throw new UnsuccessfulResponse($this->url, $errorOutput ?? '');
         }
 
         if ($exitCode === 2) {
@@ -1041,6 +1074,26 @@ class Browsershot
         return $this
             ->setOption('initialPageNumber', ($initialPage - 1))
             ->pages($initialPage.'-');
+    }
+
+    /**
+     * get full output after calling the browser.
+     *
+     * All present data is always relative to the last browser call.
+     *
+     * output is composed in the following way:
+     *
+     * - consoleMessages: messages generated with console calls
+     * - requestsList: list of all requests made
+     * - failedRequests: list of all failed requests
+     * - result: result of the last operation called
+     * - exception: string representation of the exception generated, if any
+     *
+     * @return array|null
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 
     private function isWindows()
