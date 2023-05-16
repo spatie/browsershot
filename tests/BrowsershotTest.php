@@ -1680,7 +1680,7 @@ it('can get the body html and full output data', function () {
     expect($output['result'])->toContain($expectedContent);
     expect($output['consoleMessages'])->toBe([]);
     expect($output['requestsList'])->toMatchArray([[
-        'url' => 'https://example.com/'
+        'url' => 'https://example.com/',
     ]]);
     expect($output['failedRequests'])->toBe([]);
 });
@@ -1701,7 +1701,7 @@ it('can handle a permissions error with full output', function () {
         expect($output['exception'])->not()->toBeEmpty();
         expect($output['consoleMessages'])->toBe([]);
         expect($output['requestsList'])->toMatchArray([[
-            'url' => 'https://example.com/'
+            'url' => 'https://example.com/',
         ]]);
         expect($output['failedRequests'])->toBe([]);
 
