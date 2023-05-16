@@ -1541,7 +1541,7 @@ it('can get the failed requests', function () {
 
     expect($failedRequests)->toBeArray()
         ->and($failedRequests[0]['status'])->toBe(404)
-        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg/');
+        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg');
 });
 
 it('can set the custom temp path', function () {
@@ -1574,3 +1574,44 @@ it('can set html contents from a file', function () {
 it('can not set html contents from a non-existent file', function () {
     Browsershot::htmlFromFilePath(__DIR__.'/temp/non-existent-file.html');
 })->throws(\Spatie\Browsershot\Exceptions\FileDoesNotExistException::class);
+
+it('can get the body html and full output data', function () {
+    $instance = Browsershot::url('https://example.com');
+    $html = $instance->bodyHtml();
+
+    expect($html)->toContain($expectedContent = '<h1>Example Domain</h1>');
+
+    $output = $instance->getOutput();
+
+    expect($output)->not()->toBeNull();
+    expect($output['result'])->toContain($expectedContent);
+    expect($output['consoleMessages'])->toBe([]);
+    expect($output['requestsList'])->toMatchArray([[
+        'url' => 'https://example.com/'
+    ]]);
+    expect($output['failedRequests'])->toBe([]);
+});
+
+it('can handle a permissions error with full output', function () {
+    $targetPath = '/cantWriteThisPdf.png';
+
+    $this->expectException(ProcessFailedException::class);
+
+    $instance = Browsershot::url('https://example.com');
+
+    try {
+        $instance->save($targetPath);
+    } catch (\Throwable $th) {
+        $output = $instance->getOutput();
+
+        expect($output)->not()->toBeNull();
+        expect($output['exception'])->toContain('EPERM: operation not permitted');
+        expect($output['consoleMessages'])->toBe([]);
+        expect($output['requestsList'])->toMatchArray([[
+            'url' => 'https://example.com/'
+        ]]);
+        expect($output['failedRequests'])->toBe([]);
+
+        throw $th;
+    }
+});
