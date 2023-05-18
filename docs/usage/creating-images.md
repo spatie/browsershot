@@ -11,7 +11,7 @@ Browsershot::url('https://example.com')->save($pathToImage);
 
 ## Formatting the image
 
-By default, the screenshot's type will be a `png`. (According to [Puppeteer's Config](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions))
+By default, the screenshot's type will be a `png`. (According to [Puppeteer's Config](https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.screenshotoptions.md))
 But you can change it to `jpeg` with quality option.
 
 ```php
@@ -232,7 +232,7 @@ Browsershot::url('https://example.com')
 ```
 ## Adding JS
 
-You can add javascript prior to your screenshot or output using the syntax for [Puppeteer's addScriptTag](https://github.com/GoogleChrome/puppeteer/blob/v1.9.0/docs/api.md#pageaddscripttagoptions).
+You can add javascript prior to your screenshot or output using the syntax for [Puppeteer's addScriptTag](https://github.com/puppeteer/puppeteer/blob/v1.9.0/docs/api.md#pageaddscripttagoptions).
 
 ```php
 Browsershot::url('https://example.com')
@@ -242,7 +242,7 @@ Browsershot::url('https://example.com')
 
 ## Adding CSS
 
-You can add CSS styles prior to your screenshot or output using the syntax for [Puppeteer's addStyleTag](https://github.com/GoogleChrome/puppeteer/blob/v1.9.0/docs/api.md#pageaddstyletagoptions).
+You can add CSS styles prior to your screenshot or output using the syntax for [Puppeteer's addStyleTag](https://github.com/puppeteer/puppeteer/blob/v1.9.0/docs/api.md#pageaddstyletagoptions).
 
 ```php
 Browsershot::url('https://example.com')
