@@ -590,23 +590,31 @@ class Browsershot
     public function bodyHtml(): string
     {
         $command = $this->createBodyHtmlCommand();
+        $html = $this->callBrowser($command);
 
-        return $this->callBrowser($command);
+        $this->cleanupTemporaryHtmlFile();
+
+        return $html;
     }
 
     public function base64Screenshot(): string
     {
         $command = $this->createScreenshotCommand();
+        $encodedImage = $this->callBrowser($command);
 
-        return $this->callBrowser($command);
+        $this->cleanupTemporaryHtmlFile();
+
+        return $encodedImage;
     }
 
     public function screenshot(): string
     {
         if ($this->imageManipulations->isEmpty()) {
-            $command = $this->createScreenshotCommand();
 
+            $command = $this->createScreenshotCommand();
             $encodedImage = $this->callBrowser($command);
+
+            $this->cleanupTemporaryHtmlFile();
 
             return base64_decode($encodedImage);
         }
@@ -625,18 +633,16 @@ class Browsershot
     public function pdf(): string
     {
         $command = $this->createPdfCommand();
-
-        $encoded_pdf = $this->callBrowser($command);
+        $encodedPdf = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
-        return base64_decode($encoded_pdf);
+        return base64_decode($encodedPdf);
     }
 
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
-
         $output = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -649,22 +655,31 @@ class Browsershot
     public function base64pdf(): string
     {
         $command = $this->createPdfCommand();
+        $encodedPdf = $this->callBrowser($command);
 
-        return $this->callBrowser($command);
+        $this->cleanupTemporaryHtmlFile();
+
+        return $encodedPdf;
     }
 
     public function evaluate(string $pageFunction): string
     {
         $command = $this->createEvaluateCommand($pageFunction);
+        $evaluation = $this->callBrowser($command);
 
-        return $this->callBrowser($command);
+        $this->cleanupTemporaryHtmlFile();
+
+        return $evaluation;
     }
 
     public function triggeredRequests(): array
     {
         $command = $this->createTriggeredRequestsListCommand();
+        $requests = $this->callBrowser($command);
 
-        return json_decode($this->callBrowser($command), true);
+        $this->cleanupTemporaryHtmlFile();
+
+        return json_decode($requests, true);
     }
 
     public function redirectHistory(): array
@@ -680,15 +695,21 @@ class Browsershot
     public function consoleMessages(): array
     {
         $command = $this->createConsoleMessagesCommand();
+        $messages = $this->callBrowser($command);
 
-        return json_decode($this->callBrowser($command), true);
+        $this->cleanupTemporaryHtmlFile();
+
+        return json_decode($messages, true);
     }
 
     public function failedRequests(): array
     {
         $command = $this->createFailedRequestsCommand();
+        $requests = $this->callBrowser($command);
 
-        return json_decode($this->callBrowser($command), true);
+        $this->cleanupTemporaryHtmlFile();
+
+        return json_decode($requests, true);
     }
 
     public function applyManipulations(string $imagePath)
