@@ -1541,7 +1541,7 @@ it('can get the failed requests', function () {
 
     expect($failedRequests)->toBeArray()
         ->and($failedRequests[0]['status'])->toBe(404)
-        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg/');
+        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg');
 });
 
 it('can set the custom temp path', function () {
