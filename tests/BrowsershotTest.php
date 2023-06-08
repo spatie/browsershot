@@ -1589,7 +1589,7 @@ it('should set the new headless flag when using the new method', function () {
             'viewport' => [
                 'width' => 800,
                 'height' => 600,
-                ]
-        ]
+                ],
+        ],
     ], $command);
 });
