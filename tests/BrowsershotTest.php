@@ -1574,3 +1574,22 @@ it('can set html contents from a file', function () {
 it('can not set html contents from a non-existent file', function () {
     Browsershot::htmlFromFilePath(__DIR__.'/temp/non-existent-file.html');
 })->throws(\Spatie\Browsershot\Exceptions\FileDoesNotExistException::class);
+
+it('should set the new headless flag when using the new method', function () {
+    $command = Browsershot::url('https://example.com')->newHeadless()->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'newHeadless' => true,
+            'type' => 'png',
+            'path' => 'screenshot.png',
+            'args' => [],
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+                ]
+        ]
+    ], $command);
+});
