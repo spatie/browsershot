@@ -54,6 +54,12 @@ foreach ($requests as $request) {
 }
 ```
 
+To use Chrome's new [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome) pass the `newHeadless` method:
+
+```php
+Browsershot::url('https://example.com')->newHeadless()->save($pathToImage);
+```
+
 ## Support us
 
 Learn how to create a package like this one, by watching our premium video course:
