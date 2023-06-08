@@ -1015,4 +1015,9 @@ class Browsershot
 
         return $url;
     }
+
+    public function newHeadless(): self
+    {
+        return $this->setOption('newHeadless', true);
+    }
 }

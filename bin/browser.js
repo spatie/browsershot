@@ -82,6 +82,7 @@ const callChrome = async pup => {
 
         if (!browser) {
             browser = await puppet.launch({
+                headless: request.options.newHeadless ? 'new' : true,
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
                 args: request.options.args || [],
