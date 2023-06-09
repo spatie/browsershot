@@ -918,7 +918,7 @@ class Browsershot
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
+        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.cjs';
 
         $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
