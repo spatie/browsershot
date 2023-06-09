@@ -1,3 +1,24 @@
+## 3.57.7 - 2023-06-09
+
+### What's Changed
+
+- A word was missing by @sdebacker in https://github.com/spatie/browsershot/pull/704
+- Devices url for puppeteer has changed by @Skullbock in https://github.com/spatie/browsershot/pull/706
+- Bump dependabot/fetch-metadata from 1.3.5 to 1.3.6 by @dependabot in https://github.com/spatie/browsershot/pull/708
+- Fix link to Puppeteer devices in creating-images.md by @kriiv in https://github.com/spatie/browsershot/pull/709
+- Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 by @dependabot in https://github.com/spatie/browsershot/pull/726
+- Update creating-images.md by @adityadees in https://github.com/spatie/browsershot/pull/732
+- Bump dependabot/fetch-metadata from 1.4.0 to 1.5.1 by @dependabot in https://github.com/spatie/browsershot/pull/737
+
+### New Contributors
+
+- @sdebacker made their first contribution in https://github.com/spatie/browsershot/pull/704
+- @Skullbock made their first contribution in https://github.com/spatie/browsershot/pull/706
+- @kriiv made their first contribution in https://github.com/spatie/browsershot/pull/709
+- @adityadees made their first contribution in https://github.com/spatie/browsershot/pull/732
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.6...3.57.7
+
 ## 3.57.6 - 2023-01-03
 
 ### What's Changed
