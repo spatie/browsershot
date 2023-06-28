@@ -1,3 +1,15 @@
+## 3.57.8 - 2023-06-28
+
+### What's Changed
+
+- Fix node command error caused by type: module in package.json by @osbre in https://github.com/spatie/browsershot/pull/740
+
+### New Contributors
+
+- @osbre made their first contribution in https://github.com/spatie/browsershot/pull/740
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.7...3.57.8
+
 ## 3.57.7 - 2023-06-09
 
 ### What's Changed
