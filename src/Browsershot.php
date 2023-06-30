@@ -667,6 +667,13 @@ class Browsershot
         return json_decode($this->callBrowser($command), true);
     }
 
+    public function redirectHistory(): array
+    {
+        $command = $this->createRedirectHistoryCommand();
+
+        return json_decode($this->callBrowser($command), true);
+    }
+
     /**
      * @return array{type: string, message: string, location:array}
      */
@@ -767,6 +774,15 @@ class Browsershot
             : $this->url;
 
         return $this->createCommand($url, 'requestsList');
+    }
+
+    public function createRedirectHistoryCommand(): array
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        return $this->createCommand($url, 'redirectHistory');
     }
 
     public function createConsoleMessagesCommand(): array
