@@ -1,3 +1,15 @@
+## 3.58.0 - 2023-06-30
+
+### What's Changed
+
+- Read redirect history by @bessone in https://github.com/spatie/browsershot/pull/747
+
+### New Contributors
+
+- @bessone made their first contribution in https://github.com/spatie/browsershot/pull/747
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.57.8...3.58.0
+
 ## 3.57.8 - 2023-06-28
 
 ### What's Changed
