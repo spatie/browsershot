@@ -40,6 +40,33 @@ it('can get the requests list', function () {
     );
 });
 
+it('can get the redirect history', function () {
+    $list = Browsershot::url('http://www.spatie.be')
+        ->redirectHistory();
+
+    $list = array_map(function($item) {unset($item['headers']); return $item;}, $list);
+
+    expect($list)->toHaveCount(3);
+
+    $this->assertEquals([
+        [
+            'url' => 'http://www.spatie.be/',
+            'status' => 301,
+            'reason' => 'Moved Permanently'
+        ],
+        [
+            'url' => 'https://www.spatie.be/',
+            'status' => 301,
+            'reason' => ''
+        ],
+        [
+            'url' => 'https://spatie.be/',
+            'status' => 200,
+            'reason' => ''
+        ],
+    ], $list);
+});
+
 it('will not allow a file url', function () {
     Browsershot::url('file://test');
 })->throws(FileUrlNotAllowed::class);

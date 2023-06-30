@@ -16,6 +16,8 @@ const request = args[0].startsWith('-f ')
 
 const requestsList = [];
 
+const redirectHistory = [];
+
 const consoleMessages = [];
 
 const failedRequests = [];
@@ -25,6 +27,12 @@ const getOutput = async (page, request) => {
 
     if (request.action == 'requestsList') {
         output = JSON.stringify(requestsList);
+
+        return output;
+    }
+
+    if (request.action == 'redirectHistory') {
+        output = JSON.stringify(redirectHistory);
 
         return output;
     }
@@ -118,6 +126,15 @@ const callChrome = async pup => {
         }));
 
         page.on('response', function (response) {
+            if (response.request().isNavigationRequest() && response.request().frame().parentFrame() === null) {
+                redirectHistory.push({
+                    url: response.request().url(),
+                    status: response.status(),
+                    reason: response.statusText(),
+                    headers: response.headers()
+                })
+            }
+
             if (response.status() >= 200 && response.status() <= 399) {
                 return;
             }
