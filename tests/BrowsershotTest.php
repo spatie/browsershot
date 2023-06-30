@@ -44,7 +44,11 @@ it('can get the redirect history', function () {
     $list = Browsershot::url('http://www.spatie.be')
         ->redirectHistory();
 
-    $list = array_map(function($item) {unset($item['headers']); return $item;}, $list);
+    $list = array_map(function ($item) {
+        unset($item['headers']);
+
+        return $item;
+    }, $list);
 
     expect($list)->toHaveCount(3);
 
@@ -52,17 +56,17 @@ it('can get the redirect history', function () {
         [
             'url' => 'http://www.spatie.be/',
             'status' => 301,
-            'reason' => 'Moved Permanently'
+            'reason' => 'Moved Permanently',
         ],
         [
             'url' => 'https://www.spatie.be/',
             'status' => 301,
-            'reason' => ''
+            'reason' => '',
         ],
         [
             'url' => 'https://spatie.be/',
             'status' => 200,
-            'reason' => ''
+            'reason' => '',
         ],
     ], $list);
 });
