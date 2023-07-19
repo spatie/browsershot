@@ -1,3 +1,17 @@
+## 3.58.1 - 2023-07-19
+
+### What's Changed
+
+- Redirect History: Update docs by @bessone in https://github.com/spatie/browsershot/pull/748
+- Bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 by @dependabot in https://github.com/spatie/browsershot/pull/749
+- Fix Windows command escaping by @EmanueleCoppola in https://github.com/spatie/browsershot/pull/756
+
+### New Contributors
+
+- @EmanueleCoppola made their first contribution in https://github.com/spatie/browsershot/pull/756
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.58.0...3.58.1
+
 ## 3.58.0 - 2023-06-30
 
 ### What's Changed
