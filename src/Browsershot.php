@@ -907,8 +907,10 @@ class Browsershot
     {
         $fullCommand = $this->getFullCommand($command);
 
-        $process = Process::fromShellCommandline($fullCommand)->setTimeout($this->timeout);
+        $process = $this->isWindows() ? new Process($fullCommand) : Process::fromShellCommandline($fullCommand);
 
+        $process->setTimeout($this->timeout);
+        
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -930,15 +932,6 @@ class Browsershot
         throw new ProcessFailedException($process);
     }
 
-    protected function escapeshellarg(string $arg)
-    {
-        if ($this->isWindows()) {
-            return '"' . str_replace('"', '\\"', $arg) . '"';
-        }
-
-        return escapeshellarg($arg);
-    }
-
     protected function getFullCommand(array $command)
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
@@ -948,12 +941,13 @@ class Browsershot
         $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
         if ($this->isWindows()) {
-            $fullCommand =
-                $this->escapeshellarg($nodeBinary).' '
-                .$this->escapeshellarg($binPath).' '
-                .$optionsCommand;
-
-            return $fullCommand;
+            // on Windows we will let Symfony/process handle the command escaping
+            // by passing an array to the process instance
+            return [
+                $nodeBinary,
+                $binPath,
+                $optionsCommand
+            ];
         }
 
         $setIncludePathCommand = "PATH={$this->includePath}";
@@ -964,7 +958,7 @@ class Browsershot
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
             .$nodeBinary.' '
-            .$this->escapeshellarg($binPath).' '
+            .escapeshellarg($binPath).' '
             .$optionsCommand;
     }
 
@@ -987,7 +981,11 @@ class Browsershot
             $command = "-f {$temporaryOptionsFile}";
         }
 
-        return $this->escapeshellarg($command);
+        if ($this->isWindows()) {
+            return $command;
+        }
+
+        return escapeshellarg($command);
     }
 
     protected function arraySet(array &$array, string $key, $value): array
