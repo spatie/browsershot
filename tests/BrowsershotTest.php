@@ -71,9 +71,14 @@ it('can get the redirect history', function () {
     ], $list);
 });
 
-it('will not allow a file url', function () {
-    Browsershot::url('file://test');
-})->throws(FileUrlNotAllowed::class);
+it('will not allow a file url', function (string $uri) {
+    Browsershot::url($uri);
+})->throws(FileUrlNotAllowed::class)->with([
+    ' file://example.html', // leading space
+    'file://example.html',
+    'file:/example.html',
+    'file:example.html'
+]);
 
 it('can take a screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
