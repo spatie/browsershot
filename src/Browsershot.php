@@ -910,7 +910,7 @@ class Browsershot
         $process = $this->isWindows() ? new Process($fullCommand) : Process::fromShellCommandline($fullCommand);
 
         $process->setTimeout($this->timeout);
-        
+
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -946,7 +946,7 @@ class Browsershot
             return [
                 $nodeBinary,
                 $binPath,
-                $optionsCommand
+                $optionsCommand,
             ];
         }
 
