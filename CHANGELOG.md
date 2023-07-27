@@ -1,3 +1,16 @@
+## 3.58.2 - 2023-07-27
+
+### What's Changed
+
+- Let Symfony/process handle the command escape on Windows by @EmanueleCoppola in https://github.com/spatie/browsershot/pull/757
+- Cleanup temporary html files by @angelej in https://github.com/spatie/browsershot/pull/735
+
+### New Contributors
+
+- @angelej made their first contribution in https://github.com/spatie/browsershot/pull/735
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.58.1...3.58.2
+
 ## 3.58.1 - 2023-07-19
 
 ### What's Changed
