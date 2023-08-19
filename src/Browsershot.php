@@ -52,7 +52,7 @@ class Browsershot
      *
      * @return static
      */
-    public static function url(string $url)
+    public static function url(string $url): static
     {
         return (new static())->setUrl($url);
     }
@@ -62,12 +62,12 @@ class Browsershot
      *
      * @return static
      */
-    public static function html(string $html)
+    public static function html(string $html): static
     {
         return (new static())->setHtml($html);
     }
 
-    public static function htmlFromFilePath(string $filePath): self
+    public static function htmlFromFilePath(string $filePath): static
     {
         return (new static())->setHtmlFromFilePath($filePath);
     }
