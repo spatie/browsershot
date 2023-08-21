@@ -47,21 +47,11 @@ class Browsershot
     public const POLLING_REQUEST_ANIMATION_FRAME = 'raf';
     public const POLLING_MUTATION = 'mutation';
 
-    /**
-     * @param string $url
-     *
-     * @return static
-     */
     public static function url(string $url): static
     {
         return (new static())->setUrl($url);
     }
 
-    /**
-     * @param string $html
-     *
-     * @return static
-     */
     public static function html(string $html): static
     {
         return (new static())->setHtml($html);
