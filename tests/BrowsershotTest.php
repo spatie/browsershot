@@ -3,7 +3,7 @@
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
-use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
+use Spatie\Browsershot\Exceptions\UrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Manipulations;
@@ -71,9 +71,15 @@ it('can get the redirect history', function () {
     ], $list);
 });
 
-it('will not allow a file url', function () {
-    Browsershot::url('file://test');
-})->throws(FileUrlNotAllowed::class);
+it('throws an exception on not allowed urls', function (string $url) {
+    Browsershot::url($url);
+})->throws(UrlNotAllowed::class)->with([
+    'file://example.html',
+    'file:/example.html',
+    'file:example.html',
+    '/example.html',
+    'ftp://example.com'
+]);
 
 it('can take a screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';

@@ -5,7 +5,7 @@ namespace Spatie\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
-use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
+use Spatie\Browsershot\Exceptions\UrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Image;
@@ -231,10 +231,12 @@ class Browsershot
         return $this->setOption('function', $function);
     }
 
-    public function setUrl(string $url)
+    public function setUrl(string $url): self
     {
-        if (Helpers::stringStartsWith(strtolower($url), 'file://')) {
-            throw FileUrlNotAllowed::make();
+        $scheme = (string) parse_url(strtolower($url), PHP_URL_SCHEME);
+
+        if(!in_array($scheme, ['http', 'https'])){
+            throw UrlNotAllowed::make();
         }
 
         $this->url = $url;
@@ -264,7 +266,7 @@ class Browsershot
 
     public function setHtml(string $html)
     {
-        if (Helpers::stringContains(strtolower($html), 'file://')) {
+        if (Helpers::stringContains(strtolower($html), 'file:/')) {
             throw HtmlIsNotAllowedToContainFile::make();
         }
 
