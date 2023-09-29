@@ -78,7 +78,7 @@ const getOutput = async (request, page = null) => {
 
     output = await page[request.action](request.options);
 
-    return request.options.path ? null : output.toString('base64');
+    return output;
 };
 
 const callChrome = async (pup) => {
@@ -427,8 +427,10 @@ const callChrome = async (pup) => {
             );
         }
 
-        if (request.options.waitForSelector) {
-            await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
+        output = await getOutput(page, request);
+
+        if (!request.options.path) {
+            console.log(output.toString('base64'));
         }
 
         console.log(await getOutput(request, page));
