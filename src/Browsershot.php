@@ -689,7 +689,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return json_decode($requests, true);
+        return $this->output['requestsList'] ?? null;
     }
 
     public function redirectHistory(): array
