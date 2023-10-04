@@ -22,12 +22,15 @@ const consoleMessages = [];
 
 const failedRequests = [];
 
+const pageErrors = [];
+
 const getOutput = async (request, page = null) => {
     let output = {
-        requestsList: requestsList,
-        consoleMessages: consoleMessages,
-        failedRequests: failedRequests,
-        redirectHistory: redirectHistory,
+        requestsList,
+        consoleMessages,
+        failedRequests,
+        redirectHistory,
+        pageErrors,
     };
 
     if (
@@ -36,6 +39,7 @@ const getOutput = async (request, page = null) => {
             "consoleMessages",
             "failedRequests",
             "redirectHistory",
+            "pageErrors",
         ].includes(request.action) &&
         page
     ) {
@@ -126,8 +130,16 @@ const callChrome = async (pup) => {
                 type: message.type(),
                 message: message.text(),
                 location: message.location(),
+                stackTrace: message.stackTrace(),
             })
         );
+
+        page.on("pageerror", (msg) => {
+            pageErrors.push({
+                name: msg.name || "unknown error",
+                message: msg.message || msg.toString(),
+            });
+        });
 
         page.on("response", function (response) {
             if (
