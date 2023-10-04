@@ -1683,6 +1683,7 @@ it('can get the body html and full output data', function () {
         'url' => 'https://example.com/',
     ]]);
     expect($output['failedRequests'])->toBe([]);
+    expect($output['pageErrors'])->toBe([]);
 });
 
 it('can handle a permissions error with full output', function () {
@@ -1704,7 +1705,24 @@ it('can handle a permissions error with full output', function () {
             'url' => 'https://example.com/',
         ]]);
         expect($output['failedRequests'])->toBe([]);
+        expect($output['pageErrors'])->toBe([]);
 
         throw $th;
     }
+});
+
+it("should be able to fetch page errors with pageErrors method", function () {
+    $errors = Browsershot::html('<!DOCTYPE html>
+    <html lang="en">
+      <body>
+        <script type="text/javascript">
+            throw "this is not right!";
+        </script>
+      </body>
+    </html>')->pageErrors();
+
+    expect($errors)->toBeArray();
+    expect(count($errors))->toBe(1);
+    expect($errors[0]['name'])->toBeString();
+    expect($errors[0]['message'])->toBeString();
 });

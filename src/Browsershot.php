@@ -614,7 +614,6 @@ class Browsershot
     public function screenshot(): string
     {
         if ($this->imageManipulations->isEmpty()) {
-
             $command = $this->createScreenshotCommand();
             $encodedImage = $this->callBrowser($command);
 
@@ -738,6 +737,23 @@ class Browsershot
         return $this->output['failedRequests'] ?? null;
     }
 
+    public function pageErrors(): array
+    {
+        $pageErrors = $this->output['pageErrors'] ?? null;
+
+        if ($pageErrors) {
+            return $pageErrors;
+        }
+
+        $command = $this->createPageErrorsCommand();
+
+        $this->callBrowser($command);
+
+        $this->cleanupTemporaryHtmlFile();
+
+        return $this->output['pageErrors'] ?? null;
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -848,6 +864,15 @@ class Browsershot
             : $this->url;
 
         return $this->createCommand($url, 'failedRequests');
+    }
+
+    public function createPageErrorsCommand(): array
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        return $this->createCommand($url, 'pageErrors');
     }
 
     public function setRemoteInstance(string $ip = '127.0.0.1', int $port = 9222): self
@@ -1088,6 +1113,7 @@ class Browsershot
      * - failedRequests: list of all failed requests
      * - result: result of the last operation called
      * - exception: string representation of the exception generated, if any
+     * - pageErrors: list of all page errors generated during the current command
      *
      * @return array|null
      */
