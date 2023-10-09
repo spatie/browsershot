@@ -1,3 +1,21 @@
+## 3.59.0 - 2023-10-09
+
+### What's Changed
+
+- Update return types by @lamberttraccard in https://github.com/spatie/browsershot/pull/766
+- Update requirements.md for Forge provisioning by @colinmackinlay in https://github.com/spatie/browsershot/pull/777
+- Test against php 8.3 by @sergiy-petrov in https://github.com/spatie/browsershot/pull/781
+- Add waitForSelector() by @shadoWalker89 in https://github.com/spatie/browsershot/pull/715
+- Drop support for PHP 7
+
+### New Contributors
+
+- @lamberttraccard made their first contribution in https://github.com/spatie/browsershot/pull/766
+- @colinmackinlay made their first contribution in https://github.com/spatie/browsershot/pull/777
+- @sergiy-petrov made their first contribution in https://github.com/spatie/browsershot/pull/781
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.58.2...3.59.0
+
 ## 3.58.2 - 2023-07-27
 
 ### What's Changed
