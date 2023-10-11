@@ -1,6 +1,6 @@
 build
 composer.lock
+node_modules
 vendor
 .phpunit.result.cache
 .php-cs-fixer.cache
-

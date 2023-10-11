@@ -57,7 +57,7 @@ const getOutput = async (page, request) => {
 
     output = await page[request.action](request.options);
 
-    return output;
+    return request.options.path ? null : output.toString('base64');
 };
 
 const callChrome = async pup => {
@@ -375,8 +375,8 @@ const callChrome = async pup => {
 
         output = await getOutput(page, request);
 
-        if (!request.options.path) {
-            console.log(output.toString('base64'));
+        if (output) {
+            console.log(output);
         }
 
         if (remoteInstance && page) {
