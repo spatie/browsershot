@@ -215,7 +215,7 @@ const callChrome = async pup => {
                     postData: queryString,
                     headers: {
                         ...interceptedRequest.headers(),
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Content-Type": "application/x-www-form-urlencoded"
                     }
                 });
                 return;
@@ -337,10 +337,10 @@ const callChrome = async pup => {
 
                 const style = document.createElement('style');
                 style.type = 'text/css';
-                style.innerHTML = '.empty-page {page-break-after: always; visibility: hidden;}';
+                style.innerHTML = '.empty-page { page-break-after: always; visibility: hidden; }';
                 document.getElementsByTagName('head')[0].appendChild(style);
 
-                const emptyPages = Array.from({ length: window.pageStart }).map(() => {
+                const emptyPages = Array.from({length: window.pageStart}).map(() => {
                     const emptyPage = document.createElement('div');
                     emptyPage.className = "empty-page";
                     emptyPage.textContent = "empty";
