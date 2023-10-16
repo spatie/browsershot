@@ -614,7 +614,7 @@ class Browsershot
     public function screenshot(): string
     {
         if ($this->imageManipulations->isEmpty()) {
-            
+
             $command = $this->createScreenshotCommand();
             $encodedImage = $this->callBrowser($command);
 
