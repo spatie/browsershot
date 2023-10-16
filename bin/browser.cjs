@@ -60,11 +60,11 @@ const getOutput = async (request, page = null) => {
     return output;
 };
 
-const callChrome = async (pup) => {
+const callChrome = async pup => {
     let browser;
     let page;
     let remoteInstance;
-    const puppet = pup || require('puppeteer');
+    const puppet = (pup || require('puppeteer'));
 
     try {
         if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
@@ -81,7 +81,7 @@ const callChrome = async (pup) => {
             }
 
             try {
-                browser = await puppet.connect(options);
+                browser = await puppet.connect( options );
 
                 remoteInstance = true;
             } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
@@ -110,7 +110,7 @@ const callChrome = async (pup) => {
         await page.setRequestInterception(true);
 
         const contentUrl = request.options.contentUrl;
-        const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, '') : undefined;
+        const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
         let pageContent;
 
         if (contentUrl) {
@@ -140,8 +140,8 @@ const callChrome = async (pup) => {
                     url: response.request().url(),
                     status: response.status(),
                     reason: response.statusText(),
-                    headers: response.headers(),
-                });
+                    headers: response.headers()
+                })
             }
 
             if (response.status() >= 200 && response.status() <= 399) {
@@ -152,9 +152,9 @@ const callChrome = async (pup) => {
                 status: response.status(),
                 url: response.url(),
             });
-        });
+        })
 
-        page.on('request', (interceptedRequest) => {
+        page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
             requestsList.push({
@@ -193,7 +193,7 @@ const callChrome = async (pup) => {
             }
 
             if (pageContent) {
-                const interceptedUrl = interceptedRequest.url().replace(/\/$/, '');
+                const interceptedUrl = interceptedRequest.url().replace(/\/$/, "");
 
                 // if content url matches the intercepted request url, will return the content fetched from the local file system
                 if (interceptedUrl === parsedContentUrl) {
@@ -211,11 +211,11 @@ const callChrome = async (pup) => {
                     .map(key => `${key}=${postParamsArray[key]}`)
                     .join('&');
                 interceptedRequest.continue({
-                    method: 'POST',
+                    method: "POST",
                     postData: queryString,
                     headers: {
                         ...interceptedRequest.headers(),
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        "Content-Type": "application/x-www-form-urlencoded",
                     }
                 });
                 return;
@@ -225,7 +225,7 @@ const callChrome = async (pup) => {
         });
 
         if (request.options && request.options.dismissDialogs) {
-            page.on('dialog', async (dialog) => {
+            page.on('dialog', async dialog => {
                 await dialog.dismiss();
             });
         }
@@ -276,10 +276,10 @@ const callChrome = async (pup) => {
         const response = await page.goto(request.url, requestOptions);
 
         if (request.options.preventUnsuccessfulResponse) {
-            const status = response.status();
+            const status = response.status()
 
             if (status >= 400 && status < 600) {
-                throw {type: 'UnsuccessfulResponse', status};
+                throw {type: "UnsuccessfulResponse", status};
             }
         }
 
@@ -337,13 +337,13 @@ const callChrome = async (pup) => {
 
                 const style = document.createElement('style');
                 style.type = 'text/css';
-                style.innerHTML = '.empty-page { page-break-after: always; visibility: hidden; }';
+                style.innerHTML = '.empty-page {page-break-after: always; visibility: hidden;}';
                 document.getElementsByTagName('head')[0].appendChild(style);
 
                 const emptyPages = Array.from({ length: window.pageStart }).map(() => {
                     const emptyPage = document.createElement('div');
-                    emptyPage.className = 'empty-page';
-                    emptyPage.textContent = 'empty';
+                    emptyPage.className = "empty-page";
+                    emptyPage.textContent = "empty";
                     return emptyPage;
                 });
                 document.body.prepend(...emptyPages);
