@@ -41,7 +41,16 @@ class Browsershot
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
 
-    /** @var array|null */
+    /** 
+     * @var null|array{
+     *  consoleMessages: array{type: string, message: string, location: array, stackTrace: string},
+     *  requestsList: array{url: string},
+     *  failedRequests: array{status: int, url: string},
+     *  result: string,
+     *  exception: string,
+     *  pageErrors: array{name: string, message: string},
+     * }
+     */
     private $output = null;
 
     /** @var \Spatie\Image\Manipulations */
@@ -676,6 +685,9 @@ class Browsershot
         return $evaluation;
     }
 
+    /**
+     * @return array{url: string}
+     */
     public function triggeredRequests(): array
     {
         $requests = $this->output['requestsList'] ?? null;
@@ -685,7 +697,7 @@ class Browsershot
         }
 
         $command = $this->createTriggeredRequestsListCommand();
-        $requests = $this->callBrowser($command);
+        $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
@@ -721,6 +733,9 @@ class Browsershot
         return $this->output['consoleMessages'] ?? null;
     }
 
+    /**
+     * @return array{status: int, url: string}
+     */
     public function failedRequests(): array
     {
         $requests = $this->output['failedRequests'] ?? null;
@@ -738,6 +753,9 @@ class Browsershot
         return $this->output['failedRequests'] ?? null;
     }
 
+    /**
+     * @return array{name: string, message: string}
+     */
     public function pageErrors(): array
     {
         $pageErrors = $this->output['pageErrors'] ?? null;
@@ -1103,11 +1121,11 @@ class Browsershot
     }
 
     /**
-     * get full output after calling the browser.
+     * Get full output after calling the browser.
      *
      * All present data is always relative to the last browser call.
      *
-     * output is composed in the following way:
+     * Output is composed in the following way:
      *
      * - consoleMessages: messages generated with console calls
      * - requestsList: list of all requests made
@@ -1116,7 +1134,14 @@ class Browsershot
      * - exception: string representation of the exception generated, if any
      * - pageErrors: list of all page errors generated during the current command
      *
-     * @return array|null
+     * @return null|array{
+     *  consoleMessages: array{type: string, message: string, location: array, stackTrace: string},
+     *  requestsList: array{url: string},
+     *  failedRequests: array{status: int, url: string},
+     *  result: string,
+     *  exception: string,
+     *  pageErrors: array{name: string, message: string},
+     * },
      */
     public function getOutput()
     {
