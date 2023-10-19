@@ -41,7 +41,7 @@ class Browsershot
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
 
-    /** 
+    /**
      * @var null|array{
      *  consoleMessages: array{type: string, message: string, location: array, stackTrace: string},
      *  requestsList: array{url: string},
