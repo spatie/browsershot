@@ -8,7 +8,6 @@ use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
-use Spatie\Browsershot\ChromiumResult;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
