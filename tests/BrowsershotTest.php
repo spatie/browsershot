@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\ChromiumResult;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
@@ -1677,13 +1678,14 @@ it('can get the body html and full output data', function () {
     $output = $instance->getOutput();
 
     expect($output)->not()->toBeNull();
-    expect($output['result'])->toContain($expectedContent);
-    expect($output['consoleMessages'])->toBe([]);
-    expect($output['requestsList'])->toMatchArray([[
+    expect($output)->toBeInstanceOf(ChromiumResult::class);
+    expect($output->getResult())->toContain($expectedContent);
+    expect($output->getConsoleMessages())->toBe([]);
+    expect($output->getRequestsList())->toMatchArray([[
         'url' => 'https://example.com/',
     ]]);
-    expect($output['failedRequests'])->toBe([]);
-    expect($output['pageErrors'])->toBe([]);
+    expect($output->getFailedRequests())->toBe([]);
+    expect($output->getPageErrors())->toBe([]);
 });
 
 it('can handle a permissions error with full output', function () {
@@ -1699,13 +1701,14 @@ it('can handle a permissions error with full output', function () {
         $output = $instance->getOutput();
 
         expect($output)->not()->toBeNull();
-        expect($output['exception'])->not()->toBeEmpty();
-        expect($output['consoleMessages'])->toBe([]);
-        expect($output['requestsList'])->toMatchArray([[
+        expect($output)->toBeInstanceOf(ChromiumResult::class);
+        expect($output->getException())->not()->toBeEmpty();
+        expect($output->getConsoleMessages())->toBe([]);
+        expect($output->getRequestsList())->toMatchArray([[
             'url' => 'https://example.com/',
         ]]);
-        expect($output['failedRequests'])->toBe([]);
-        expect($output['pageErrors'])->toBe([]);
+        expect($output->getFailedRequests())->toBe([]);
+        expect($output->getPageErrors())->toBe([]);
 
         throw $th;
     }
