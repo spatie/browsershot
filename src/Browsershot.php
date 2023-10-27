@@ -8,6 +8,7 @@ use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
+use Spatie\Browsershot\ChromiumResult;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
@@ -42,16 +43,9 @@ class Browsershot
     protected $chromiumArguments = [];
 
     /**
-     * @var null|array{
-     *  consoleMessages: array{type: string, message: string, location: array, stackTrace: string},
-     *  requestsList: array{url: string},
-     *  failedRequests: array{status: int, url: string},
-     *  result: string,
-     *  exception: string,
-     *  pageErrors: array{name: string, message: string},
-     * }
+     * @var ChromiumResult|null
      */
-    private $output = null;
+    private $chromiumResult = null;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -690,7 +684,7 @@ class Browsershot
      */
     public function triggeredRequests(): array
     {
-        $requests = $this->output['requestsList'] ?? null;
+        $requests = $this->chromiumResult?->getRequestsList();
 
         if ($requests) {
             return $requests;
@@ -701,16 +695,22 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $this->output['requestsList'] ?? null;
+        return $this->chromiumResult?->getRequestsList();
     }
 
     public function redirectHistory(): array
     {
+        $redirectHistory = $this->chromiumResult?->getredirectHistory();
+
+        if ($redirectHistory) {
+            return $redirectHistory;
+        }
+
         $command = $this->createRedirectHistoryCommand();
 
         $this->callBrowser($command);
 
-        return $this->output['redirectHistory'] ?? null;
+        return $this->chromiumResult?->getredirectHistory();
     }
 
     /**
@@ -718,7 +718,7 @@ class Browsershot
      */
     public function consoleMessages(): array
     {
-        $messages = $this->output['consoleMessages'] ?? null;
+        $messages = $this->chromiumResult?->getConsoleMessages();
 
         if ($messages) {
             return $messages;
@@ -730,7 +730,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $this->output['consoleMessages'] ?? null;
+        return $this->chromiumResult?->getConsoleMessages();
     }
 
     /**
@@ -738,7 +738,7 @@ class Browsershot
      */
     public function failedRequests(): array
     {
-        $requests = $this->output['failedRequests'] ?? null;
+        $requests = $this->chromiumResult?->getFailedRequests();
 
         if ($requests) {
             return $requests;
@@ -750,7 +750,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $this->output['failedRequests'] ?? null;
+        return $this->chromiumResult?->getFailedRequests();
     }
 
     /**
@@ -758,7 +758,7 @@ class Browsershot
      */
     public function pageErrors(): array
     {
-        $pageErrors = $this->output['pageErrors'] ?? null;
+        $pageErrors = $this->chromiumResult?->getPageErrors();
 
         if ($pageErrors) {
             return $pageErrors;
@@ -770,7 +770,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $this->output['pageErrors'] ?? null;
+        return $this->chromiumResult?->getPageErrors();
     }
 
     public function applyManipulations(string $imagePath)
@@ -1003,16 +1003,16 @@ class Browsershot
         $process->setTimeout($this->timeout);
 
         // clear additional output data fetched on last browser request
-        $this->output = null;
+        $this->chromiumResult = null;
 
         $process->run();
 
         $rawOutput = rtrim($process->getOutput());
 
-        $this->output = json_decode($rawOutput, true);
+        $this->chromiumResult = new ChromiumResult(json_decode($rawOutput, true));
 
-        if ($process->isSuccessful() && $this->output) {
-            return $this->output['result'] ?? '';
+        if ($process->isSuccessful()) {
+            return $this->chromiumResult?->getResult();
         }
 
         $this->cleanupTemporaryOptionsFile();
@@ -1133,19 +1133,13 @@ class Browsershot
      * - result: result of the last operation called
      * - exception: string representation of the exception generated, if any
      * - pageErrors: list of all page errors generated during the current command
+     * - redirectHistory: list of all redirect in the page
      *
-     * @return null|array{
-     *  consoleMessages: array{type: string, message: string, location: array, stackTrace: string},
-     *  requestsList: array{url: string},
-     *  failedRequests: array{status: int, url: string},
-     *  result: string,
-     *  exception: string,
-     *  pageErrors: array{name: string, message: string},
-     * },
+     * @return ChromiumResult|null
      */
     public function getOutput()
     {
-        return $this->output;
+        return $this->chromiumResult;
     }
 
     private function isWindows()
