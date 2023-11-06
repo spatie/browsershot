@@ -679,9 +679,9 @@ class Browsershot
     }
 
     /**
-     * @return array{url: string}
+     * @return null|array{url: string}
      */
-    public function triggeredRequests(): array
+    public function triggeredRequests(): array|null
     {
         $requests = $this->chromiumResult?->getRequestsList();
 
@@ -697,7 +697,10 @@ class Browsershot
         return $this->chromiumResult?->getRequestsList();
     }
 
-    public function redirectHistory(): array
+    /**
+     * @return null|array{url: string, status: int, statusText: string, headers: array}
+     */
+    public function redirectHistory(): array|null
     {
         $redirectHistory = $this->chromiumResult?->getredirectHistory();
 
@@ -713,9 +716,9 @@ class Browsershot
     }
 
     /**
-     * @return array{type: string, message: string, location:array}
+     * @return null|array{type: string, message: string, location:array}
      */
-    public function consoleMessages(): array
+    public function consoleMessages(): array|null
     {
         $messages = $this->chromiumResult?->getConsoleMessages();
 
@@ -733,9 +736,9 @@ class Browsershot
     }
 
     /**
-     * @return array{status: int, url: string}
+     * @return null|array{status: int, url: string}
      */
-    public function failedRequests(): array
+    public function failedRequests(): array|null
     {
         $requests = $this->chromiumResult?->getFailedRequests();
 
@@ -753,9 +756,9 @@ class Browsershot
     }
 
     /**
-     * @return array{name: string, message: string}
+     * @return null|array{name: string, message: string}
      */
-    public function pageErrors(): array
+    public function pageErrors(): array|null
     {
         $pageErrors = $this->chromiumResult?->getPageErrors();
 
@@ -1119,24 +1122,7 @@ class Browsershot
             ->pages($initialPage.'-');
     }
 
-    /**
-     * Get full output after calling the browser.
-     *
-     * All present data is always relative to the last browser call.
-     *
-     * Output is composed in the following way:
-     *
-     * - consoleMessages: messages generated with console calls
-     * - requestsList: list of all requests made
-     * - failedRequests: list of all failed requests
-     * - result: result of the last operation called
-     * - exception: string representation of the exception generated, if any
-     * - pageErrors: list of all page errors generated during the current command
-     * - redirectHistory: list of all redirect in the page
-     *
-     * @return ChromiumResult|null
-     */
-    public function getOutput()
+    public function getOutput(): ChromiumResult|null
     {
         return $this->chromiumResult;
     }
