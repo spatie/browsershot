@@ -44,7 +44,7 @@ class Browsershot
     /**
      * @var ChromiumResult|null
      */
-    private $chromiumResult = null;
+    protected ChromiumResult|null $chromiumResult = null;
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
