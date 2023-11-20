@@ -587,6 +587,16 @@ it('can set another chrome executable path', function () {
         ->save($targetPath);
 });
 
+it('can set another firefox executable path', function () {
+    $this->expectException(ProcessFailedException::class);
+
+    $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+    Browsershot::html('Foo')
+        ->setFirefoxPath('non-existant/bin/wich/causes/an/exception')
+        ->save($targetPath);
+});
+
 it('can set another bin path', function () {
     $this->expectException(ProcessFailedException::class);
 
@@ -605,6 +615,27 @@ it('can set the include path and still works', function () {
         ->save($targetPath);
 
     expect($targetPath)->toBeFile();
+});
+
+it('can set product to firefox', function() {
+    $command = Browsershot::url('https://example.com')
+        ->useFirefox()
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'product' => 'firefox',
+            'type' => 'png',
+        ],
+    ], $command);
 });
 
 it('can run without sandbox', function () {
