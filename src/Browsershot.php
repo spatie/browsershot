@@ -120,6 +120,13 @@ class Browsershot
         return $this;
     }
 
+    public function setFirefoxPath(string $executablePath)
+    {
+        $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
     public function setCustomTempPath(string $tempPath)
     {
         $this->tempPath = $tempPath;
@@ -130,6 +137,13 @@ class Browsershot
     public function post(array $postParams = [])
     {
         $this->postParams = $postParams;
+
+        return $this;
+    }
+
+    public function useFirefox()
+    {
+        $this->setOption('product', 'firefox');
 
         return $this;
     }
