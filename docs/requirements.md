@@ -19,6 +19,12 @@ Or you could opt to just install it globally
 npm install puppeteer --location=global
 ```
 
+You can also install the Firefox browser if you intend on using Firefox:
+
+```bash
+PUPPETEER_PRODUCT=firefox npm install puppeteer
+```
+
 ### Installing puppeteer on a Forge provisioned server
 
 On a [Forge](https://forge.laravel.com) provisioned Ubuntu server you can install the latest stable version of Chrome like this:
@@ -113,3 +119,11 @@ Browsershot::html('Foo')
   ]);
 ```
 
+### Using Firefox instead of Chrome
+
+If you need to use Firefox, you can simply call the `useFirefox` method.
+
+```php
+Browsershot::html('Foo')
+  ->useFirefox();
+```

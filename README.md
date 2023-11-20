@@ -7,7 +7,7 @@
 [![run-tests](https://img.shields.io/github/actions/workflow/status/spatie/browsershot/run-tests.yml?label=tests&style=flat-square)](https://github.com/spatie/browsershot/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
 
-The package can convert a webpage to an image or pdf. The conversion is done behind the scenes by [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless version of Google Chrome.
+The package can convert a webpage to an image or pdf. The conversion is done behind the scenes by [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless version of Google Chrome by default.
 
 Here's a quick example:
 
@@ -58,6 +58,12 @@ To use Chrome's new [headless mode](https://developers.google.com/web/updates/20
 
 ```php
 Browsershot::url('https://example.com')->newHeadless()->save($pathToImage);
+```
+
+If you prefer using Firefox, you can simply call the `useFirefox` method:
+
+```php
+Browsershot::url('https://example.com')->useFirefox()->save($pathToImage);
 ```
 
 ## Support us
