@@ -159,10 +159,37 @@ it('can take a highly customized screenshot', function () {
     expect($targetPath)->toBeFile();
 });
 
+it('can take a highly customized screenshot on firefox', function () {
+    $targetPath = __DIR__.'/temp/customScreenshot.png';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
+        ->clip(290, 80, 700, 290)
+        ->deviceScaleFactor(2)
+        ->dismissDialogs()
+        ->mobile()
+        ->touch()
+        ->windowSize(1280, 800)
+        ->save($targetPath);
+
+    expect($targetPath)->toBeFile();
+});
+
 it('can take a screenshot of an element matching a selector', function () {
     $targetPath = __DIR__.'/temp/nodeScreenshot.png';
 
     Browsershot::url('https://example.com')
+        ->select('div')
+        ->save($targetPath);
+
+    expect($targetPath)->toBeFile();
+});
+
+it('can take a screenshot of an element matching a selector on firefox', function () {
+    $targetPath = __DIR__.'/temp/nodeScreenshot.png';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
         ->select('div')
         ->save($targetPath);
 
@@ -178,6 +205,16 @@ it('throws an exception if the selector does not match any elements', function (
         ->save($targetPath);
 });
 
+it('throws an exception if the selector does not match any elements in firefox', function () {
+    $this->expectException(ElementNotFound::class);
+    $targetPath = __DIR__.'/temp/nodeScreenshot.png';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
+        ->select('not-a-valid-selector')
+        ->save($targetPath);
+});
+
 it('can save a pdf by using the pdf extension', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
 
@@ -189,10 +226,39 @@ it('can save a pdf by using the pdf extension', function () {
     expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
+it('can save a pdf by using the pdf extension using firefox', function () {
+    $targetPath = __DIR__.'/temp/testPdf.pdf';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
+        ->save($targetPath);
+
+    expect($targetPath)->toBeFile();
+
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
+});
+
 it('can save a highly customized pdf', function () {
     $targetPath = __DIR__.'/temp/customPdf.pdf';
 
     Browsershot::url('https://example.com')
+        ->hideBrowserHeaderAndFooter()
+        ->showBackground()
+        ->landscape()
+        ->margins(5, 25, 5, 25)
+        ->pages('1')
+        ->savePdf($targetPath);
+
+    expect($targetPath)->toBeFile();
+
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
+});
+
+it('can save a highly customized pdf using firefox', function () {
+    $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
         ->hideBrowserHeaderAndFooter()
         ->showBackground()
         ->landscape()
@@ -222,8 +288,34 @@ it('can save a highly customized pdf when using pipe', function () {
     expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
+it('can save a highly customized pdf when using pipe using firefox', function () {
+    $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
+        ->usePipe()
+        ->hideBrowserHeaderAndFooter()
+        ->showBackground()
+        ->landscape()
+        ->margins(5, 25, 5, 25)
+        ->pages('1')
+        ->savePdf($targetPath);
+
+    expect($targetPath)->toBeFile();
+
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
+});
+
 it('can return a pdf as base 64', function () {
     $base64 = Browsershot::url('https://example.com')
+        ->base64pdf();
+
+    expect(is_string($base64))->toBeTrue();
+});
+
+it('can return a pdf as base 64 using firefox', function () {
+    $base64 = Browsershot::url('https://example.com')
+        ->useFirefox()
         ->base64pdf();
 
     expect(is_string($base64))->toBeTrue();
@@ -235,6 +327,16 @@ it('can handle a permissions error', function () {
     $this->expectException(ProcessFailedException::class);
 
     Browsershot::url('https://example.com')
+        ->save($targetPath);
+});
+
+it('can handle a permissions error using firefox', function () {
+    $targetPath = '/cantWriteThisPdf.png';
+
+    $this->expectException(ProcessFailedException::class);
+
+    Browsershot::url('https://example.com')
+        ->useFirefox()
         ->save($targetPath);
 });
 
