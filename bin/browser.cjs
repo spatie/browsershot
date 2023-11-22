@@ -46,10 +46,11 @@ const getOutput = async (request, page = null) => {
         if (request.action == "evaluate") {
             output.result = await page.evaluate(request.options.pageFunction);
         } else {
-            const result = await page[request.action](request.options);
-
-            // Ignore output result when saving to a file
-            output.result = request.options.path ? '' : result.toString('base64');
+            output.result = await page[request.action](request.options);
+            
+            if (!request.options.path) {
+                output.result = output.result.toString('base64');
+            }
         }
     }
 
@@ -429,14 +430,12 @@ const callChrome = async (pup) => {
         if (request.options.waitForSelector) {
             await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
         }
+        
+        const output = await getOutput(request, page);
 
-        output = await getOutput(page, request);
-
-        if (output) {
+        if (!request.options.path) {
             console.log(output);
         }
-
-        console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
             await page.close();
