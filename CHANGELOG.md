@@ -1,3 +1,11 @@
+## 3.60.0 - 2023-11-16
+
+### What's Changed
+
+- Added getOutput method for full output data access on any request by @vitorsemeano in https://github.com/spatie/browsershot/pull/780
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.59.0...3.60.0
+
 ## 3.59.0 - 2023-10-09
 
 ### What's Changed
