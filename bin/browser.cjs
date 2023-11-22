@@ -46,9 +46,11 @@ const getOutput = async (request, page = null) => {
         if (request.action == 'evaluate') {
             output.result = await page.evaluate(request.options.pageFunction);
         } else {
-            output.result = (
-                await page[request.action](request.options)
-            ).toString('base64');
+            output.result = await page[request.action](request.options);
+            
+            if (!request.options.path) {
+                output.result = output.result.toString('base64');
+            }
         }
     }
 
@@ -382,7 +384,11 @@ const callChrome = async pup => {
             await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
         }
         
-        console.log(await getOutput(request, page));
+        const output = await getOutput(request, page);
+
+        if (!request.options.path) {
+            console.log(output);
+        }
 
         if (remoteInstance && page) {
             await page.close();
