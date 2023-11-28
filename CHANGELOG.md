@@ -1,3 +1,15 @@
+## 3.60.1 - 2023-11-28
+
+### What's Changed
+
+* fixing ?? syntax with ternary by @Chetanp23 in https://github.com/spatie/browsershot/pull/795
+
+### New Contributors
+
+* @Chetanp23 made their first contribution in https://github.com/spatie/browsershot/pull/795
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.60.0...3.60.1
+
 ## 3.60.0 - 2023-11-16
 
 ### What's Changed
