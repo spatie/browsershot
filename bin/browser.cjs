@@ -383,7 +383,11 @@ const callChrome = async pup => {
             await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
         }
 
-        console.log(await getOutput(request, page));
+        const output = await getOutput(request, page);
+
+        if (!request.options.path) {
+            console.log(output);
+        }
 
         if (remoteInstance && page) {
             await page.close();
