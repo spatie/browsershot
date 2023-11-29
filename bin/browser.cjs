@@ -430,25 +430,21 @@ const callChrome = async (pup) => {
         if (request.options.waitForSelector) {
             await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
         }
-        
-        const output = await getOutput(request, page);
 
-        if (!request.options.path) {
-            console.log(output);
-        }
+        console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
             await page.close();
         }
 
-        (await remoteInstance) ? browser.disconnect() : browser.close();
+        await (remoteInstance ? browser.disconnect() : browser.close());
     } catch (exception) {
         if (browser) {
             if (remoteInstance && page) {
                 await page.close();
             }
 
-            (await remoteInstance) ? browser.disconnect() : browser.close();
+            await (remoteInstance ? browser.disconnect() : browser.close());
         }
 
         const output = await getOutput(request);
