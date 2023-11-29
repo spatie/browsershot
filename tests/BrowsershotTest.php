@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Browsershot\Browsershot;
+use Spatie\Browsershot\ChromiumResult;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
@@ -1666,4 +1667,65 @@ it('should set the new headless flag when using the new method', function () {
                 ],
         ],
     ], $command);
+});
+
+it('can get the body html and full output data', function () {
+    $instance = Browsershot::url('https://example.com');
+    $html = $instance->bodyHtml();
+
+    expect($html)->toContain($expectedContent = '<h1>Example Domain</h1>');
+
+    $output = $instance->getOutput();
+
+    expect($output)->not()->toBeNull();
+    expect($output)->toBeInstanceOf(ChromiumResult::class);
+    expect($output->getResult())->toContain($expectedContent);
+    expect($output->getConsoleMessages())->toBe([]);
+    expect($output->getRequestsList())->toMatchArray([[
+        'url' => 'https://example.com/',
+    ]]);
+    expect($output->getFailedRequests())->toBe([]);
+    expect($output->getPageErrors())->toBe([]);
+});
+
+it('can handle a permissions error with full output', function () {
+    $targetPath = '/cantWriteThisPdf.png';
+
+    $this->expectException(ProcessFailedException::class);
+
+    $instance = Browsershot::url('https://example.com');
+
+    try {
+        $instance->save($targetPath);
+    } catch (\Throwable $th) {
+        $output = $instance->getOutput();
+
+        expect($output)->not()->toBeNull();
+        expect($output)->toBeInstanceOf(ChromiumResult::class);
+        expect($output->getException())->not()->toBeEmpty();
+        expect($output->getConsoleMessages())->toBe([]);
+        expect($output->getRequestsList())->toMatchArray([[
+            'url' => 'https://example.com/',
+        ]]);
+        expect($output->getFailedRequests())->toBe([]);
+        expect($output->getPageErrors())->toBe([]);
+
+        throw $th;
+    }
+});
+
+it("should be able to fetch page errors with pageErrors method", function () {
+    $errors = Browsershot::html('<!DOCTYPE html>
+    <html lang="en">
+      <body>
+        <script type="text/javascript">
+            throw "this is not right!";
+        </script>
+      </body>
+    </html>')->pageErrors();
+
+    expect($errors)->toBeArray();
+    expect(count($errors))->toBe(1);
+    expect($errors[0]['name'])->toBeString();
+    expect($errors[0]['message'])->toBeString();
 });

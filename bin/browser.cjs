@@ -22,48 +22,47 @@ const consoleMessages = [];
 
 const failedRequests = [];
 
-const getOutput = async (page, request) => {
-    let output;
+const pageErrors = [];
 
-    if (request.action == 'requestsList') {
-        output = JSON.stringify(requestsList);
+const getOutput = async (request, page = null) => {
+    let output = {
+        requestsList,
+        consoleMessages,
+        failedRequests,
+        redirectHistory,
+        pageErrors,
+    };
 
-        return output;
+    if (
+        ![
+            'requestsList',
+            'consoleMessages',
+            'failedRequests',
+            'redirectHistory',
+            'pageErrors',
+        ].includes(request.action) &&
+        page
+    ) {
+        if (request.action == 'evaluate') {
+            output.result = await page.evaluate(request.options.pageFunction);
+        } else {
+            output.result = (
+                await page[request.action](request.options)
+            ).toString('base64');
+        }
     }
 
-    if (request.action == 'redirectHistory') {
-        output = JSON.stringify(redirectHistory);
-
-        return output;
+    if (page) {
+        return JSON.stringify(output);
     }
 
-    if (request.action == 'consoleMessages') {
-        output = JSON.stringify(consoleMessages);
-
-        return output;
-    }
-
-    if (request.action == 'failedRequests') {
-        output = JSON.stringify(failedRequests);
-
-        return output;
-    }
-
-    if (request.action == 'evaluate') {
-        output = await page.evaluate(request.options.pageFunction);
-
-        return output;
-    }
-
-    output = await page[request.action](request.options);
-
-    return request.options.path ? null : output.toString('base64');
+    // this will allow adding additional error info (only reach this point when there's an exception)
+    return output;
 };
 
 const callChrome = async pup => {
     let browser;
     let page;
-    let output;
     let remoteInstance;
     const puppet = (pup || require('puppeteer'));
 
@@ -119,11 +118,21 @@ const callChrome = async pup => {
             request.url = contentUrl;
         }
 
-        page.on('console',  message => consoleMessages.push({
-            type: message.type(),
-            message: message.text(),
-            location: message.location()
-        }));
+        page.on('console', (message) =>
+            consoleMessages.push({
+                type: message.type(),
+                message: message.text(),
+                location: message.location(),
+                stackTrace: message.stackTrace(),
+            })
+        );
+
+        page.on('pageerror', (msg) => {
+            pageErrors.push({
+                name: msg.name || 'unknown error',
+                message: msg.message || msg.toString(),
+            });
+        });
 
         page.on('response', function (response) {
             if (response.request().isNavigationRequest() && response.request().frame().parentFrame() === null) {
@@ -370,14 +379,10 @@ const callChrome = async pup => {
         }
 
         if (request.options.waitForSelector) {
-            await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
+            await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
         }
 
-        output = await getOutput(page, request);
-
-        if (output) {
-            console.log(output);
-        }
+        console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
             await page.close();
@@ -386,21 +391,26 @@ const callChrome = async pup => {
         await remoteInstance ? browser.disconnect() : browser.close();
     } catch (exception) {
         if (browser) {
-
             if (remoteInstance && page) {
                 await page.close();
             }
 
-            await remoteInstance ? browser.disconnect() : browser.close();
+            (await remoteInstance) ? browser.disconnect() : browser.close();
         }
 
-        if (exception.type === 'UnsuccessfulResponse') {
-            console.error(exception.status)
+        const output = await getOutput(request);
 
+        if (exception.type === 'UnsuccessfulResponse') {
+            output.exception = exception.toString();
+            console.error(exception.status);
+            console.log(JSON.stringify(output));
             process.exit(3);
         }
 
+        output.exception = exception.toString();
+
         console.error(exception);
+        console.log(JSON.stringify(output));
 
         if (exception.type === 'ElementNotFound') {
             process.exit(2);
