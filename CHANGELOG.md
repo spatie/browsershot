@@ -1,3 +1,15 @@
+## 3.60.2 - 2023-12-18
+
+### What's Changed
+
+* Allow symfony/process 7.x by @thecaliskan in https://github.com/spatie/browsershot/pull/803
+
+### New Contributors
+
+* @thecaliskan made their first contribution in https://github.com/spatie/browsershot/pull/803
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.60.1...3.60.2
+
 ## 3.60.1 - 2023-11-28
 
 ### What's Changed
