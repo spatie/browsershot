@@ -30,6 +30,7 @@ class Browsershot
     protected $scale = null;
     protected $screenshotType = 'png';
     protected $screenshotQuality = null;
+    protected $taggedPdf = false;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $transparentBackground = false;
@@ -374,6 +375,13 @@ class Browsershot
     public function transparentBackground()
     {
         $this->transparentBackground = true;
+
+        return $this;
+    }
+
+    public function taggedPdf()
+    {
+        $this->taggedPdf = true;
 
         return $this;
     }
@@ -831,6 +839,10 @@ class Browsershot
 
         if ($this->transparentBackground) {
             $command['options']['omitBackground'] = true;
+        }
+
+        if ($this->taggedPdf) {
+            $command['options']['tagged'] = true;
         }
 
         if ($this->scale) {

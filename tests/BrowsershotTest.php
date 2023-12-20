@@ -222,6 +222,19 @@ it('can save a highly customized pdf when using pipe', function () {
     expect(mime_content_type($targetPath))->toEqual('application/pdf');
 });
 
+it('can save a pdf with the taggedPdf option', function () {
+    $targetPath = __DIR__.'/temp/customPdf.pdf';
+
+    Browsershot::url('https://example.com')
+        ->taggedPdf()
+        ->pages('1')
+        ->savePdf($targetPath);
+
+    expect($targetPath)->toBeFile();
+
+    expect(mime_content_type($targetPath))->toEqual('application/pdf');
+});
+
 it('can return a pdf as base 64', function () {
     $base64 = Browsershot::url('https://example.com')
         ->base64pdf();
@@ -309,6 +322,39 @@ it('can create a command to generate a pdf', function () {
             'path' => 'screenshot.pdf',
             'printBackground' => true,
             'omitBackground' => true,
+            'landscape' => true,
+            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
+            'pageRanges' => '1-3',
+            'width' => '210mm',
+            'height' => '148mm',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+        ],
+    ], $command);
+});
+
+it('can create a command to generate a pdf with tags', function() {
+    $command = Browsershot::url('https://example.com')
+        ->showBackground()
+        ->transparentBackground()
+        ->taggedPdf()
+        ->landscape()
+        ->margins(10, 20, 30, 40)
+        ->pages('1-3')
+        ->paperSize(210, 148)
+        ->createPdfCommand('screenshot.pdf');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'pdf',
+        'options' => [
+            'path' => 'screenshot.pdf',
+            'printBackground' => true,
+            'omitBackground' => true,
+            'tagged' => true,
             'landscape' => true,
             'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
             'pageRanges' => '1-3',
