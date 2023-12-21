@@ -1,3 +1,15 @@
+## 3.61.0 - 2023-12-21
+
+### What's Changed
+
+* Adding a taggedPdf option by @ntaylor-86 in https://github.com/spatie/browsershot/pull/804
+
+### New Contributors
+
+* @ntaylor-86 made their first contribution in https://github.com/spatie/browsershot/pull/804
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.60.2...3.61.0
+
 ## 3.60.2 - 2023-12-18
 
 ### What's Changed
