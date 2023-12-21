@@ -336,7 +336,7 @@ it('can create a command to generate a pdf', function () {
     ], $command);
 });
 
-it('can create a command to generate a pdf with tags', function() {
+it('can create a command to generate a pdf with tags', function () {
     $command = Browsershot::url('https://example.com')
         ->showBackground()
         ->transparentBackground()
