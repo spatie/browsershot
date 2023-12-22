@@ -7,7 +7,6 @@ use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
-use Spatie\Image\Manipulations;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 beforeEach(function () {
@@ -61,10 +60,6 @@ it('will not allow a file url', function () {
     Browsershot::url('file://test');
 })->throws(FileUrlNotAllowed::class);
 
-
-
-
-
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
@@ -88,8 +83,6 @@ it('cannot save without an extension', function () {
         ->save($targetPath);
 });
 
-
-
 it('throws an exception if the selector does not match any elements', function () {
     $this->expectException(ElementNotFound::class);
     $targetPath = __DIR__.'/temp/nodeScreenshot.png';
@@ -99,10 +92,6 @@ it('throws an exception if the selector does not match any elements', function (
         ->save($targetPath);
 });
 
-
-
-
-
 it('can handle a permissions error', function () {
     $targetPath = '/cantWriteThisPdf.png';
 
@@ -111,8 +100,6 @@ it('can handle a permissions error', function () {
     Browsershot::url('https://example.com')
         ->save($targetPath);
 });
-
-
 
 it('can set another node binary', function () {
     $this->expectException(ProcessFailedException::class);
@@ -140,8 +127,8 @@ it('can set another bin path', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
     Browsershot::html('Foo')
-            ->setBinPath('non-existant/bin/wich/causes/an/exception')
-            ->save($targetPath);
+        ->setBinPath('non-existant/bin/wich/causes/an/exception')
+        ->save($targetPath);
 });
 
 it('can set the include path and still works', function () {
@@ -360,7 +347,6 @@ it('can set arbitrary options', function () {
     ], $command);
 });
 
-
 it('can get the output of a pdf', function () {
     $output = Browsershot::url('https://example.com')
         ->pdf();
@@ -577,8 +563,6 @@ it('can click on the page', function () {
     ], $command);
 });
 
-
-
 it('can evaluate page', function () {
     $result = Browsershot::url('https://example.com')
         ->evaluate('1 + 1');
@@ -792,11 +776,6 @@ it('can change select fields and post and get the body html', function () {
     ], $command);
 });
 
-
-
-
-
-
 it('will auto prefix chromium arguments', function () {
     $command = Browsershot::url('https://example.com')
         ->addChromiumArguments(['please-autoprefix-me'])
@@ -894,8 +873,6 @@ it('will allow passing environment variables', function () {
     ], $instance->createScreenshotCommand('screenshot.png'));
 });
 
-
-
 it('can throw an error when response is unsuccessful', function () {
     $url = 'https://google.com/404';
 
@@ -935,7 +912,7 @@ it('will allow passing a content url', function () {
         ],
     ], $response);
 
-    $this->assertStringContainsString("file://", $responseUrl);
+    $this->assertStringContainsString('file://', $responseUrl);
 });
 
 it('can get the console messages', function () {
@@ -967,9 +944,6 @@ it('can set the custom temp path', function () {
     expect('application/pdf')->toEqual($mimeType);
 });
 
-
-
-
 it('should set the new headless flag when using the new method', function () {
     $command = Browsershot::url('https://example.com')->newHeadless()->createScreenshotCommand('screenshot.png');
 
@@ -984,7 +958,7 @@ it('should set the new headless flag when using the new method', function () {
             'viewport' => [
                 'width' => 800,
                 'height' => 600,
-                ],
+            ],
         ],
     ], $command);
 });
@@ -1034,7 +1008,7 @@ it('can handle a permissions error with full output', function () {
     }
 });
 
-it("should be able to fetch page errors with pageErrors method", function () {
+it('should be able to fetch page errors with pageErrors method', function () {
     $errors = Browsershot::html('<!DOCTYPE html>
     <html lang="en">
       <body>

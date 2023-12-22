@@ -1,6 +1,6 @@
 <?php
 
-expect()->extend('toHaveMime', function(string $expectedMimeType) {
+expect()->extend('toHaveMime', function (string $expectedMimeType) {
     $actualMimeType = mime_content_type($this->value);
 
     expect($actualMimeType)->toBe($expectedMimeType);

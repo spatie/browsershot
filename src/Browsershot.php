@@ -17,31 +17,54 @@ use Symfony\Component\Process\Process;
 class Browsershot
 {
     protected ?string $nodeBinary = null;
-    protected ?string$npmBinary = null;
+
+    protected ?string $npmBinary = null;
+
     protected ?string $nodeModulePath = null;
+
     protected string $includePath = '$PATH:/usr/local/bin:/opt/homebrew/bin';
+
     protected ?string $binPath = null;
+
     protected string $html = '';
+
     protected bool $noSandbox = false;
+
     protected string $proxyServer = '';
+
     protected bool $showBackground = false;
+
     protected bool $showScreenshotBackground = true;
+
     protected ?float $scale = null;
+
     protected string $screenshotType = 'png';
+
     protected ?string $screenshotQuality = null;
+
     protected bool $taggedPdf = false;
-    protected ?TemporaryDirectory $temporaryHtmlDirectory = null ;
+
+    protected ?TemporaryDirectory $temporaryHtmlDirectory = null;
+
     protected int $timeout = 60;
+
     protected bool $transparentBackground = false;
+
     protected string $url = '';
+
     protected array $postParams = [];
+
     protected array $additionalOptions = [];
+
     protected ?TemporaryDirectory $temporaryOptionsDirectory = null;
+
     protected string $tempPath = '';
+
     protected bool $writeOptionsToFile = false;
+
     protected array $chromiumArguments = [];
 
-    protected ChromiumResult|null $chromiumResult = null;
+    protected ?ChromiumResult $chromiumResult = null;
 
     public static function url(string $url): static
     {
@@ -123,7 +146,7 @@ class Browsershot
         return $this;
     }
 
-    public function useCookies(array $cookies, string $domain = null): static
+    public function useCookies(array $cookies, ?string $domain = null): static
     {
         if (! count($cookies)) {
             return $this;
@@ -207,7 +230,7 @@ class Browsershot
         return $this;
     }
 
-    public function waitForFunction(string $function, Polling $polling = null, int $timeout = 0): static
+    public function waitForFunction(string $function, ?Polling $polling = null, int $timeout = 0): static
     {
         $polling ??= Polling::RequestAnimationFrame;
 
@@ -242,7 +265,7 @@ class Browsershot
 
     public function setHtmlFromFilePath(string $filePath): static
     {
-        if (false === file_exists($filePath)) {
+        if (file_exists($filePath) === false) {
             throw new FileDoesNotExistException($filePath);
         }
 
@@ -366,7 +389,7 @@ class Browsershot
         return $this;
     }
 
-    public function setScreenshotType(string $type, int $quality = null): static
+    public function setScreenshotType(string $type, ?int $quality = null): static
     {
         $this->screenshotType = $type;
 
@@ -592,12 +615,12 @@ class Browsershot
 
     public function screenshot(): string
     {
-            $command = $this->createScreenshotCommand();
-            $encodedImage = $this->callBrowser($command);
+        $command = $this->createScreenshotCommand();
+        $encodedImage = $this->callBrowser($command);
 
-            $this->cleanupTemporaryHtmlFile();
+        $this->cleanupTemporaryHtmlFile();
 
-            return base64_decode($encodedImage);
+        return base64_decode($encodedImage);
 
     }
 
@@ -646,7 +669,7 @@ class Browsershot
     /**
      * @return null|array{url: string}
      */
-    public function triggeredRequests(): array|null
+    public function triggeredRequests(): ?array
     {
         $requests = $this->chromiumResult?->getRequestsList();
 
@@ -670,7 +693,7 @@ class Browsershot
      *     headers: array
      * }
      */
-    public function redirectHistory(): array|null
+    public function redirectHistory(): ?array
     {
         $redirectHistory = $this->chromiumResult?->getRedirectHistory();
 
@@ -692,7 +715,7 @@ class Browsershot
      *     location:array
      * }
      */
-    public function consoleMessages(): array|null
+    public function consoleMessages(): ?array
     {
         $messages = $this->chromiumResult?->getConsoleMessages();
 
@@ -712,7 +735,7 @@ class Browsershot
     /**
      * @return null|array{status: int, url: string}
      */
-    public function failedRequests(): array|null
+    public function failedRequests(): ?array
     {
         $requests = $this->chromiumResult?->getFailedRequests();
 
@@ -732,7 +755,7 @@ class Browsershot
     /**
      * @return null|array{name: string, message: string}
      */
-    public function pageErrors(): array|null
+    public function pageErrors(): ?array
     {
         $pageErrors = $this->chromiumResult?->getPageErrors();
 
@@ -1100,7 +1123,7 @@ class Browsershot
             ->pages($initialPage.'-');
     }
 
-    public function getOutput(): ChromiumResult|null
+    public function getOutput(): ?ChromiumResult
     {
         return $this->chromiumResult;
     }
