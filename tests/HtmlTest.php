@@ -9,7 +9,6 @@ it('can set html contents from a file', function () {
 
     file_put_contents($inputFile, $inputHtml);
 
-
     $outputHtml = Browsershot::htmlFromFilePath($inputFile)
         ->usePipe()
         ->bodyHtml();
