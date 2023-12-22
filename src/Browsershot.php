@@ -1067,7 +1067,7 @@ class Browsershot
         return escapeshellarg($command);
     }
 
-    protected function arraySet(array &$array, string $key, $value): array
+    protected function arraySet(array &$array, string $key, mixed $value): array
     {
         if (is_null($key)) {
             return $array = $value;
@@ -1097,7 +1097,7 @@ class Browsershot
     {
         return $this
             ->setOption('initialPageNumber', ($initialPage - 1))
-            ->pages($initialPage.'-');
+            ->pages("{$initialPage}-");
     }
 
     public function getOutput(): ChromiumResult|null
