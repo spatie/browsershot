@@ -781,13 +781,6 @@ class Browsershot
         return $this->chromiumResult?->getPageErrors();
     }
 
-    public function applyManipulations(string $imagePath)
-    {
-        Image::load($imagePath)
-            ->manipulate($this->imageManipulations)
-            ->save();
-    }
-
     public function createBodyHtmlCommand(): array
     {
         $url = $this->getFinalContentsUrl();
