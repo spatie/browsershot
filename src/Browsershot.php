@@ -597,6 +597,7 @@ class Browsershot
     public function bodyHtml(): string
     {
         $command = $this->createBodyHtmlCommand();
+
         $html = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -607,6 +608,7 @@ class Browsershot
     public function base64Screenshot(): string
     {
         $command = $this->createScreenshotCommand();
+
         $encodedImage = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -617,6 +619,7 @@ class Browsershot
     public function screenshot(): string
     {
         $command = $this->createScreenshotCommand();
+
         $encodedImage = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -628,6 +631,7 @@ class Browsershot
     public function pdf(): string
     {
         $command = $this->createPdfCommand();
+
         $encodedPdf = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -638,6 +642,7 @@ class Browsershot
     public function savePdf(string $targetPath)
     {
         $command = $this->createPdfCommand($targetPath);
+
         $output = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -650,6 +655,7 @@ class Browsershot
     public function base64pdf(): string
     {
         $command = $this->createPdfCommand();
+
         $encodedPdf = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -660,6 +666,7 @@ class Browsershot
     public function evaluate(string $pageFunction): string
     {
         $command = $this->createEvaluateCommand($pageFunction);
+
         $evaluation = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
@@ -679,6 +686,7 @@ class Browsershot
         }
 
         $command = $this->createTriggeredRequestsListCommand();
+
         $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
