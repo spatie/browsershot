@@ -22,28 +22,28 @@ class ChromiumResult
     protected string $result;
     protected string|null $exception;
 
-    /**
-     * @var null|array{type: string, message: string, location: array, stackTrace: string}
-     */
+    /** @var null|array{type: string, message: string, location: array, stackTrace: string} */
     protected null|array $consoleMessages;
 
-    /**
-     * @var null|array{url: string}
-     */
+    /** @var null|array{url: string} */
     protected null|array $requestsList;
 
-    /**
-     * @var null|array{status: int, url: string}
-     */
+    /** * @var null|array{status: int, url: string} */
     protected null|array $failedRequests;
 
-    /**
-     * @var null|array{name: string, message: string}
+    /** * @var null|array{
+     *     name: string,
+     *     message: string
+     * }
      */
     protected null|array $pageErrors;
 
-    /**
-     * @var null|array{url: string, status: int, statusText: string, headers: array}
+    /** @var null|array{
+     *     url: string,
+     *     status: int,
+     *     statusText: string,
+     *      headers: array
+     * }
      */
     protected null|array $redirectHistory;
 
@@ -68,8 +68,12 @@ class ChromiumResult
         return $this->exception;
     }
 
-    /**
-     * @return null|array{type: string, message: string, location: array, stackTrace: string}
+    /** @return null|array{
+     *     type: string,
+     *      message: string,
+     *     location: array,
+     *     stackTrace: string
+     * }
      */
     public function getConsoleMessages(): array|null
     {
@@ -92,18 +96,24 @@ class ChromiumResult
         return $this->failedRequests;
     }
 
-    /**
-     * @return null|array{name: string, message: string}
+    /** @return null|array{
+     *     name: string,
+     *     message: string
+     * }
      */
     public function getPageErrors(): array|null
     {
         return $this->pageErrors;
     }
 
-    /**
-     * @return null|array{url: string, status: int, statusText: string, headers: array}
+    /** @return null|array{
+     *     url: string,
+     *     status: int,
+     *     statusText: string,
+     *     headers: array
+     * }
      */
-    public function getredirectHistory(): array|null
+    public function getRedirectHistory(): array|null
     {
         return $this->redirectHistory;
     }

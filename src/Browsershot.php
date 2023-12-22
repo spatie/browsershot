@@ -14,41 +14,34 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-/** @mixin \Spatie\Image\Manipulations */
 class Browsershot
 {
-    protected $nodeBinary = null;
-    protected $npmBinary = null;
-    protected $nodeModulePath = null;
-    protected $includePath = '$PATH:/usr/local/bin:/opt/homebrew/bin';
-    protected $binPath = null;
-    protected $html = '';
-    protected $noSandbox = false;
-    protected $proxyServer = '';
-    protected $showBackground = false;
-    protected $showScreenshotBackground = true;
-    protected $scale = null;
-    protected $screenshotType = 'png';
-    protected $screenshotQuality = null;
-    protected $taggedPdf = false;
-    protected $temporaryHtmlDirectory;
-    protected $timeout = 60;
-    protected $transparentBackground = false;
-    protected $url = '';
-    protected $postParams = [];
-    protected $additionalOptions = [];
-    protected $temporaryOptionsDirectory;
-    protected $tempPath = '';
-    protected $writeOptionsToFile = false;
-    protected $chromiumArguments = [];
+    protected ?string $nodeBinary = null;
+    protected ?string$npmBinary = null;
+    protected ?string $nodeModulePath = null;
+    protected string $includePath = '$PATH:/usr/local/bin:/opt/homebrew/bin';
+    protected ?string $binPath = null;
+    protected string $html = '';
+    protected bool $noSandbox = false;
+    protected string $proxyServer = '';
+    protected bool $showBackground = false;
+    protected bool $showScreenshotBackground = true;
+    protected ?float $scale = null;
+    protected string $screenshotType = 'png';
+    protected ?string $screenshotQuality = null;
+    protected bool $taggedPdf = false;
+    protected ?TemporaryDirectory $temporaryHtmlDirectory = null ;
+    protected int $timeout = 60;
+    protected bool $transparentBackground = false;
+    protected string $url = '';
+    protected array $postParams = [];
+    protected array $additionalOptions = [];
+    protected ?TemporaryDirectory $temporaryOptionsDirectory = null;
+    protected string $tempPath = '';
+    protected bool $writeOptionsToFile = false;
+    protected array $chromiumArguments = [];
 
-    /**
-     * @var ChromiumResult|null
-     */
     protected ChromiumResult|null $chromiumResult = null;
-
-    /** @var \Spatie\Image\Manipulations */
-    protected $imageManipulations;
 
     public const POLLING_REQUEST_ANIMATION_FRAME = 'raf';
     public const POLLING_MUTATION = 'mutation';
@@ -71,8 +64,6 @@ class Browsershot
     public function __construct(string $url = '', bool $deviceEmulate = false)
     {
         $this->url = $url;
-
-        $this->imageManipulations = new Manipulations();
 
         if (! $deviceEmulate) {
             $this->windowSize(800, 600);
@@ -250,7 +241,7 @@ class Browsershot
 
     public function setUrl(string $url)
     {
-        if (Helpers::stringStartsWith(strtolower($url), 'file://')) {
+        if (str_starts_with(strtolower($url), 'file://')) {
             throw FileUrlNotAllowed::make();
         }
 
@@ -281,7 +272,7 @@ class Browsershot
 
     public function setHtml(string $html)
     {
-        if (Helpers::stringContains(strtolower($html), 'file://')) {
+        if (str_contains(strtolower($html), 'file://')) {
             throw HtmlIsNotAllowedToContainFile::make();
         }
 
@@ -567,13 +558,6 @@ class Browsershot
         return $this;
     }
 
-    public function __call($name, $arguments)
-    {
-        $this->imageManipulations->$name(...$arguments);
-
-        return $this;
-    }
-
     public function save(string $targetPath)
     {
         $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
@@ -594,10 +578,6 @@ class Browsershot
 
         if (! file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
-        }
-
-        if (! $this->imageManipulations->isEmpty()) {
-            $this->applyManipulations($targetPath);
         }
     }
 
@@ -623,25 +603,13 @@ class Browsershot
 
     public function screenshot(): string
     {
-        if ($this->imageManipulations->isEmpty()) {
-
             $command = $this->createScreenshotCommand();
             $encodedImage = $this->callBrowser($command);
 
             $this->cleanupTemporaryHtmlFile();
 
             return base64_decode($encodedImage);
-        }
 
-        $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
-
-        $this->save($temporaryDirectory->path('screenshot.png'));
-
-        $screenshot = file_get_contents($temporaryDirectory->path('screenshot.png'));
-
-        $temporaryDirectory->delete();
-
-        return $screenshot;
     }
 
     public function pdf(): string
@@ -710,7 +678,7 @@ class Browsershot
      */
     public function redirectHistory(): array|null
     {
-        $redirectHistory = $this->chromiumResult?->getredirectHistory();
+        $redirectHistory = $this->chromiumResult?->getRedirectHistory();
 
         if ($redirectHistory) {
             return $redirectHistory;
@@ -720,7 +688,7 @@ class Browsershot
 
         $this->callBrowser($command);
 
-        return $this->chromiumResult?->getredirectHistory();
+        return $this->chromiumResult?->getRedirectHistory();
     }
 
     /**
