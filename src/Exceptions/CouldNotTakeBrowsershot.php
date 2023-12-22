@@ -6,7 +6,7 @@ use Exception;
 
 class CouldNotTakeBrowsershot extends Exception
 {
-    public static function chromeOutputEmpty(string $screenShotPath, string $output, array $command = [])
+    public static function chromeOutputEmpty(string $screenShotPath, string $output, array $command = []): static
     {
         $command = json_encode($command);
 
@@ -23,7 +23,7 @@ class CouldNotTakeBrowsershot extends Exception
         return new static($message);
     }
 
-    public static function outputFileDidNotHaveAnExtension(string $path)
+    public static function outputFileDidNotHaveAnExtension(string $path): static
     {
         return new static("The given path `{$path}` did not contain an extension. Please append an extension.");
     }
