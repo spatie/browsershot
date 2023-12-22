@@ -242,8 +242,8 @@ class Browsershot
 
     public function setHtmlFromFilePath(string $filePath): static
     {
-        if (false === file_exists($filePath)) {
-            throw new FileDoesNotExistException($filePath);
+        if (! file_exists($filePath)) {
+            throw FileDoesNotExistException::make($filePath);
         }
 
         $this->url = 'file://'.$filePath;
@@ -1001,11 +1001,11 @@ class Browsershot
         $errorOutput = $process->getErrorOutput();
 
         if ($exitCode === 3) {
-            throw new UnsuccessfulResponse($this->url, $errorOutput ?? '');
+            throw UnsuccessfulResponse::make($this->url, $errorOutput ?? '');
         }
 
         if ($exitCode === 2) {
-            throw new ElementNotFound($this->additionalOptions['selector']);
+            throw ElementNotFound::make($this->additionalOptions['selector']);
         }
 
         throw new ProcessFailedException($process);

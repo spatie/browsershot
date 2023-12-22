@@ -6,8 +6,8 @@ use Exception;
 
 class FileDoesNotExistException extends Exception
 {
-    public function __construct($file)
+    public static function make(string $file): static
     {
-        parent::__construct("The file `{$file}` does not exist");
+        return new static("The file `{$file}` does not exist");
     }
 }
