@@ -320,7 +320,6 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
-<<<<<<< HEAD
 ## 3.52.0 - 2021-10-27
 
 - Prevent unsuccessful response by @mikaelpopowicz in https://github.com/spatie/browsershot/pull/576
