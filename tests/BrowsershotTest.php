@@ -1025,7 +1025,7 @@ it('should be able to fetch page errors with pageErrors method', function () {
     expect($errors[0]['message'])->toBeString();
 });
 
-it('will apply manipulations when taking screenshots', function() {
+it('will apply manipulations when taking screenshots', function () {
     $screenShot = Browsershot::url('https://example.com')
         ->windowSize(1920, 1080)
         ->fit(Fit::Fill, 200, 200)
