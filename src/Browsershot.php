@@ -580,7 +580,6 @@ class Browsershot
         return $this;
     }
 
-
     public function save(string $targetPath): void
     {
         $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
