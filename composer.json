@@ -29,9 +29,9 @@
         "ext-fileinfo": "*"
     },
     "require-dev": {
-        "spatie/phpunit-snapshot-assertions": "^4.2.3",
-        "pestphp/pest": "^1.20"
-
+        "pestphp/pest": "^1.20",
+        "spatie/image": "^3.3",
+        "spatie/phpunit-snapshot-assertions": "^4.2.3"
     },
     "autoload": {
         "psr-4": {

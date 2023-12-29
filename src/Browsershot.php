@@ -9,11 +9,11 @@ use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
-use Spatie\Image\Image;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+/** @mixin \Spatie\Image\Image */
 class Browsershot
 {
     protected ?string $nodeBinary = null;
@@ -66,6 +66,8 @@ class Browsershot
 
     protected ?ChromiumResult $chromiumResult = null;
 
+    protected ImageManipulations $imageManipulations;
+
     public static function url(string $url): static
     {
         return (new static())->setUrl($url);
@@ -88,6 +90,8 @@ class Browsershot
         if (! $deviceEmulate) {
             $this->windowSize(800, 600);
         }
+
+        $this->imageManipulations = new ImageManipulations();
     }
 
     public function setNodeBinary(string $nodeBinary): static
@@ -569,6 +573,14 @@ class Browsershot
         return $this;
     }
 
+    public function __call($name, $arguments)
+    {
+        $this->imageManipulations->$name(...$arguments);
+
+        return $this;
+    }
+
+
     public function save(string $targetPath): void
     {
         $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
@@ -592,6 +604,8 @@ class Browsershot
         if (! file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
         }
+
+        $this->imageManipulations->apply($targetPath);
     }
 
     public function bodyHtml(): string
@@ -618,13 +632,26 @@ class Browsershot
 
     public function screenshot(): string
     {
-        $command = $this->createScreenshotCommand();
+        if ($this->imageManipulations->isEmpty()) {
 
-        $encodedImage = $this->callBrowser($command);
+            $command = $this->createScreenshotCommand();
 
-        $this->cleanupTemporaryHtmlFile();
+            $encodedImage = $this->callBrowser($command);
 
-        return base64_decode($encodedImage);
+            $this->cleanupTemporaryHtmlFile();
+
+            return base64_decode($encodedImage);
+        }
+
+        $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
+
+        $this->save($temporaryDirectory->path('screenshot.png'));
+
+        $screenshot = file_get_contents($temporaryDirectory->path('screenshot.png'));
+
+        $temporaryDirectory->delete();
+
+        return $screenshot;
 
     }
 

@@ -7,6 +7,7 @@ use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
+use Spatie\Image\Enums\Fit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 beforeEach(function () {
@@ -1022,4 +1023,19 @@ it('should be able to fetch page errors with pageErrors method', function () {
     expect(count($errors))->toBe(1);
     expect($errors[0]['name'])->toBeString();
     expect($errors[0]['message'])->toBeString();
+});
+
+it('will apply manipulations when taking screenshots', function() {
+    $screenShot = Browsershot::url('https://example.com')
+        ->windowSize(1920, 1080)
+        ->fit(Fit::Fill, 200, 200)
+        ->screenshot();
+
+    $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+    file_put_contents($targetPath, $screenShot);
+
+    expect($targetPath)->toBeFile();
+    expect(getimagesize($targetPath)[0])->toEqual(200);
+    expect(getimagesize($targetPath)[1])->toEqual(200);
 });
