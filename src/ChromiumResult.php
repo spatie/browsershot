@@ -23,13 +23,23 @@ class ChromiumResult
 
     protected ?string $exception;
 
-    /** @var null|array{type: string, message: string, location: array, stackTrace: string} */
+    /** @var null|array{
+     *     type: string,
+     *     message: string,
+     *     location: array,
+     *     stackTrace: string
+     * }
+     */
     protected ?array $consoleMessages;
 
     /** @var null|array{url: string} */
     protected ?array $requestsList;
 
-    /** * @var null|array{status: int, url: string} */
+    /** * @var null|array{
+     *     status: int,
+     *     url: string
+     * }
+     */
     protected ?array $failedRequests;
 
     /** * @var null|array{
