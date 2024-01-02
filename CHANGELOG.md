@@ -1,3 +1,12 @@
+## 4.0.1 - 2024-01-02
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/spatie/browsershot/pull/809
+* [Fix] Change `screenshotQuality` property type to integer by @orkhanahmadov in https://github.com/spatie/browsershot/pull/810
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.0...4.0.1
+
 ## 4.0.0 - 2023-12-29
 
 - modernize codebase
