@@ -40,7 +40,7 @@ class Browsershot
 
     protected string $screenshotType = 'png';
 
-    protected ?string $screenshotQuality = null;
+    protected ?int $screenshotQuality = null;
 
     protected bool $taggedPdf = false;
 
