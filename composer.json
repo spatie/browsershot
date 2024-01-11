@@ -23,10 +23,11 @@
     ],
     "require": {
         "php": "^8.2",
-        "spatie/temporary-directory": "^2.0",
-        "symfony/process": "^6.0|^7.0",
+        "ext-fileinfo": "*",
         "ext-json": "*",
-        "ext-fileinfo": "*"
+        "spatie/laravel-package-tools": "^1.16",
+        "spatie/temporary-directory": "^2.0",
+        "symfony/process": "^6.0|^7.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.20",
@@ -50,6 +51,13 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spatie\\Browsershot\\BrowsershotServiceProvider"
+            ]
         }
     }
 }

@@ -22,7 +22,7 @@ class Browsershot
 
     protected ?string $nodeModulePath = null;
 
-    protected string $includePath = '$PATH:/usr/local/bin:/opt/homebrew/bin';
+    protected ?string $includePath = null;
 
     protected ?string $binPath = null;
 
@@ -1064,7 +1064,9 @@ class Browsershot
 
     protected function getFullCommand(array $command): array|string
     {
-        $nodeBinary = $this->nodeBinary ?: 'node';
+        $nodeBinary = $this->nodeBinary
+            ?: config('browsershot.node_binary')
+            ?: 'node';
 
         $binPath = $this->binPath ?: __DIR__.'/../bin/browser.cjs';
 
@@ -1080,7 +1082,11 @@ class Browsershot
             ];
         }
 
-        $setIncludePathCommand = "PATH={$this->includePath}";
+        $includePath = $this->includePath
+            ?: config('browsershot.include_path')
+            ?: '$PATH:/usr/local/bin:/opt/homebrew/bin';
+
+        $setIncludePathCommand = "PATH={$includePath}";
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
@@ -1094,11 +1100,16 @@ class Browsershot
 
     protected function getNodePathCommand(string $nodeBinary): string
     {
-        if ($this->nodeModulePath) {
-            return "NODE_PATH='{$this->nodeModulePath}'";
+        $nodeModulePath = $this->nodeModulePath ?: config('browsershot.node_module_path');
+
+        if ($nodeModulePath) {
+            return "NODE_PATH='{$nodeModulePath}'";
         }
-        if ($this->npmBinary) {
-            return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
+
+        $npmBinary = $this->npmBinary ?: config('browsershot.npm_binary');
+
+        if ($npmBinary) {
+            return "NODE_PATH=`{$nodeBinary} {$npmBinary} root -g`";
         }
 
         return 'NODE_PATH=`npm root -g`';
