@@ -1,6 +1,6 @@
-const fs = require("fs");
-const URL = require("url").URL;
-const URLParse = require("url").parse;
+const fs = require('fs');
+const URL = require('url').URL;
+const URLParse = require('url').parse;
 
 const [, , ...args] = process.argv;
 
@@ -10,7 +10,7 @@ const [, , ...args] = process.argv;
  * - Or by providing a temporary file with the options JSON dump,
  *   the path to this file is then given as an argument with the flag -f
  */
-const request = args[0].startsWith("-f ")
+const request = args[0].startsWith('-f ')
     ? JSON.parse(fs.readFileSync(new URL(args[0].substring(3))))
     : JSON.parse(args[0]);
 
@@ -35,15 +35,15 @@ const getOutput = async (request, page = null) => {
 
     if (
         ![
-            "requestsList",
-            "consoleMessages",
-            "failedRequests",
-            "redirectHistory",
-            "pageErrors",
+            'requestsList',
+            'consoleMessages',
+            'failedRequests',
+            'redirectHistory',
+            'pageErrors',
         ].includes(request.action) &&
         page
     ) {
-        if (request.action == "evaluate") {
+        if (request.action == 'evaluate') {
             output.result = await page.evaluate(request.options.pageFunction);
         } else {
             const result = await page[request.action](request.options);
@@ -56,72 +56,48 @@ const getOutput = async (request, page = null) => {
     if (page) {
         return JSON.stringify(output);
     }
-
-    if (request.action == "consoleMessages") {
-        output = JSON.stringify(consoleMessages);
-
-        return output;
-    }
-
-    if (request.action == "failedRequests") {
-        output = JSON.stringify(failedRequests);
-
-        return output;
-    }
-
-    if (request.action == "evaluate") {
-        output = await page.evaluate(request.options.pageFunction);
-
-        return output;
-    }
-
-    output = await page[request.action](request.options);
-
-    return request.options.path ? null : output.toString('base64');
+    
+    // this will allow adding additional error info (only reach this point when there's an exception)
+    return output;
 };
 
-const callChrome = async (pup) => {
+const callChrome = async pup => {
     let browser;
     let page;
     let remoteInstance;
-    const puppet = pup || require("puppeteer");
+    const puppet = (pup || require('puppeteer'));
 
     try {
-        if (
-            request.options.remoteInstanceUrl ||
-            request.options.browserWSEndpoint
-        ) {
+        if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
             // default options
             let options = {
-                ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
+                ignoreHTTPSErrors: request.options.ignoreHttpsErrors
             };
 
             // choose only one method to connect to the browser instance
-            if (request.options.remoteInstanceUrl) {
+            if ( request.options.remoteInstanceUrl ) {
                 options.browserURL = request.options.remoteInstanceUrl;
-            } else if (request.options.browserWSEndpoint) {
+            } else if ( request.options.browserWSEndpoint ) {
                 options.browserWSEndpoint = request.options.browserWSEndpoint;
             }
 
             try {
-                browser = await puppet.connect(options);
+                browser = await puppet.connect( options );
 
                 remoteInstance = true;
-            } catch (exception) {
-                /** does nothing. fallbacks to launching a chromium instance */
-            }
+            } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
         }
 
         if (!browser) {
             browser = await puppet.launch({
-                headless: request.options.newHeadless ? "new" : true,
+                headless: request.options.newHeadless ? 'new' : true,
                 ignoreHTTPSErrors: request.options.ignoreHttpsErrors,
                 executablePath: request.options.executablePath,
                 args: request.options.args || [],
                 pipe: request.options.pipe || false,
                 env: {
                     ...(request.options.env || {}),
-                    ...process.env,
+                    ...process.env
                 },
             });
         }
@@ -135,17 +111,15 @@ const callChrome = async (pup) => {
         await page.setRequestInterception(true);
 
         const contentUrl = request.options.contentUrl;
-        const parsedContentUrl = contentUrl
-            ? contentUrl.replace(/\/$/, "")
-            : undefined;
+        const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
         let pageContent;
 
         if (contentUrl) {
-            pageContent = fs.readFileSync(request.url.replace("file://", ""));
+            pageContent = fs.readFileSync(request.url.replace('file://', ''));
             request.url = contentUrl;
         }
 
-        page.on("console", (message) =>
+        page.on('console', (message) =>
             consoleMessages.push({
                 type: message.type(),
                 message: message.text(),
@@ -154,24 +128,21 @@ const callChrome = async (pup) => {
             })
         );
 
-        page.on("pageerror", (msg) => {
+        page.on('pageerror', (msg) => {
             pageErrors.push({
-                name: msg.name || "unknown error",
+                name: msg.name || 'unknown error',
                 message: msg.message || msg.toString(),
             });
         });
 
-        page.on("response", function (response) {
-            if (
-                response.request().isNavigationRequest() &&
-                response.request().frame().parentFrame() === null
-            ) {
+        page.on('response', function (response) {
+            if (response.request().isNavigationRequest() && response.request().frame().parentFrame() === null) {
                 redirectHistory.push({
                     url: response.request().url(),
                     status: response.status(),
                     reason: response.statusText(),
-                    headers: response.headers(),
-                });
+                    headers: response.headers()
+                })
             }
 
             if (response.status() >= 200 && response.status() <= 399) {
@@ -182,9 +153,9 @@ const callChrome = async (pup) => {
                 status: response.status(),
                 url: response.url(),
             });
-        });
+        })
 
-        page.on("request", (interceptedRequest) => {
+        page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
             requestsList.push({
@@ -192,7 +163,7 @@ const callChrome = async (pup) => {
             });
 
             if (request.options && request.options.disableImages) {
-                if (interceptedRequest.resourceType() === "image") {
+                if (interceptedRequest.resourceType() === 'image') {
                     interceptedRequest.abort();
                     return;
                 }
@@ -218,18 +189,12 @@ const callChrome = async (pup) => {
             if (request.options && request.options.extraNavigationHTTPHeaders) {
                 // Do nothing in case of non-navigation requests.
                 if (interceptedRequest.isNavigationRequest()) {
-                    headers = Object.assign(
-                        {},
-                        headers,
-                        request.options.extraNavigationHTTPHeaders
-                    );
+                    headers = Object.assign({}, headers, request.options.extraNavigationHTTPHeaders);
                 }
             }
 
             if (pageContent) {
-                const interceptedUrl = interceptedRequest
-                    .url()
-                    .replace(/\/$/, "");
+                const interceptedUrl = interceptedRequest.url().replace(/\/$/, "");
 
                 // if content url matches the intercepted request url, will return the content fetched from the local file system
                 if (interceptedUrl === parsedContentUrl) {
@@ -244,15 +209,15 @@ const callChrome = async (pup) => {
             if (request.postParams) {
                 const postParamsArray = request.postParams;
                 const queryString = Object.keys(postParamsArray)
-                    .map((key) => `${key}=${postParamsArray[key]}`)
-                    .join("&");
+                    .map(key => `${key}=${postParamsArray[key]}`)
+                    .join('&');
                 interceptedRequest.continue({
                     method: "POST",
                     postData: queryString,
                     headers: {
                         ...interceptedRequest.headers(),
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
                 });
                 return;
             }
@@ -261,7 +226,7 @@ const callChrome = async (pup) => {
         });
 
         if (request.options && request.options.dismissDialogs) {
-            page.on("dialog", async (dialog) => {
+            page.on('dialog', async dialog => {
                 await dialog.dismiss();
             });
         }
@@ -303,9 +268,8 @@ const callChrome = async (pup) => {
         const requestOptions = {};
 
         if (request.options && request.options.networkIdleTimeout) {
-            requestOptions.waitUntil = "networkidle";
-            requestOptions.networkIdleTimeout =
-                request.options.networkIdleTimeout;
+            requestOptions.waitUntil = 'networkidle';
+            requestOptions.networkIdleTimeout = request.options.networkIdleTimeout;
         } else if (request.options && request.options.waitUntil) {
             requestOptions.waitUntil = request.options.waitUntil;
         }
@@ -313,16 +277,16 @@ const callChrome = async (pup) => {
         const response = await page.goto(request.url, requestOptions);
 
         if (request.options.preventUnsuccessfulResponse) {
-            const status = response.status();
+            const status = response.status()
 
             if (status >= 400 && status < 600) {
-                throw { type: "UnsuccessfulResponse", status };
+                throw {type: "UnsuccessfulResponse", status};
             }
         }
 
         if (request.options && request.options.disableImages) {
             await page.evaluate(() => {
-                let images = document.getElementsByTagName("img");
+                let images = document.getElementsByTagName('img');
                 while (images.length > 0) {
                     images[0].parentNode.removeChild(images[0]);
                 }
@@ -333,17 +297,13 @@ const callChrome = async (pup) => {
             for (let i = 0, len = request.options.types.length; i < len; i++) {
                 let typeOptions = request.options.types[i];
                 await page.type(typeOptions.selector, typeOptions.text, {
-                    delay: typeOptions.delay,
+                    'delay': typeOptions.delay,
                 });
             }
         }
 
         if (request.options && request.options.selects) {
-            for (
-                let i = 0, len = request.options.selects.length;
-                i < len;
-                i++
-            ) {
+            for (let i = 0, len = request.options.selects.length; i < len; i++) {
                 let selectOptions = request.options.selects[i];
                 await page.select(selectOptions.selector, selectOptions.value);
             }
@@ -353,9 +313,9 @@ const callChrome = async (pup) => {
             for (let i = 0, len = request.options.clicks.length; i < len; i++) {
                 let clickOptions = request.options.clicks[i];
                 await page.click(clickOptions.selector, {
-                    button: clickOptions.button,
-                    clickCount: clickOptions.clickCount,
-                    delay: clickOptions.delay,
+                    'button': clickOptions.button,
+                    'clickCount': clickOptions.clickCount,
+                    'delay': clickOptions.delay,
                 });
             }
         }
@@ -376,20 +336,17 @@ const callChrome = async (pup) => {
             await page.evaluate((initialPageNumber) => {
                 window.pageStart = initialPageNumber;
 
-                const style = document.createElement("style");
-                style.type = "text/css";
-                style.innerHTML =
-                    ".empty-page { page-break-after: always; visibility: hidden; }";
-                document.getElementsByTagName("head")[0].appendChild(style);
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = '.empty-page { page-break-after: always; visibility: hidden; }';
+                document.getElementsByTagName('head')[0].appendChild(style);
 
-                const emptyPages = Array.from({ length: window.pageStart }).map(
-                    () => {
-                        const emptyPage = document.createElement("div");
-                        emptyPage.className = "empty-page";
-                        emptyPage.textContent = "empty";
-                        return emptyPage;
-                    }
-                );
+                const emptyPages = Array.from({length: window.pageStart}).map(() => {
+                    const emptyPage = document.createElement('div');
+                    emptyPage.className = "empty-page";
+                    emptyPage.textContent = "empty";
+                    return emptyPage;
+                });
                 document.body.prepend(...emptyPages);
             }, request.options.initialPageNumber);
         }
@@ -397,18 +354,18 @@ const callChrome = async (pup) => {
         if (request.options.selector) {
             var element;
             const index = request.options.selectorIndex || 0;
-            if (index) {
+            if(index){
                 element = await page.$$(request.options.selector);
-                if (!element.length || typeof element[index] === "undefined") {
+                if(!element.length || typeof element[index] === 'undefined'){
                     element = null;
-                } else {
+                }else{
                     element = element[index];
                 }
-            } else {
+            }else{
                 element = await page.$(request.options.selector);
             }
             if (element === null) {
-                throw { type: "ElementNotFound" };
+                throw {type: 'ElementNotFound'};
             }
 
             request.options.clip = await element.boundingBox();
@@ -417,19 +374,15 @@ const callChrome = async (pup) => {
         if (request.options.function) {
             let functionOptions = {
                 polling: request.options.functionPolling,
-                timeout:
-                    request.options.functionTimeout || request.options.timeout,
+                timeout: request.options.functionTimeout || request.options.timeout
             };
-            await page.waitForFunction(
-                request.options.function,
-                functionOptions
-            );
+            await page.waitForFunction(request.options.function, functionOptions);
         }
 
         if (request.options.waitForSelector) {
             await page.waitForSelector(request.options.waitForSelector, request.options.waitForSelectorOptions ?? undefined);
         }
-
+        
         console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
@@ -448,7 +401,7 @@ const callChrome = async (pup) => {
 
         const output = await getOutput(request);
 
-        if (exception.type === "UnsuccessfulResponse") {
+        if (exception.type === 'UnsuccessfulResponse') {
             output.exception = exception.toString();
             console.error(exception.status);
             console.log(JSON.stringify(output));
@@ -460,7 +413,7 @@ const callChrome = async (pup) => {
         console.error(exception);
         console.log(JSON.stringify(output));
 
-        if (exception.type === "ElementNotFound") {
+        if (exception.type === 'ElementNotFound') {
             process.exit(2);
         }
 
