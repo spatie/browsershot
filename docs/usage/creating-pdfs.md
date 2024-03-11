@@ -116,6 +116,16 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
+## Tagged (accessible) pdf
+
+Call `taggedPdf` if you want the resulting pdf to be tagged (accessible).
+
+```php
+Browsershot::html($someHtml)
+    ->taggedPdf()
+    ->save('example.pdf');
+```
+
 ## Landscape orientation
 
 Call `landscape` if you want to resulting pdf to be landscape oriented.

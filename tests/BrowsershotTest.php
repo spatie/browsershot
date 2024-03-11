@@ -7,26 +7,11 @@ use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
-use Spatie\Image\Manipulations;
+use Spatie\Image\Enums\Fit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 beforeEach(function () {
-    $this->emptyTempDirectory();
-});
-
-it('can get the body html', function () {
-    $html = Browsershot::url('https://example.com')
-        ->bodyHtml();
-
-    expect($html)->toContain('<h1>Example Domain</h1>');
-});
-
-it('can get the body html when using pipe', function () {
-    $html = Browsershot::url('https://example.com')
-        ->usePipe()
-        ->bodyHtml();
-
-    expect($html)->toContain('<h1>Example Domain</h1>');
+    emptyTempDirectory();
 });
 
 it('can get the requests list', function () {
@@ -76,41 +61,6 @@ it('will not allow a file url', function () {
     Browsershot::url('file://test');
 })->throws(FileUrlNotAllowed::class);
 
-it('can take a screenshot', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    Browsershot::url('https://example.com')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
-it('can return a screenshot as base 64', function () {
-    $base64 = Browsershot::url('https://example.com')
-        ->base64Screenshot();
-
-    expect(is_string($base64))->toBeTrue();
-});
-
-it('can take a screenshot when using pipe', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    Browsershot::url('https://example.com')
-        ->usePipe()
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
-it('can take a screenshot of arbitrary html', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    Browsershot::html('<h1>Hello world!!</h1>')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
@@ -134,41 +84,6 @@ it('cannot save without an extension', function () {
         ->save($targetPath);
 });
 
-it('can take a full page screenshot', function () {
-    $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
-
-    Browsershot::url('https://github.com/spatie/browsershot')
-        ->fullPage()
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
-it('can take a highly customized screenshot', function () {
-    $targetPath = __DIR__.'/temp/customScreenshot.png';
-
-    Browsershot::url('https://example.com')
-        ->clip(290, 80, 700, 290)
-        ->deviceScaleFactor(2)
-        ->dismissDialogs()
-        ->mobile()
-        ->touch()
-        ->windowSize(1280, 800)
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
-it('can take a screenshot of an element matching a selector', function () {
-    $targetPath = __DIR__.'/temp/nodeScreenshot.png';
-
-    Browsershot::url('https://example.com')
-        ->select('div')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
 it('throws an exception if the selector does not match any elements', function () {
     $this->expectException(ElementNotFound::class);
     $targetPath = __DIR__.'/temp/nodeScreenshot.png';
@@ -178,57 +93,6 @@ it('throws an exception if the selector does not match any elements', function (
         ->save($targetPath);
 });
 
-it('can save a pdf by using the pdf extension', function () {
-    $targetPath = __DIR__.'/temp/testPdf.pdf';
-
-    Browsershot::url('https://example.com')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-
-    expect(mime_content_type($targetPath))->toEqual('application/pdf');
-});
-
-it('can save a highly customized pdf', function () {
-    $targetPath = __DIR__.'/temp/customPdf.pdf';
-
-    Browsershot::url('https://example.com')
-        ->hideBrowserHeaderAndFooter()
-        ->showBackground()
-        ->landscape()
-        ->margins(5, 25, 5, 25)
-        ->pages('1')
-        ->savePdf($targetPath);
-
-    expect($targetPath)->toBeFile();
-
-    expect(mime_content_type($targetPath))->toEqual('application/pdf');
-});
-
-it('can save a highly customized pdf when using pipe', function () {
-    $targetPath = __DIR__.'/temp/customPdf.pdf';
-
-    Browsershot::url('https://example.com')
-        ->usePipe()
-        ->hideBrowserHeaderAndFooter()
-        ->showBackground()
-        ->landscape()
-        ->margins(5, 25, 5, 25)
-        ->pages('1')
-        ->savePdf($targetPath);
-
-    expect($targetPath)->toBeFile();
-
-    expect(mime_content_type($targetPath))->toEqual('application/pdf');
-});
-
-it('can return a pdf as base 64', function () {
-    $base64 = Browsershot::url('https://example.com')
-        ->base64pdf();
-
-    expect(is_string($base64))->toBeTrue();
-});
-
 it('can handle a permissions error', function () {
     $targetPath = '/cantWriteThisPdf.png';
 
@@ -236,335 +100,6 @@ it('can handle a permissions error', function () {
 
     Browsershot::url('https://example.com')
         ->save($targetPath);
-});
-
-it('can create a command to generate a screenshot', function () {
-    $command = Browsershot::url('https://example.com')
-        ->clip(100, 50, 600, 400)
-        ->deviceScaleFactor(2)
-        ->fullPage()
-        ->dismissDialogs()
-        ->windowSize(1920, 1080)
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
-            'path' => 'screenshot.png',
-            'fullPage' => true,
-            'dismissDialogs' => true,
-            'viewport' => [
-                'deviceScaleFactor' => 2,
-                'width' => 1920,
-                'height' => 1080,
-            ],
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a screenshot and omit the background', function () {
-    $command = Browsershot::url('https://example.com')
-        ->clip(100, 50, 600, 400)
-        ->deviceScaleFactor(2)
-        ->hideBackground()
-        ->windowSize(1920, 1080)
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'clip' => ['x' => 100, 'y' => 50, 'width' => 600, 'height' => 400],
-            'path' => 'screenshot.png',
-            'omitBackground' => true,
-            'viewport' => [
-                'deviceScaleFactor' => 2,
-                'width' => 1920,
-                'height' => 1080,
-            ],
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->transparentBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->paperSize(210, 148)
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'omitBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'width' => '210mm',
-            'height' => '148mm',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf with a custom header', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->paperSize(210, 148)
-        ->showBrowserHeaderAndFooter()
-        ->headerHtml('<p>Test Header</p>')
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'width' => '210mm',
-            'height' => '148mm',
-            'displayHeaderFooter' => true,
-            'headerTemplate' => '<p>Test Header</p>',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf with a custom footer', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->paperSize(210, 148)
-        ->showBrowserHeaderAndFooter()
-        ->footerHtml('<p>Test Footer</p>')
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'width' => '210mm',
-            'height' => '148mm',
-            'displayHeaderFooter' => true,
-            'footerTemplate' => '<p>Test Footer</p>',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf with the header hidden', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->paperSize(210, 148)
-        ->showBrowserHeaderAndFooter()
-        ->hideHeader()
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'width' => '210mm',
-            'height' => '148mm',
-            'displayHeaderFooter' => true,
-            'headerTemplate' => '<p></p>',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf with the footer hidden', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->paperSize(210, 148)
-        ->showBrowserHeaderAndFooter()
-        ->hideFooter()
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'width' => '210mm',
-            'height' => '148mm',
-            'displayHeaderFooter' => true,
-            'footerTemplate' => '<p></p>',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can create a command to generate a pdf with paper format', function () {
-    $command = Browsershot::url('https://example.com')
-        ->showBackground()
-        ->landscape()
-        ->margins(10, 20, 30, 40)
-        ->pages('1-3')
-        ->format('a4')
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'printBackground' => true,
-            'landscape' => true,
-            'margin' => ['top' => '10mm', 'right' => '20mm', 'bottom' => '30mm', 'left' => '40mm'],
-            'pageRanges' => '1-3',
-            'format' => 'a4',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-        ],
-    ], $command);
-});
-
-it('can use given user agent', function () {
-    $command = Browsershot::url('https://example.com')
-        ->userAgent('my_special_snowflake')
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'userAgent' => 'my_special_snowflake',
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
-});
-
-it('can set emulate media option', function () {
-    $command = Browsershot::url('https://example.com')
-        ->emulateMedia('screen')
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'emulateMedia' => 'screen',
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
-});
-
-it('can set emulate media option to null', function () {
-    $command = Browsershot::url('https://example.com')
-        ->emulateMedia(null)
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'emulateMedia' => null,
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
-});
-
-it('can use pipe', function () {
-    $command = Browsershot::url('https://example.com')
-        ->usePipe()
-        ->createScreenshotCommand('screenshot.png');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'pipe' => true,
-            'args' => [],
-            'type' => 'png',
-        ],
-    ], $command);
 });
 
 it('can set another node binary', function () {
@@ -593,8 +128,8 @@ it('can set another bin path', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
     Browsershot::html('Foo')
-            ->setBinPath('non-existant/bin/wich/causes/an/exception')
-            ->save($targetPath);
+        ->setBinPath('non-existant/bin/wich/causes/an/exception')
+        ->save($targetPath);
 });
 
 it('can set the include path and still works', function () {
@@ -813,33 +348,6 @@ it('can set arbitrary options', function () {
     ], $command);
 });
 
-it('can add a delay before taking a screenshot', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    $delay = 2000;
-
-    $start = round(microtime(true) * 1000);
-
-    Browsershot::url('https://example.com')
-        ->setDelay($delay)
-        ->save($targetPath);
-
-    $end = round(microtime(true) * 1000);
-
-    expect($end - $start)->toBeGreaterThanOrEqual($delay);
-});
-
-it('can get the output of a screenshot', function () {
-    $output = Browsershot::url('https://example.com')
-        ->screenshot();
-
-    $finfo = finfo_open();
-
-    $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
-
-    expect('image/png')->toEqual($mimeType);
-});
-
 it('can get the output of a pdf', function () {
     $output = Browsershot::url('https://example.com')
         ->pdf();
@@ -849,15 +357,6 @@ it('can get the output of a pdf', function () {
     $mimeType = finfo_buffer($finfo, $output, FILEINFO_MIME_TYPE);
 
     expect('application/pdf')->toEqual($mimeType);
-});
-
-it('can save to temp dir with background', function () {
-    $targetPath = tempnam(sys_get_temp_dir(), 'bs_').'.jpg';
-    Browsershot::url('https://example.com')
-        ->background('white')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
 });
 
 it('can wait until network idle', function () {
@@ -1063,18 +562,6 @@ it('can click on the page', function () {
             'type' => 'png',
         ],
     ], $command);
-});
-
-it('can set type of screenshot', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.jpg';
-
-    Browsershot::url('https://example.com')
-        ->setScreenshotType('jpeg')
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-
-    $this->assertMimeType('image/jpeg', $targetPath);
 });
 
 it('can evaluate page', function () {
@@ -1290,56 +777,6 @@ it('can change select fields and post and get the body html', function () {
     ], $command);
 });
 
-it('can write options to a file and generate a screenshot', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    Browsershot::url('https://example.com')
-        ->writeOptionsToFile()
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-});
-
-it('can write options to a file and generate a pdf', function () {
-    $targetPath = __DIR__.'/temp/testPdf.pdf';
-
-    Browsershot::url('https://example.com')
-        ->writeOptionsToFile()
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
-
-    expect(mime_content_type($targetPath))->toEqual('application/pdf');
-});
-
-it('can generate a pdf with custom paper size unit', function () {
-    $command = Browsershot::url('https://example.com')
-        ->paperSize(8.3, 11.7, 'in')
-        ->margins(0.39, 0.78, 1.18, 1.57, 'in')
-        ->createPdfCommand('screenshot.pdf');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'pdf',
-        'options' => [
-            'path' => 'screenshot.pdf',
-            'margin' => [
-                'top' => '0.39in',
-                'right' => '0.78in',
-                'bottom' => '1.18in',
-                'left' => '1.57in',
-            ],
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'width' => '8.3in',
-            'height' => '11.7in',
-            'args' => [],
-        ],
-    ], $command);
-});
-
 it('will auto prefix chromium arguments', function () {
     $command = Browsershot::url('https://example.com')
         ->addChromiumArguments(['please-autoprefix-me'])
@@ -1413,119 +850,6 @@ it('will set user data dir arg flag', function () {
     ], $command);
 });
 
-it('will apply manipulations when taking screen shots', function () {
-    $screenShot = Browsershot::url('https://example.com')
-        ->windowSize(1920, 1080)
-        ->fit(Manipulations::FIT_FILL, 200, 200)
-        ->screenshot();
-
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    file_put_contents($targetPath, $screenShot);
-
-    expect($targetPath)->toBeFile();
-    expect(getimagesize($targetPath)[0])->toEqual(200);
-    expect(getimagesize($targetPath)[1])->toEqual(200);
-});
-
-it('will connect to remote instance and take screenshot', function () {
-    $instance = Browsershot::url('https://example.com')
-        ->setRemoteInstance();
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-            'type' => 'png',
-            'remoteInstanceUrl' => 'http://127.0.0.1:9222',
-        ],
-    ], $instance->createScreenshotCommand('screenshot.png'));
-
-    /*
-     * to test the connection, uncomment the following code, and make sure you are running a chrome/chromium instance locally,
-     * with the following param: --headless --remote-debugging-port=9222
-     */
-    /*
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    file_put_contents($targetPath, $instance->screenshot());
-    expect($targetPath)->toBeFile();
-    */
-});
-
-it('will connect to a custom remote instance and take screenshot', function () {
-    $instance = Browsershot::url('https://example.com')
-        ->setRemoteInstance('127.0.0.1', 9999);
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-            'type' => 'png',
-            'remoteInstanceUrl' => 'http://127.0.0.1:9999',
-        ],
-    ], $instance->createScreenshotCommand('screenshot.png'));
-
-    /*
-    * to test the connection, uncomment the following code, and make sure you are running a chrome/chromium instance locally,
-    * with the following params: --headless --remote-debugging-port=9999
-    */
-    /*
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    file_put_contents($targetPath, $instance->screenshot());
-    expect($targetPath)->toBeFile();
-    */
-});
-
-it('will connect to a custom ws endpoint and take screenshot', function () {
-    $instance = Browsershot::url('https://example.com')
-        ->setWSEndpoint('wss://chrome.browserless.io/');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-            'type' => 'png',
-            'browserWSEndpoint' => 'wss://chrome.browserless.io/',
-        ],
-    ], $instance->createScreenshotCommand('screenshot.png'));
-
-    // It should be online so mis-use the assetsContains because a 4xx error won't contain the word "browerless".
-    $html = Browsershot::url('https://chrome.browserless.io/json/')
-        ->bodyHtml();
-
-    // If it's offline then this will fail.
-    expect($html)->toContain('chrome.browserless.io');
-
-    /* Now that we now the domain is online, assert the screenshot.
-     * Although we can't be sure, because Browsershot itself falls back to launching a chromium instance in browser.js
-    */
-
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    file_put_contents($targetPath, $instance->screenshot());
-    expect($targetPath)->toBeFile();
-});
-
 it('will allow passing environment variables', function () {
     $instance = Browsershot::url('https://example.com')
         ->setEnvironmentOptions([
@@ -1548,16 +872,6 @@ it('will allow passing environment variables', function () {
             ],
         ],
     ], $instance->createScreenshotCommand('screenshot.png'));
-});
-
-it('can take a scaled screenshot', function () {
-    $targetPath = __DIR__.'/temp/testScreenshot.pdf';
-
-    Browsershot::url('https://example.com')
-        ->scale(0.5)
-        ->save($targetPath);
-
-    expect($targetPath)->toBeFile();
 });
 
 it('can throw an error when response is unsuccessful', function () {
@@ -1599,7 +913,7 @@ it('will allow passing a content url', function () {
         ],
     ], $response);
 
-    $this->assertStringContainsString("file://", $responseUrl);
+    $this->assertStringContainsString('file://', $responseUrl);
 });
 
 it('can get the console messages', function () {
@@ -1631,25 +945,6 @@ it('can set the custom temp path', function () {
     expect('application/pdf')->toEqual($mimeType);
 });
 
-
-it('can set html contents from a file', function () {
-    $inputFile = __DIR__.'/temp/test.html';
-    $inputHtml = '<html><head></head><body><h1>Hello World</h1></body></html>';
-
-    file_put_contents($inputFile, $inputHtml);
-
-
-    $outputHtml = Browsershot::htmlFromFilePath($inputFile)
-        ->usePipe()
-        ->bodyHtml();
-
-    expect($outputHtml)->toEqual($inputHtml);
-});
-
-it('can not set html contents from a non-existent file', function () {
-    Browsershot::htmlFromFilePath(__DIR__.'/temp/non-existent-file.html');
-})->throws(\Spatie\Browsershot\Exceptions\FileDoesNotExistException::class);
-
 it('should set the new headless flag when using the new method', function () {
     $command = Browsershot::url('https://example.com')->newHeadless()->createScreenshotCommand('screenshot.png');
 
@@ -1664,7 +959,7 @@ it('should set the new headless flag when using the new method', function () {
             'viewport' => [
                 'width' => 800,
                 'height' => 600,
-                ],
+            ],
         ],
     ], $command);
 });
@@ -1714,7 +1009,7 @@ it('can handle a permissions error with full output', function () {
     }
 });
 
-it("should be able to fetch page errors with pageErrors method", function () {
+it('should be able to fetch page errors with pageErrors method', function () {
     $errors = Browsershot::html('<!DOCTYPE html>
     <html lang="en">
       <body>
@@ -1728,4 +1023,19 @@ it("should be able to fetch page errors with pageErrors method", function () {
     expect(count($errors))->toBe(1);
     expect($errors[0]['name'])->toBeString();
     expect($errors[0]['message'])->toBeString();
+});
+
+it('will apply manipulations when taking screenshots', function () {
+    $screenShot = Browsershot::url('https://example.com')
+        ->windowSize(1920, 1080)
+        ->fit(Fit::Fill, 200, 200)
+        ->screenshot();
+
+    $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+    file_put_contents($targetPath, $screenShot);
+
+    expect($targetPath)->toBeFile();
+    expect(getimagesize($targetPath)[0])->toEqual(200);
+    expect(getimagesize($targetPath)[1])->toEqual(200);
 });

@@ -30,15 +30,6 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
-You can also set the size of the output image independently of the size of window. Here's how to resize a screenshot take with a resolution of 1920x1080 and scale that down to something that fits inside 200x200.
-
-```php
-Browsershot::url('https://example.com')
-    ->windowSize(1920, 1080)
-    ->fit(Manipulations::FIT_CONTAIN, 200, 200)
-    ->save($pathToImage);
-```
-
 You can screenshot only a portion of the page by using `clip`.
 
 ```php
@@ -66,7 +57,13 @@ $base64Data = Browsershot::url('https://example.com')
 
 ## Manipulating the image
 
-You can use all the methods [spatie/image](https://docs.spatie.be/image/v1) provides. Here's an example where we create a greyscale image:
+To perform image manipulation on the screenshot, you need to install the optional dependency [spatie/image](https://spatie.be/docs/image). v3 or higher is required.
+
+```bash
+composer require spatie/image
+```
+
+You can use all the methods [spatie/image](https://docs.spatie.be/image) provides. Here's an example where we create a greyscale image:
 
 ```php
 Browsershot::url('https://example.com')

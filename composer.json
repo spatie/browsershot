@@ -22,15 +22,16 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "spatie/image": "^1.5.3|^2.0",
-        "spatie/temporary-directory": "^1.1|^2.0",
-        "symfony/process": "^4.2|^5.0|^6.0",
-        "ext-json": "*"
+        "php": "^8.2",
+        "spatie/temporary-directory": "^2.0",
+        "symfony/process": "^6.0|^7.0",
+        "ext-json": "*",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
-        "spatie/phpunit-snapshot-assertions": "^4.2.3",
-        "pestphp/pest": "^1.20"
+        "pestphp/pest": "^1.20",
+        "spatie/image": "^3.3",
+        "spatie/phpunit-snapshot-assertions": "^4.2.3"
     },
     "autoload": {
         "psr-4": {

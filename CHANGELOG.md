@@ -1,3 +1,41 @@
+## 4.0.1 - 2024-01-02
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/spatie/browsershot/pull/809
+* [Fix] Change `screenshotQuality` property type to integer by @orkhanahmadov in https://github.com/spatie/browsershot/pull/810
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.0...4.0.1
+
+## 4.0.0 - 2023-12-29
+
+- modernize codebase
+- made dependency on spatie/image optional
+
+## 3.61.0 - 2023-12-21
+
+### What's Changed
+
+* Adding a taggedPdf option by @ntaylor-86 in https://github.com/spatie/browsershot/pull/804
+
+### New Contributors
+
+* @ntaylor-86 made their first contribution in https://github.com/spatie/browsershot/pull/804
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.60.2...3.61.0
+
+## 3.60.2 - 2023-12-18
+
+### What's Changed
+
+* Allow symfony/process 7.x by @thecaliskan in https://github.com/spatie/browsershot/pull/803
+
+### New Contributors
+
+* @thecaliskan made their first contribution in https://github.com/spatie/browsershot/pull/803
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/3.60.1...3.60.2
+
 ## 3.60.1 - 2023-11-28
 
 ### What's Changed
@@ -619,6 +657,10 @@ All notable changes to `Browsershot` will be documented in this file
 
 - use Puppeteer to call Chrome
 - add various options enabled by using Puppeteer
+
+### 2.4.2 - 2017-12-24
+
+- update dep on `spatie/image`
 
 ### 2.4.1 - 2017-09-27
 

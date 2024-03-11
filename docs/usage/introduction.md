@@ -23,6 +23,6 @@ Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 
 Here are the things that Browsershot can produce for you:
 
-- [an image](/docs/browsershot/v1/usage)
-- [a PDF](/docs/browsershot/v1/usage)
-- [HTML](/docs/browsershot/v1/usage)
+- [an image](/docs/browsershot/v4/usage)
+- [a PDF](/docs/browsershot/v4/usage)
+- [HTML](/docs/browsershot/v4/usage)
