@@ -56,7 +56,7 @@ const getOutput = async (request, page = null) => {
     if (page) {
         return JSON.stringify(output);
     }
-    
+
     // this will allow adding additional error info (only reach this point when there's an exception)
     return output;
 };
