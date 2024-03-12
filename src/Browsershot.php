@@ -255,17 +255,6 @@ class Browsershot
         return $this;
     }
 
-    public function setUrl(string $url)
-    {
-        $this->setOption('waitForSelector', $selector);
-
-        if (! empty($options)) {
-            $this->setOption('waitForSelectorOptions', $options);
-        }
-
-        return $this;
-    }
-
     public function setUrl(string $url): static
     {
         if (str_starts_with(strtolower($url), 'file://')) {
