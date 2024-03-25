@@ -1029,7 +1029,7 @@ class Browsershot
     {
         $fullCommand = $this->getFullCommand($command);
 
-        $process = $this->isWindows() ? new Process($fullCommand) : Process::fromShellCommandline($fullCommand);
+        $process = $this->isWindows() ? new Process($fullCommand, null, getenv()) : Process::fromShellCommandline($fullCommand);
 
         $process->setTimeout($this->timeout);
 
