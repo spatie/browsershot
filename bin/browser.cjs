@@ -328,7 +328,7 @@ const callChrome = async pup => {
         }
 
         if (request.options.delay) {
-            await new Promise(r => setTimeout(r, request.options.delay))
+            await new Promise(r => setTimeout(r, request.options.delay));
         }
 
         if (request.options.initialPageNumber) {
