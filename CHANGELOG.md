@@ -1,3 +1,18 @@
+## 4.0.2 - 2024-04-01
+
+### What's Changed
+
+* Update node version by @alnutile in https://github.com/spatie/browsershot/pull/830
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.0.0 by @dependabot in https://github.com/spatie/browsershot/pull/832
+* Replace waitForTimeout by @niclas-timm in https://github.com/spatie/browsershot/pull/834
+
+### New Contributors
+
+* @alnutile made their first contribution in https://github.com/spatie/browsershot/pull/830
+* @niclas-timm made their first contribution in https://github.com/spatie/browsershot/pull/834
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.1...4.0.2
+
 ## 4.0.1 - 2024-01-02
 
 ### What's Changed
