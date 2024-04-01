@@ -36,14 +36,9 @@ it('can get the redirect history', function () {
         return $item;
     }, $list);
 
-    expect($list)->toHaveCount(3);
+    expect($list)->toHaveCount(2);
 
     $this->assertEquals([
-        [
-            'url' => 'http://www.spatie.be/',
-            'status' => 301,
-            'reason' => 'Moved Permanently',
-        ],
         [
             'url' => 'https://www.spatie.be/',
             'status' => 301,
