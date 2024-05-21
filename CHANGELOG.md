@@ -1,3 +1,19 @@
+## 4.0.3 - 2024-05-21
+
+### What's Changed
+
+* Fix redirect history test by @niclas-timm in https://github.com/spatie/browsershot/pull/836
+* Bump aglipanci/laravel-pint-action from 2.3.1 to 2.4 by @dependabot in https://github.com/spatie/browsershot/pull/838
+* Bump dependabot/fetch-metadata from 2.0.0 to 2.1.0 by @dependabot in https://github.com/spatie/browsershot/pull/841
+* Update installation instructions for nodejs + Puppeteer by @benholmen in https://github.com/spatie/browsershot/pull/843
+* Fix generation of large PDFs by @clementmas in https://github.com/spatie/browsershot/pull/827
+
+### New Contributors
+
+* @benholmen made their first contribution in https://github.com/spatie/browsershot/pull/843
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.2...4.0.3
+
 ## 4.0.2 - 2024-04-01
 
 ### What's Changed
