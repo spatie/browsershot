@@ -1,3 +1,15 @@
+## 4.0.4 - 2024-05-24
+
+### What's Changed
+
+* Fixing `spatie/image`'s dependant bot alerts issues in `composer.lock` by @thanosalexandris in https://github.com/spatie/browsershot/pull/846
+
+### New Contributors
+
+* @thanosalexandris made their first contribution in https://github.com/spatie/browsershot/pull/846
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.3...4.0.4
+
 ## 4.0.3 - 2024-05-21
 
 ### What's Changed
