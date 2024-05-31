@@ -604,7 +604,9 @@ class Browsershot
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
         }
 
-        $this->imageManipulations->apply($targetPath);
+        if (!$this->imageManipulations->isEmpty()) {
+            $this->imageManipulations->apply($targetPath);
+        }
     }
 
     public function bodyHtml(): string
