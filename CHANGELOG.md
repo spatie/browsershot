@@ -1,3 +1,11 @@
+## 4.0.5 - 2024-06-04
+
+### What's Changed
+
+* Fix save method if there are no image manipulations by @moisish in https://github.com/spatie/browsershot/pull/847
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.4...4.0.5
+
 ## 4.0.4 - 2024-05-24
 
 ### What's Changed
