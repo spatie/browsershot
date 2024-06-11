@@ -709,7 +709,7 @@ class Browsershot
     {
         $requests = $this->chromiumResult?->getRequestsList();
 
-        if ($requests) {
+        if (!is_null($requests)) {
             return $requests;
         }
 
@@ -734,7 +734,7 @@ class Browsershot
     {
         $redirectHistory = $this->chromiumResult?->getRedirectHistory();
 
-        if ($redirectHistory) {
+        if (!is_null($redirectHistory)) {
             return $redirectHistory;
         }
 
@@ -756,7 +756,7 @@ class Browsershot
     {
         $messages = $this->chromiumResult?->getConsoleMessages();
 
-        if ($messages) {
+        if (!is_null($messages)) {
             return $messages;
         }
 
@@ -776,7 +776,7 @@ class Browsershot
     {
         $requests = $this->chromiumResult?->getFailedRequests();
 
-        if ($requests) {
+        if (!is_null($requests)) {
             return $requests;
         }
 
@@ -796,7 +796,7 @@ class Browsershot
     {
         $pageErrors = $this->chromiumResult?->getPageErrors();
 
-        if ($pageErrors) {
+        if (!is_null($pageErrors)) {
             return $pageErrors;
         }
 
