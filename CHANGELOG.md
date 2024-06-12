@@ -1,3 +1,11 @@
+## 4.1.0 - 2024-06-12
+
+### What's Changed
+
+* Prevent taking screenshots twice by @clementmas in https://github.com/spatie/browsershot/pull/849
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.0.5...4.1.0
+
 ## 4.0.5 - 2024-06-04
 
 ### What's Changed
