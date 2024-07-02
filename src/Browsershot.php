@@ -1031,7 +1031,7 @@ class Browsershot
     {
         $fullCommand = $this->getFullCommand($command);
 
-        $process = $this->isWindows() ? new Process($fullCommand) : Process::fromShellCommandline($fullCommand);
+        $process = $this->isWindows() ? new Process($fullCommand, null, $this->getWindowsEnv()) : Process::fromShellCommandline($fullCommand);
 
         $process->setTimeout($this->timeout);
 
@@ -1062,6 +1062,16 @@ class Browsershot
         }
 
         throw new ProcessFailedException($process);
+    }
+
+    protected function getWindowsEnv() : array
+    {
+        return [
+            "LOCALAPPDATA" => getenv("LOCALAPPDATA"),
+            "Path"         => getenv("Path"),
+            "SystemRoot"   => getenv("SystemRoot"),
+            "USERPROFILE"  => getenv("USERPROFILE"),
+        ];
     }
 
     protected function getFullCommand(array $command): array|string
