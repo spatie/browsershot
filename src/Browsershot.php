@@ -1064,13 +1064,13 @@ class Browsershot
         throw new ProcessFailedException($process);
     }
 
-    protected function getWindowsEnv() : array
+    protected function getWindowsEnv(): array
     {
         return [
-            "LOCALAPPDATA" => getenv("LOCALAPPDATA"),
-            "Path"         => getenv("Path"),
-            "SystemRoot"   => getenv("SystemRoot"),
-            "USERPROFILE"  => getenv("USERPROFILE"),
+            'LOCALAPPDATA' => getenv('LOCALAPPDATA'),
+            'Path' => getenv('Path'),
+            'SystemRoot' => getenv('SystemRoot'),
+            'USERPROFILE' => getenv('USERPROFILE'),
         ];
     }
 
