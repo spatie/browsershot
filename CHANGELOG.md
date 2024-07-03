@@ -1,3 +1,15 @@
+## 4.1.1 - 2024-07-03
+
+### What's Changed
+
+* Issue with Windows temp path fixed by @SyedMuradAliShah in https://github.com/spatie/browsershot/pull/858
+
+### New Contributors
+
+* @SyedMuradAliShah made their first contribution in https://github.com/spatie/browsershot/pull/858
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.1.0...4.1.1
+
 ## 4.1.0 - 2024-06-12
 
 ### What's Changed
