@@ -457,6 +457,11 @@ class Browsershot
         return $this->setOption('disableImages', true);
     }
 
+    public function disableCaptureURLS(): static
+    {
+        return $this->setOption('disableCaptureURLS', true);
+    }
+
     public function blockUrls($array): static
     {
         return $this->setOption('blockUrls', $array);

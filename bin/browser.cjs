@@ -158,9 +158,11 @@ const callChrome = async pup => {
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
-            requestsList.push({
-                url: interceptedRequest.url(),
-            });
+            if (request.options && request.options.disableCaptureURLS) {
+                requestsList.push({
+                    url: interceptedRequest.url(),
+                });
+            }
 
             if (request.options && request.options.disableImages) {
                 if (interceptedRequest.resourceType() === 'image') {
