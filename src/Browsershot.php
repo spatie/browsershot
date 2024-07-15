@@ -1045,7 +1045,10 @@ class Browsershot
         $this->chromiumResult = new ChromiumResult(json_decode($rawOutput, true));
 
         if ($process->isSuccessful()) {
-            return $this->chromiumResult?->getResult();
+            $result = $this->chromiumResult?->getResult();
+
+            $this->cleanupTemporaryOptionsFile();
+            return $result;
         }
 
         $this->cleanupTemporaryOptionsFile();
