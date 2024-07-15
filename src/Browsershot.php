@@ -1048,6 +1048,7 @@ class Browsershot
             $result = $this->chromiumResult?->getResult();
 
             $this->cleanupTemporaryOptionsFile();
+
             return $result;
         }
 
