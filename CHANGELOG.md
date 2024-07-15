@@ -1,3 +1,16 @@
+## 4.1.2 - 2024-07-15
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.1.0 to 2.2.0 by @dependabot in https://github.com/spatie/browsershot/pull/860
+* Fix - Clean up the temporary options file when browser was called successfully by @Ardenexal in https://github.com/spatie/browsershot/pull/863
+
+### New Contributors
+
+* @Ardenexal made their first contribution in https://github.com/spatie/browsershot/pull/863
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.1.1...4.1.2
+
 ## 4.1.1 - 2024-07-03
 
 ### What's Changed
