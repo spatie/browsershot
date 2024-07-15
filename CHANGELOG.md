@@ -1,3 +1,15 @@
+## 4.1.3 - 2024-07-15
+
+### What's Changed
+
+* option to disable the capturing request by @ziaratban in https://github.com/spatie/browsershot/pull/861
+
+### New Contributors
+
+* @ziaratban made their first contribution in https://github.com/spatie/browsershot/pull/861
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.1.2...4.1.3
+
 ## 4.1.2 - 2024-07-15
 
 ### What's Changed
