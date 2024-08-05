@@ -99,6 +99,7 @@ const callChrome = async pup => {
                     ...(request.options.env || {}),
                     ...process.env
                 },
+                protocolTimeout: request.options.protocolTimeout ?? 30000,
             });
         }
 
