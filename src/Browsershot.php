@@ -504,6 +504,11 @@ class Browsershot
         return $this->setOption('timeout', $timeout * 1000);
     }
 
+    public function protocolTimeout(int $protocolTimeout): static
+    {
+        return $this->setOption('protocolTimeout', $protocolTimeout * 1000);
+    }
+
     public function userAgent(string $userAgent): static
     {
         return $this->setOption('userAgent', $userAgent);
