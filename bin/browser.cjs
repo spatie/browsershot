@@ -159,7 +159,7 @@ const callChrome = async pup => {
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
-            if (request.options && request.options.disableCaptureURLS) {
+            if (request.options && !request.options.disableCaptureURLS) {
                 requestsList.push({
                     url: interceptedRequest.url(),
                 });
@@ -385,7 +385,7 @@ const callChrome = async pup => {
         if (request.options.waitForSelector) {
             await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
         }
-        
+
         console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
