@@ -64,6 +64,7 @@ it('can return a pdf as base 64', function () {
         ->base64pdf();
 
     expect(is_string($base64))->toBeTrue();
+    expect(base64_decode($base64, true))->toBeString();
 });
 
 it('can write options to a file and generate a pdf', function () {

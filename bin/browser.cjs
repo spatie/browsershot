@@ -49,7 +49,9 @@ const getOutput = async (request, page = null) => {
             const result = await page[request.action](request.options);
 
             // Ignore output result when saving to a file
-            output.result = request.options.path ? '' : result.toString('base64');
+            output.result = request.options.path
+                ? ''
+                : (result instanceof Uint8Array ? Buffer.from(result) : result).toString('base64');
         }
     }
 
