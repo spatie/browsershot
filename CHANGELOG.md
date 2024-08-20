@@ -1,3 +1,9 @@
+## 4.2.1 - 2024-08-20
+
+Revert changes of 4.2.1 because PDFs do not render correctly anymore (see https://github.com/spatie/laravel-pdf/issues/175)
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.2.0...4.2.1
+
 ## 4.2.0 - 2024-08-20
 
 ### What's Changed
