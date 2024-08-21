@@ -504,6 +504,11 @@ class Browsershot
         return $this->setOption('timeout', $timeout * 1000);
     }
 
+    public function protocolTimeout(int $protocolTimeout): static
+    {
+        return $this->setOption('protocolTimeout', $protocolTimeout * 1000);
+    }
+
     public function userAgent(string $userAgent): static
     {
         return $this->setOption('userAgent', $userAgent);
@@ -669,7 +674,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return base64_decode($encodedPdf);
+        return $encodedPdf;
     }
 
     public function savePdf(string $targetPath)
@@ -689,11 +694,11 @@ class Browsershot
     {
         $command = $this->createPdfCommand();
 
-        $encodedPdf = $this->callBrowser($command);
+        $pdf = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $encodedPdf;
+        return base64_encode($pdf);
     }
 
     public function evaluate(string $pageFunction): string
