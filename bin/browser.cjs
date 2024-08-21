@@ -47,9 +47,14 @@ const getOutput = async (request, page = null) => {
             output.result = await page.evaluate(request.options.pageFunction);
         } else {
             const result = await page[request.action](request.options);
+            const resultBuffer = Buffer.from(result);
 
-            // Ignore output result when saving to a file
-            output.result = request.options.path ? '' : result.toString('base64');
+            if (request.action === 'screenshot') {
+                output.result = resultBuffer.toString('base64');
+            } else {
+                // Ignore output result when saving to a file
+                output.result = request.options.path ? '' : resultBuffer.toString();
+            }
         }
     }
 
@@ -99,6 +104,7 @@ const callChrome = async pup => {
                     ...(request.options.env || {}),
                     ...process.env
                 },
+                protocolTimeout: request.options.protocolTimeout ?? 30000,
             });
         }
 
@@ -158,7 +164,7 @@ const callChrome = async pup => {
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
-            if (request.options && request.options.disableCaptureURLS) {
+            if (request.options && !request.options.disableCaptureURLS) {
                 requestsList.push({
                     url: interceptedRequest.url(),
                 });
@@ -384,7 +390,7 @@ const callChrome = async pup => {
         if (request.options.waitForSelector) {
             await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
         }
-        
+
         console.log(await getOutput(request, page));
 
         if (remoteInstance && page) {
