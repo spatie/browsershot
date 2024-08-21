@@ -1,6 +1,7 @@
 <?php
 
 use Spatie\Browsershot\Browsershot;
+use Spatie\PdfToText\Pdf;
 
 it('can save a pdf by using the pdf extension', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
@@ -64,6 +65,17 @@ it('can return a pdf as base 64', function () {
         ->base64pdf();
 
     expect(is_string($base64))->toBeTrue();
+});
+
+it('can return a pdf', function () {
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+    $targetPath = __DIR__.'/temp/testPdf.pdf';
+
+    $pdf = Browsershot::url('https://example.com')
+        ->pdf();
+    file_put_contents($targetPath, $pdf);
+
+    expect(Pdf::getText($targetPath, $binPath))->toContain('Example Domain');
 });
 
 it('can write options to a file and generate a pdf', function () {
