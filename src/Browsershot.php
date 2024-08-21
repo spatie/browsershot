@@ -674,7 +674,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        return $encodedPdf;
+        return base64_decode($encodedPdf);
     }
 
     public function savePdf(string $targetPath)
@@ -694,11 +694,11 @@ class Browsershot
     {
         $command = $this->createPdfCommand();
 
-        $pdf = $this->callBrowser($command);
+        $encodedPdf = $this->callBrowser($command);
 
         $this->cleanupTemporaryHtmlFile();
 
-        return base64_encode($pdf);
+        return $encodedPdf;
     }
 
     public function evaluate(string $pageFunction): string

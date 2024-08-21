@@ -47,14 +47,11 @@ const getOutput = async (request, page = null) => {
             output.result = await page.evaluate(request.options.pageFunction);
         } else {
             const result = await page[request.action](request.options);
-            const resultBuffer = Buffer.from(result);
 
-            if (request.action === 'screenshot') {
-                output.result = resultBuffer.toString('base64');
-            } else {
-                // Ignore output result when saving to a file
-                output.result = request.options.path ? '' : resultBuffer.toString();
-            }
+            // Ignore output result when saving to a file
+            output.result = request.options.path
+                ? ''
+                : (result instanceof Uint8Array ? Buffer.from(result) : result).toString('base64');
         }
     }
 
