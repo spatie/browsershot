@@ -70,17 +70,17 @@ class Browsershot
 
     public static function url(string $url): static
     {
-        return (new static())->setUrl($url);
+        return (new static)->setUrl($url);
     }
 
     public static function html(string $html): static
     {
-        return (new static())->setHtml($html);
+        return (new static)->setHtml($html);
     }
 
     public static function htmlFromFilePath(string $filePath): static
     {
-        return (new static())->setHtmlFromFilePath($filePath);
+        return (new static)->setHtmlFromFilePath($filePath);
     }
 
     public function __construct(string $url = '', bool $deviceEmulate = false)
@@ -91,7 +91,7 @@ class Browsershot
             $this->windowSize(800, 600);
         }
 
-        $this->imageManipulations = new ImageManipulations();
+        $this->imageManipulations = new ImageManipulations;
     }
 
     public function setNodeBinary(string $nodeBinary): static

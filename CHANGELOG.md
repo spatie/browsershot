@@ -1,3 +1,27 @@
+## 4.2.1 - 2024-08-20
+
+Revert changes of 4.2.1 because PDFs do not render correctly anymore (see https://github.com/spatie/laravel-pdf/issues/175)
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.2.0...4.2.1
+
+## 4.2.0 - 2024-08-20
+
+### What's Changed
+
+* Add options to set protocol timeout by @zarulizham in https://github.com/spatie/browsershot/pull/865
+* Update Laravel Forge instructions.md by @mchev in https://github.com/spatie/browsershot/pull/872
+* Correctly respond to disableCaptureURLS option by @bluesheep100 in https://github.com/spatie/browsershot/pull/871
+* add disableCaptureURLs() document by @ziaratban in https://github.com/spatie/browsershot/pull/864
+* Update handling of browser output for Puppeteer ^23.0.0 by @bluesheep100 in https://github.com/spatie/browsershot/pull/870
+
+### New Contributors
+
+* @zarulizham made their first contribution in https://github.com/spatie/browsershot/pull/865
+* @mchev made their first contribution in https://github.com/spatie/browsershot/pull/872
+* @bluesheep100 made their first contribution in https://github.com/spatie/browsershot/pull/871
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.1.3...4.2.0
+
 ## 4.1.3 - 2024-07-15
 
 ### What's Changed
