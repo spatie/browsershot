@@ -1,3 +1,11 @@
+## 4.3.0 - 2024-08-22
+
+### What's Changed
+
+* Fix empty PDF issue with Puppeteer ^23.0.0  by @JeppeKnockaert in https://github.com/spatie/browsershot/pull/876
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.2.1...4.3.0
+
 ## 4.2.1 - 2024-08-20
 
 Revert changes of 4.2.1 because PDFs do not render correctly anymore (see https://github.com/spatie/laravel-pdf/issues/175)
