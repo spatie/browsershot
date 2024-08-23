@@ -161,7 +161,7 @@ const callChrome = async pup => {
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
 
-            if (request.options && !request.options.disableCaptureURLS) {
+            if (!request.options || !request.options.disableCaptureURLS) {
                 requestsList.push({
                     url: interceptedRequest.url(),
                 });
