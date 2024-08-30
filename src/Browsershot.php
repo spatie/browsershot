@@ -472,6 +472,11 @@ class Browsershot
         return $this->setOption('blockDomains', $array);
     }
 
+    public function disableRedirects(): static
+    {
+        return $this->setOption('disableRedirects', true);
+    }
+
     public function pages(string $pages): static
     {
         return $this->setOption('pageRanges', $pages);

@@ -1,3 +1,12 @@
+## 4.3.1 - 2024-08-30
+
+### What's Changed
+
+* Add check for `file:/` URL fetching by @JaredPage in https://github.com/spatie/browsershot/pull/xyz
+* Added the ability to disable redirects via the `disableRedirects` method by @JaredPage in https://github.com/spatie/browsershot/pull/xyz
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.3.0...4.3.1
+
 ## 4.3.0 - 2024-08-22
 
 ### What's Changed

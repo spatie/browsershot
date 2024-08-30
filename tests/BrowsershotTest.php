@@ -68,6 +68,26 @@ it('will not allow html to contain file:/', function () {
     Browsershot::html('<h1><img src="file:/" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
 
+it('no redirects - will not follow redirects', function () {
+    $targetPath = __DIR__.'/temp/redirect_fail.pdf';
+
+    Browsershot::url('http://www.spatie.be')
+        ->disableRedirects()
+        ->save($targetPath);
+
+    expect($targetPath)->not->toBeFile();
+})->throws(ProcessFailedException::class);
+
+it('no redirects - will still render direct 200 OKs', function () {
+    $targetPath = __DIR__.'/temp/redirect_success.pdf';
+
+    Browsershot::url('https://spatie.be/')
+        ->disableRedirects()
+        ->save($targetPath);
+
+    expect($targetPath)->toBeFile();
+});
+
 it('can take a high density screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
