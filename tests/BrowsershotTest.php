@@ -60,6 +60,14 @@ it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
 
+it('will not allow a slightly malformed file url', function () {
+    Browsershot::url('file:/test');
+})->throws(FileUrlNotAllowed::class);
+
+it('will not allow html to contain file:/', function () {
+    Browsershot::html('<h1><img src="file:/" /></h1>');
+})->throws(HtmlIsNotAllowedToContainFile::class);
+
 it('can take a high density screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 

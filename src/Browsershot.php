@@ -257,7 +257,7 @@ class Browsershot
 
     public function setUrl(string $url): static
     {
-        if (str_starts_with(strtolower($url), 'file://')) {
+        if (str_starts_with(strtolower($url), 'file://') || str_starts_with(strtolower($url), 'file:/')) {
             throw FileUrlNotAllowed::make();
         }
 
@@ -289,7 +289,7 @@ class Browsershot
 
     public function setHtml(string $html): static
     {
-        if (str_contains(strtolower($html), 'file://')) {
+        if (str_contains(strtolower($html), 'file://') || str_contains(strtolower($html), 'file:/')) {
             throw HtmlIsNotAllowedToContainFile::make();
         }
 
