@@ -191,6 +191,13 @@ const callChrome = async pup => {
                 }
             }
 
+            if (request.options && request.options.disableRedirects) {
+                if (interceptedRequest.isNavigationRequest() && interceptedRequest.redirectChain().length) {
+                    interceptedRequest.abort();
+                    return
+                }
+            }
+
             if (request.options && request.options.extraNavigationHTTPHeaders) {
                 // Do nothing in case of non-navigation requests.
                 if (interceptedRequest.isNavigationRequest()) {
