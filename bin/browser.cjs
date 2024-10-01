@@ -250,6 +250,10 @@ const callChrome = async pup => {
             await page.emulateMediaType(request.options.emulateMedia);
         }
 
+        if (request.options && request.options.emulateMediaFeatures) {
+            await page.emulateMediaFeatures(JSON.parse(request.options.emulateMediaFeatures));
+        }
+
         if (request.options && request.options.viewport) {
             await page.setViewport(request.options.viewport);
         }
