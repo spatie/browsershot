@@ -524,6 +524,11 @@ class Browsershot
         return $this->setOption('emulateMedia', $media);
     }
 
+    public function emulateMediaFeatures(array $features): static
+    {
+        return $this->setOption('emulateMediaFeatures', json_encode($features));
+    }
+
     public function newHeadless(): self
     {
         return $this->setOption('newHeadless', true);

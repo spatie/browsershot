@@ -343,6 +343,29 @@ it('can set emulate media option to null', function () {
     ], $command);
 });
 
+it('can set emulate media features', function () {
+    $command = Browsershot::url('https://example.com')
+        ->emulateMediaFeatures([
+            ['name' => 'prefers-color-scheme', 'value' => 'dark']
+        ])
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'emulateMediaFeatures' => '[{"name":"prefers-color-scheme","value":"dark"}]',
+            'args' => [],
+            'type' => 'png',
+        ],
+    ], $command);
+});
+
 it('can use pipe', function () {
     $command = Browsershot::url('https://example.com')
         ->usePipe()

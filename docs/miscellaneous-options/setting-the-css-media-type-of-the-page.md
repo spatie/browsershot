@@ -11,3 +11,12 @@ Browsershot::url('https://example.com')
     ->savePdf($pathToPdf);
 ```
 
+You can also emulate [media features](https://www.w3.org/TR/mediaqueries-5/), such as dark mode or reduced motion.
+
+```php
+Browsershot::url('https://example.com')
+    ->emulateMediaFeatures([
+        ['name' => 'prefers-color-scheme', 'value' => 'dark']
+    ])
+    ->save($pathToImage);
+```
