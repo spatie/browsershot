@@ -394,14 +394,14 @@ const callChrome = async pup => {
             await page.close();
         }
 
-        await remoteInstance ? browser.disconnect() : browser.close();
+        await (remoteInstance ? browser.disconnect() : browser.close());
     } catch (exception) {
         if (browser) {
             if (remoteInstance && page) {
                 await page.close();
             }
 
-            (await remoteInstance) ? browser.disconnect() : browser.close();
+            await (remoteInstance ? browser.disconnect() : browser.close());
         }
 
         const output = await getOutput(request);
