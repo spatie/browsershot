@@ -407,7 +407,7 @@ class Browsershot
 
     public function ignoreHttpsErrors(): static
     {
-        return $this->setOption('ignoreHttpsErrors', true);
+        return $this->setOption('acceptInsecureCerts', true);
     }
 
     public function mobile(bool $mobile = true): static

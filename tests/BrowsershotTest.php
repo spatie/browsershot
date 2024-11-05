@@ -306,7 +306,7 @@ it('can ignore https errors', function () {
         'url' => 'https://example.com',
         'action' => 'screenshot',
         'options' => [
-            'ignoreHttpsErrors' => true,
+            'acceptInsecureCerts' => true,
             'path' => 'screenshot.png',
             'viewport' => [
                 'width' => 800,
