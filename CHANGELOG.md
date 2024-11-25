@@ -1,3 +1,20 @@
+## 4.3.1 - 2024-11-25
+
+### What's Changed
+
+* Update setting-the-timeout.md by @koernchen02 in https://github.com/spatie/browsershot/pull/889
+* Fix await browser close by @clementmas in https://github.com/spatie/browsershot/pull/896
+* fix disableCaptureURLS by @ziaratban in https://github.com/spatie/browsershot/pull/873
+* Add check for `file:/` URL fetching by @JaredPage in https://github.com/spatie/browsershot/pull/881
+* Added the ability to disable redirects via the `disableRedirects` method by @JaredPage in https://github.com/spatie/browsershot/pull/881
+
+### New Contributors
+
+* @koernchen02 made their first contribution in https://github.com/spatie/browsershot/pull/889
+* @JaredPage made their first contribution in https://github.com/spatie/browsershot/pull/881
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.3.0...4.3.1
+
 ## 4.3.0 - 2024-08-22
 
 ### What's Changed
