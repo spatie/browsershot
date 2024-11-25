@@ -346,7 +346,7 @@ it('can set emulate media option to null', function () {
 it('can set emulate media features', function () {
     $command = Browsershot::url('https://example.com')
         ->emulateMediaFeatures([
-            ['name' => 'prefers-color-scheme', 'value' => 'dark']
+            ['name' => 'prefers-color-scheme', 'value' => 'dark'],
         ])
         ->createScreenshotCommand('screenshot.png');
 
