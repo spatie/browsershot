@@ -3,7 +3,7 @@ title: Requirements
 weight: 3
 ---
 
-This package requires node 7.6.0 or higher and the Puppeteer Node library.
+This package requires Node 22.0 (LTS) or higher and the Puppeteer Node library (v23.0 or higher).
 
 ### Installing puppeteer on MacOS
 
