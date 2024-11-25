@@ -1,3 +1,23 @@
+## 5.0.0 - 2024-11-25
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.4.0...5.0.0
+
+### Breaking Changes
+
+* **Requires Puppeteer version 23.0 or higher!**
+
+### What's Changed
+
+* Add support for media features by @alexwass-lr in https://github.com/spatie/browsershot/pull/890
+* Update obsolete devices API by @alexwass-lr in https://github.com/spatie/browsershot/pull/891
+* Fixed `ignoreHttpsErrors()` method by @PHLAK in https://github.com/spatie/browsershot/pull/899
+
+### New Contributors
+
+* @alexwass-lr made their first contribution in https://github.com/spatie/browsershot/pull/890
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/4.3.1...5.0.0
+
 ## 4.4.0 - 2024-11-25
 
 ### What's Changed
