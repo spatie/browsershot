@@ -248,7 +248,7 @@ const callChrome = async pup => {
         }
 
         if (request.options && request.options.device) {
-            const devices = puppet.devices;
+            const devices = puppet.KnownDevices;
             const device = devices[request.options.device];
             await page.emulate(device);
         }
