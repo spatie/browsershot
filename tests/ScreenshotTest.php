@@ -203,7 +203,7 @@ it('will connect to a custom ws endpoint and take screenshot', function () {
     ], $instance->createScreenshotCommand('screenshot.png'));
 
     // It should be online so mis-use the assetsContains because a 4xx error won't contain the word "browerless".
-    $html = Browsershot::url('https://chrome.browserless.io/json/')
+    $html = Browsershot::url('https://chrome.browserless.io/')
         ->bodyHtml();
 
     // If it's offline then this will fail.
