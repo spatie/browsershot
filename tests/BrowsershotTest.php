@@ -56,6 +56,10 @@ it('will not allow a file url', function () {
     Browsershot::url('file://test');
 })->throws(FileUrlNotAllowed::class);
 
+it('will not allow a file url that has leading spaces', function () {
+    Browsershot::url('    file://test');
+})->throws(FileUrlNotAllowed::class);
+
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
