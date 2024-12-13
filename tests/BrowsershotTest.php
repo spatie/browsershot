@@ -52,8 +52,8 @@ it('can get the redirect history', function () {
     ], $list);
 });
 
-it('will not allow a file url', function () {
-    Browsershot::url('file://test');
+it('will not allow a file url', function (string $url) {
+    Browsershot::url($url);
 })->throws(FileUrlNotAllowed::class)->with([
     'file://test',
     'file:/test',
