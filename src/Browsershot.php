@@ -261,7 +261,7 @@ class Browsershot
 
         $unsupportedProtocols = ['file://', 'file:/', 'file:\\', 'file:\\\\'];
 
-        foreach($unsupportedProtocols as $unsupportedProtocol) {
+        foreach ($unsupportedProtocols as $unsupportedProtocol) {
             if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
                 throw FileUrlNotAllowed::make();
             }
