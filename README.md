@@ -54,10 +54,10 @@ foreach ($requests as $request) {
 }
 ```
 
-To use Chrome's new [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome) pass the `newHeadless` method:
+To use Chrome's old [headless mode](https://developer.chrome.com/docs/chromium/headless), also known as `chrome-headless-shell`, pass the `oldHeadless` method:
 
 ```php
-Browsershot::url('https://example.com')->newHeadless()->save($pathToImage);
+Browsershot::url('https://example.com')->oldHeadless()->save($pathToImage);
 ```
 
 ## Support us
