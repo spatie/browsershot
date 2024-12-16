@@ -1001,14 +1001,14 @@ it('can set the custom temp path', function () {
     expect('application/pdf')->toEqual($mimeType);
 });
 
-it('should set the new headless flag when using the new method', function () {
-    $command = Browsershot::url('https://example.com')->newHeadless()->createScreenshotCommand('screenshot.png');
+it('should set the old headless flag when using the old method', function () {
+    $command = Browsershot::url('https://example.com')->oldHeadless()->createScreenshotCommand('screenshot.png');
 
     $this->assertEquals([
         'url' => 'https://example.com',
         'action' => 'screenshot',
         'options' => [
-            'newHeadless' => true,
+            'oldHeadless' => true,
             'type' => 'png',
             'path' => 'screenshot.png',
             'args' => [],

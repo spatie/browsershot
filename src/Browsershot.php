@@ -546,9 +546,9 @@ class Browsershot
         return $this->setOption('emulateMediaFeatures', json_encode($features));
     }
 
-    public function newHeadless(): self
+    public function oldHeadless(): self
     {
-        return $this->setOption('newHeadless', true);
+        return $this->setOption('oldHeadless', true);
     }
 
     public function windowSize(int $width, int $height): static
