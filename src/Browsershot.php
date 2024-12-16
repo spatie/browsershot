@@ -259,7 +259,13 @@ class Browsershot
     {
         $url = trim($url);
 
-        $unsupportedProtocols = ['file://', 'file:/', 'file:\\', 'file:\\\\'];
+        $unsupportedProtocols = [
+            'file://',
+            'file:/',
+            'file:\\',
+            'file:\\\\',
+            'view-source',
+        ];
 
         foreach ($unsupportedProtocols as $unsupportedProtocol) {
             if (str_starts_with(strtolower($url), $unsupportedProtocol)) {

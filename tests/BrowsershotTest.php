@@ -56,9 +56,12 @@ it('will not allow a file url', function (string $url) {
     Browsershot::url($url);
 })->throws(FileUrlNotAllowed::class)->with([
     'file://test',
+    'File://test',
     'file:/test',
     'file:\test',
     'file:\\test',
+    'view-source',
+    'View-Source'
 ]);
 
 it('will not allow a file url that has leading spaces', function () {
