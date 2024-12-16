@@ -61,7 +61,7 @@ it('will not allow a file url', function (string $url) {
     'file:\test',
     'file:\\test',
     'view-source',
-    'View-Source'
+    'View-Source',
 ]);
 
 it('will not allow a file url that has leading spaces', function () {
