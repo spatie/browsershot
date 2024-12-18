@@ -76,6 +76,11 @@ it('will not allow a slightly malformed file url', function () {
     Browsershot::url('file:/test');
 })->throws(FileUrlNotAllowed::class);
 
+it('will not allow a slightly malformed file url', function () {
+    Browsershot::url('fil
+    e:///test');
+})->throws(FileUrlNotAllowed::class);
+
 it('will not allow html to contain file:/', function () {
     Browsershot::html('<h1><img src="file:/" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);

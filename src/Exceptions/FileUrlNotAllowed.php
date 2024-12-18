@@ -10,4 +10,9 @@ class FileUrlNotAllowed extends Exception
     {
         return new static('An URL is not allow to start with file:// or file:/');
     }
+
+    public static function parseError(): static
+    {
+        return new static('URL parse error');
+    }
 }
