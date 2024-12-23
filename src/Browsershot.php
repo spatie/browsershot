@@ -258,7 +258,7 @@ class Browsershot
     public function setUrl(string $url): static
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false ){
-            throw FileUrlNotAllowed::parseError();
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
         }
         
         $unsupportedProtocols = [
