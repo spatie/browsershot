@@ -11,7 +11,7 @@ class FileUrlNotAllowed extends Exception
         return new static('An URL is not allow to start with file:// or file:/');
     }
 
-    public static function parseError(string $url): static
+    public static function urlCannotBeParsed(string $url): static
     {
         return new static("The given URL `{$url}` is not a valid URL");
     }
