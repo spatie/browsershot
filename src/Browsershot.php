@@ -68,6 +68,15 @@ class Browsershot
 
     protected ImageManipulations $imageManipulations;
 
+    protected array $unsafeProtocols = [
+        'file:,',
+        'file:/',
+        'file://',
+        'file:\\',
+        'file:\\\\',
+        'view-source',
+    ];
+
     public static function url(string $url): static
     {
         return (new static)->setUrl($url);
@@ -259,15 +268,7 @@ class Browsershot
     {
         $url = trim($url);
 
-        $unsupportedProtocols = [
-            'file://',
-            'file:/',
-            'file:\\',
-            'file:\\\\',
-            'view-source',
-        ];
-
-        foreach ($unsupportedProtocols as $unsupportedProtocol) {
+        foreach ($this->unsafeProtocols as $unsupportedProtocol) {
             if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
                 throw FileUrlNotAllowed::make();
             }
@@ -301,8 +302,10 @@ class Browsershot
 
     public function setHtml(string $html): static
     {
-        if (str_contains(strtolower($html), 'file://') || str_contains(strtolower($html), 'file:/')) {
-            throw HtmlIsNotAllowedToContainFile::make();
+        foreach ($this->unsafeProtocols as $protocol) {
+            if (str_contains(strtolower($html), $protocol)) {
+                throw HtmlIsNotAllowedToContainFile::make();
+            }
         }
 
         $this->html = $html;
