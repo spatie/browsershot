@@ -59,10 +59,16 @@ it('will not allow a file url', function (string $url) {
     'File://test',
     'file:/test',
     'file:\test',
+    'file:',
     'file:\\test',
     'view-source',
     'View-Source',
 ]);
+
+it('will not allow a malformed file url with too many slashes', function () {
+    Browsershot::url('fil
+     e:///test');
+})->throws(FileUrlNotAllowed::class);
 
 it('will not allow a file url that has leading spaces', function () {
     Browsershot::url('    file://test');

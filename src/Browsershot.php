@@ -69,7 +69,7 @@ class Browsershot
     protected ImageManipulations $imageManipulations;
 
     protected array $unsafeProtocols = [
-        'file:,',
+        'file:',
         'file:/',
         'file://',
         'file:\\',
@@ -267,6 +267,10 @@ class Browsershot
     public function setUrl(string $url): static
     {
         $url = trim($url);
+
+        if (filter_var($url, FILTER_VALIDATE_URL) === false ){
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
+        }
 
         foreach ($this->unsafeProtocols as $unsupportedProtocol) {
             if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
