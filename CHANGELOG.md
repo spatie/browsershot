@@ -1,3 +1,7 @@
+## 5.0.4 - 2024-12-30
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.3...5.0.4
+
 ## 5.0.3 - 2024-12-16
 
 **Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.2...5.0.3
