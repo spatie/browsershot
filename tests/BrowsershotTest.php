@@ -5,7 +5,6 @@ use Spatie\Browsershot\ChromiumResult;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
-use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Enums\Fit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
