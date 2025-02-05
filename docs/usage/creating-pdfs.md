@@ -28,6 +28,11 @@ If you need the base64 version of a PDF you can use the `base64pdf` method. This
 $base64Data = Browsershot::url('https://example.com')
     ->base64pdf();
 ```
+
+## A note on security
+
+It is the responsibility of the user to validate the URLs and HTML passed to browsershot. Only pass URLs and HTML that you trust.
+
 ## Sizing the pdf
 
 You can specify the width and the height.
