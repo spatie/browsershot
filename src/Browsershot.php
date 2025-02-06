@@ -306,10 +306,12 @@ class Browsershot
 
     public function setHtml(string $html): static
     {
+        $decHtml = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
         foreach ($this->unsafeProtocols as $protocol) {
-            if (str_contains(strtolower($html), $protocol)) {
+            if (str_contains(strtolower($html), $protocol) || str_contains(strtolower($decHtml), $protocol) ) {
                 throw HtmlIsNotAllowedToContainFile::make();
             }
+            
         }
 
         $this->html = $html;
