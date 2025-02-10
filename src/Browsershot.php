@@ -96,7 +96,7 @@ class Browsershot
     {
         $this->url = $url;
 
-        if (! $deviceEmulate) {
+        if (!$deviceEmulate) {
             $this->windowSize(800, 600);
         }
 
@@ -161,7 +161,7 @@ class Browsershot
 
     public function useCookies(array $cookies, ?string $domain = null): static
     {
-        if (! count($cookies)) {
+        if (!count($cookies)) {
             return $this;
         }
 
@@ -257,7 +257,7 @@ class Browsershot
     {
         $this->setOption('waitForSelector', $selector);
 
-        if (! empty($options)) {
+        if (!empty($options)) {
             $this->setOption('waitForSelectorOptions', $options);
         }
 
@@ -287,11 +287,11 @@ class Browsershot
     public function setHtmlFromFilePath(string $filePath): static
     {
 
-        if (! file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             throw FileDoesNotExistException::make($filePath);
         }
 
-        $this->url = 'file://'.$filePath;
+        $this->url = 'file://' . $filePath;
         $this->html = '';
 
         return $this;
@@ -306,12 +306,14 @@ class Browsershot
 
     public function setHtml(string $html): static
     {
-        $decHtml = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
-        foreach ($this->unsafeProtocols as $protocol) {
-            if (str_contains(strtolower($html), $protocol) || str_contains(strtolower($decHtml), $protocol) ) {
-                throw HtmlIsNotAllowedToContainFile::make();
+        $decodedHtml = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
+
+        foreach ([$html, $decodedHtml] as $content) {
+            foreach ($this->unsafeProtocols as $protocol) {
+                if (str_contains(strtolower($content), $protocol)) {
+                    throw HtmlIsNotAllowedToContainFile::make();
+                }
             }
-            
         }
 
         $this->html = $html;
@@ -419,7 +421,7 @@ class Browsershot
     {
         $this->screenshotType = $type;
 
-        if (! is_null($quality)) {
+        if (!is_null($quality)) {
             $this->screenshotQuality = $quality;
         }
 
@@ -449,10 +451,10 @@ class Browsershot
     public function margins(float $top, float $right, float $bottom, float $left, string $unit = 'mm'): static
     {
         return $this->setOption('margin', [
-            'top' => $top.$unit,
-            'right' => $right.$unit,
-            'bottom' => $bottom.$unit,
-            'left' => $left.$unit,
+            'top' => $top . $unit,
+            'right' => $right . $unit,
+            'bottom' => $bottom . $unit,
+            'left' => $left . $unit,
         ]);
     }
 
@@ -506,8 +508,8 @@ class Browsershot
     public function paperSize(float $width, float $height, string $unit = 'mm'): static
     {
         return $this
-            ->setOption('width', $width.$unit)
-            ->setOption('height', $height.$unit);
+            ->setOption('width', $width . $unit)
+            ->setOption('height', $height . $unit);
     }
 
     // paper format
@@ -641,11 +643,11 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        if (! file_exists($targetPath)) {
+        if (!file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
         }
 
-        if (! $this->imageManipulations->isEmpty()) {
+        if (!$this->imageManipulations->isEmpty()) {
             $this->imageManipulations->apply($targetPath);
         }
     }
@@ -716,7 +718,7 @@ class Browsershot
 
         $this->cleanupTemporaryHtmlFile();
 
-        if (! file_exists($targetPath)) {
+        if (!file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output);
         }
     }
@@ -750,7 +752,7 @@ class Browsershot
     {
         $requests = $this->chromiumResult?->getRequestsList();
 
-        if (! is_null($requests)) {
+        if (!is_null($requests)) {
             return $requests;
         }
 
@@ -775,7 +777,7 @@ class Browsershot
     {
         $redirectHistory = $this->chromiumResult?->getRedirectHistory();
 
-        if (! is_null($redirectHistory)) {
+        if (!is_null($redirectHistory)) {
             return $redirectHistory;
         }
 
@@ -797,7 +799,7 @@ class Browsershot
     {
         $messages = $this->chromiumResult?->getConsoleMessages();
 
-        if (! is_null($messages)) {
+        if (!is_null($messages)) {
             return $messages;
         }
 
@@ -817,7 +819,7 @@ class Browsershot
     {
         $requests = $this->chromiumResult?->getFailedRequests();
 
-        if (! is_null($requests)) {
+        if (!is_null($requests)) {
             return $requests;
         }
 
@@ -837,7 +839,7 @@ class Browsershot
     {
         $pageErrors = $this->chromiumResult?->getPageErrors();
 
-        if (! is_null($pageErrors)) {
+        if (!is_null($pageErrors)) {
             return $pageErrors;
         }
 
@@ -874,7 +876,7 @@ class Browsershot
 
         $command = $this->createCommand($url, 'screenshot', $options);
 
-        if (! $this->showScreenshotBackground) {
+        if (!$this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
         }
 
@@ -972,7 +974,7 @@ class Browsershot
     {
         // assuring that ip and port does actually contains a value
         if ($ip && $port) {
-            $this->setOption('remoteInstanceUrl', 'http://'.$ip.':'.$port);
+            $this->setOption('remoteInstanceUrl', 'http://' . $ip . ':' . $port);
         }
 
         return $this;
@@ -980,7 +982,7 @@ class Browsershot
 
     public function setWSEndpoint(string $endpoint): self
     {
-        if (! is_null($endpoint)) {
+        if (!is_null($endpoint)) {
             $this->setOption('browserWSEndpoint', $endpoint);
         }
 
@@ -1013,7 +1015,7 @@ class Browsershot
         }
 
         if ($this->proxyServer) {
-            $args[] = '--proxy-server='.$this->proxyServer;
+            $args[] = '--proxy-server=' . $this->proxyServer;
         }
 
         return $args;
@@ -1025,11 +1027,11 @@ class Browsershot
 
         $command['options']['args'] = $this->getOptionArgs();
 
-        if (! empty($this->postParams)) {
+        if (!empty($this->postParams)) {
             $command['postParams'] = $this->postParams;
         }
 
-        if (! empty($this->additionalOptions)) {
+        if (!empty($this->additionalOptions)) {
             $command['options'] = array_merge_recursive($command['options'], $this->additionalOptions);
         }
 
@@ -1123,7 +1125,7 @@ class Browsershot
     {
         $nodeBinary = $this->nodeBinary ?: 'node';
 
-        $binPath = $this->binPath ?: __DIR__.'/../bin/browser.cjs';
+        $binPath = $this->binPath ?: __DIR__ . '/../bin/browser.cjs';
 
         $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
@@ -1142,11 +1144,11 @@ class Browsershot
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
         return
-            $setIncludePathCommand.' '
-            .$setNodePathCommand.' '
-            .$nodeBinary.' '
-            .escapeshellarg($binPath).' '
-            .$optionsCommand;
+            $setIncludePathCommand . ' '
+            . $setNodePathCommand . ' '
+            . $nodeBinary . ' '
+            . escapeshellarg($binPath) . ' '
+            . $optionsCommand;
     }
 
     protected function getNodePathCommand(string $nodeBinary): string
@@ -1189,7 +1191,7 @@ class Browsershot
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if (! isset($array[$key]) || ! is_array($array[$key])) {
+            if (!isset($array[$key]) || !is_array($array[$key])) {
                 $array[$key] = [];
             }
 
