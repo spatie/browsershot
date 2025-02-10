@@ -308,10 +308,10 @@ class Browsershot
     {
         $decHtml = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
         foreach ($this->unsafeProtocols as $protocol) {
-            if (str_contains(strtolower($html), $protocol) || str_contains(strtolower($decHtml), $protocol) ) {
+            if (str_contains(strtolower($html), $protocol) || str_contains(strtolower($decHtml), $protocol)) {
                 throw HtmlIsNotAllowedToContainFile::make();
             }
-            
+
         }
 
         $this->html = $html;
