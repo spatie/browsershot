@@ -1,3 +1,17 @@
+## 5.0.6 - 2025-02-10
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/spatie/browsershot/pull/917
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/spatie/browsershot/pull/919
+* HTML entity decode for setHTML by @Elleuch-x1 in https://github.com/spatie/browsershot/pull/921
+
+### New Contributors
+
+* @Elleuch-x1 made their first contribution in https://github.com/spatie/browsershot/pull/921
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.5...5.0.6
+
 ## 5.0.5 - 2024-12-30
 
 **Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.4...5.0.5
