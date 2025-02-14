@@ -1,3 +1,7 @@
+## 5.0.7 - 2025-02-14
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.6...5.0.7
+
 ## 5.0.6 - 2025-02-10
 
 ### What's Changed
