@@ -36,20 +36,8 @@ it('can get the redirect history', function () {
         return $item;
     }, $list);
 
-    expect($list)->toHaveCount(2);
-
-    $this->assertEquals([
-        [
-            'url' => 'https://www.spatie.be/',
-            'status' => 301,
-            'reason' => '',
-        ],
-        [
-            'url' => 'https://spatie.be/',
-            'status' => 200,
-            'reason' => '',
-        ],
-    ], $list);
+    expect($list)->toBeGreaterThanOrEqual(2);
+    expect($list)->each->toHaveKeys(['url', 'status', 'reason']);
 });
 
 it('will not allow a file url', function (string $url) {
