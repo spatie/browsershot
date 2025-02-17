@@ -36,6 +36,9 @@ jobs:
             - name: Install dependencies
               run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
+            - name: Disable AppArmor
+              run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+
             - name: Install Puppeteer
               run: npm install puppeteer
 
