@@ -1,3 +1,19 @@
+## 5.0.8 - 2025-02-17
+
+### What's Changed
+
+* support `chrome-headless-shell` (old headless mode) by @vintagesucks in https://github.com/spatie/browsershot/pull/918
+
+### New Contributors
+
+* @vintagesucks made their first contribution in https://github.com/spatie/browsershot/pull/918
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.7...5.0.8
+
+## 5.0.7 - 2025-02-14
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.6...5.0.7
+
 ## 5.0.6 - 2025-02-10
 
 ### What's Changed
