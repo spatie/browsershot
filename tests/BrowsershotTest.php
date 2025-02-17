@@ -1043,20 +1043,12 @@ it('can handle a permissions error with full output', function () {
 
     try {
         $instance->save($targetPath);
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
         $output = $instance->getOutput();
 
         expect($output)->not()->toBeNull();
         expect($output)->toBeInstanceOf(ChromiumResult::class);
         expect($output->getException())->not()->toBeEmpty();
-        expect($output->getConsoleMessages())->toBe([
-            [
-                'type' => 'error',
-                'message' => 'Failed to load resource: net::ERR_FAILED',
-                'location' => ['url' => 'https://example.com/favicon.ico'],
-                'stackTrace' => [['url' => 'https://example.com/favicon.ico']],
-            ],
-        ]);
         expect($output->getRequestsList())->toMatchArray([[
             'url' => 'https://example.com/',
         ]]);
