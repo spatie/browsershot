@@ -139,7 +139,7 @@ const callChrome = async pup => {
         });
 
         page.on('response', function (response) {
-            if (response.request().isNavigationRequest() && response.request().frame().parentFrame() === null) {
+            if (response.request().isNavigationRequest() && response.request().frame()?.parentFrame() === null) {
                 redirectHistory.push({
                     url: response.request().url(),
                     status: response.status(),
