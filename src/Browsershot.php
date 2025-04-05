@@ -278,6 +278,36 @@ class Browsershot
             }
         }
 
+        $parsedUrl = parse_url($url);
+    
+        // Ensure that the scheme is set and allowed
+        if (!isset($parsedUrl['scheme']) || !in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
+            throw FileUrlNotAllowed::make();
+        }
+
+        // Ensure that the host is present
+        if (!isset($parsedUrl['host'])) {
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
+        }
+
+        $host = $parsedUrl['host'];
+
+        // Validate if the host is a valid IP address. If not, resolve it.
+        $ip = filter_var($host, FILTER_VALIDATE_IP);
+        if ($ip === false) {
+            // Resolve hostname to an IP address
+            $resolvedIp = gethostbyname($host);
+            if (filter_var($resolvedIp, FILTER_VALIDATE_IP) === false) {
+                throw FileUrlNotAllowed::urlCannotBeParsed($url);
+            }
+            $ip = $resolvedIp;
+        }
+
+        // Check that the IP is not in a private or reserved range
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            throw FileUrlNotAllowed::make();
+        }
+
         $this->url = $url;
         $this->html = '';
 
