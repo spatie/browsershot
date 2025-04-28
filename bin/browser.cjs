@@ -367,6 +367,18 @@ const callChrome = async pup => {
             }, request.options.initialPageNumber);
         }
 
+        if (request.options.function) {
+            let functionOptions = {
+                polling: request.options.functionPolling,
+                timeout: request.options.functionTimeout || request.options.timeout
+            };
+            await page.waitForFunction(request.options.function, functionOptions);
+        }
+
+        if (request.options.waitForSelector) {
+            await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
+        }
+
         if (request.options.selector) {
             var element;
             const index = request.options.selectorIndex || 0;
@@ -385,18 +397,6 @@ const callChrome = async pup => {
             }
 
             request.options.clip = await element.boundingBox();
-        }
-
-        if (request.options.function) {
-            let functionOptions = {
-                polling: request.options.functionPolling,
-                timeout: request.options.functionTimeout || request.options.timeout
-            };
-            await page.waitForFunction(request.options.function, functionOptions);
-        }
-
-        if (request.options.waitForSelector) {
-            await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
         }
 
         console.log(await getOutput(request, page));
