@@ -1,3 +1,12 @@
+## 5.0.9 - 2025-04-28
+
+### What's Changed
+
+* run-tests: disable app armor restrictions by @vintagesucks in https://github.com/spatie/browsershot/pull/923
+* Apply selector after wait for selector/function instead of before by @itsgoingd in https://github.com/spatie/browsershot/pull/932
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.8...5.0.9
+
 ## 5.0.8 - 2025-02-17
 
 ### What's Changed
