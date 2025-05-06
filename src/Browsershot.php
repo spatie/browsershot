@@ -268,50 +268,64 @@ class Browsershot
     {
         $url = trim($url);
 
-        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw FileUrlNotAllowed::urlCannotBeParsed($url);
-        }
-
-        foreach ($this->unsafeProtocols as $unsupportedProtocol) {
-            if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
-                throw FileUrlNotAllowed::make();
-            }
-        }
+        $this->ensureUrlIsValid($url);
+        $this->ensureUrlDoesNotUseUnsafeProtocol($url);
 
         $parsedUrl = parse_url($url);
-    
-        // Ensure that the scheme is set and allowed
-        if (!isset($parsedUrl['scheme']) || !in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
-            throw FileUrlNotAllowed::make();
-        }
 
-        // Ensure that the host is present
-        if (!isset($parsedUrl['host'])) {
-            throw FileUrlNotAllowed::urlCannotBeParsed($url);
-        }
-
-        $host = $parsedUrl['host'];
-
-        // Validate if the host is a valid IP address. If not, resolve it.
-        $ip = filter_var($host, FILTER_VALIDATE_IP);
-        if ($ip === false) {
-            // Resolve hostname to an IP address
-            $resolvedIp = gethostbyname($host);
-            if (filter_var($resolvedIp, FILTER_VALIDATE_IP) === false) {
-                throw FileUrlNotAllowed::urlCannotBeParsed($url);
-            }
-            $ip = $resolvedIp;
-        }
-
-        // Check that the IP is not in a private or reserved range
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
-            throw FileUrlNotAllowed::make();
-        }
+        $this->ensureUrlHasAllowedScheme($parsedUrl, $url);
+        $this->ensureUrlHasHost($parsedUrl, $url);
+        $this->ensureHostResolvesToPublicIp($parsedUrl['host'], $url);
 
         $this->url = $url;
         $this->html = '';
 
         return $this;
+    }
+
+    protected function ensureUrlIsValid(string $url): void
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
+        }
+    }
+
+    protected function ensureUrlDoesNotUseUnsafeProtocol(string $url): void
+    {
+        foreach ($this->unsafeProtocols as $unsupportedProtocol) {
+            if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
+                throw FileUrlNotAllowed::make();
+            }
+        }
+    }
+
+    protected function ensureUrlHasAllowedScheme(array $parsedUrl, string $url): void
+    {
+        if (! isset($parsedUrl['scheme']) || ! in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
+            throw FileUrlNotAllowed::make();
+        }
+    }
+
+    protected function ensureUrlHasHost(array $parsedUrl, string $url): void
+    {
+        if (! isset($parsedUrl['host'])) {
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
+        }
+    }
+
+    private function ensureHostResolvesToPublicIp(string $host, string $url): void
+    {
+        $ip = filter_var($host, FILTER_VALIDATE_IP);
+        if ($ip === false) {
+            $ip = gethostbyname($host);
+            if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
+                throw FileUrlNotAllowed::urlCannotBeParsed($url);
+            }
+        }
+
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            throw FileUrlNotAllowed::make();
+        }
     }
 
     public function setHtmlFromFilePath(string $filePath): static
