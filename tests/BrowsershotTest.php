@@ -61,6 +61,14 @@ it('will not allow a file url that has leading spaces', function () {
     Browsershot::url('    file://test');
 })->throws(FileUrlNotAllowed::class);
 
+it('will not allow localhost url', function (string $url) {
+    Browsershot::url($url);
+})->throws(FileUrlNotAllowed::class)->with([
+    'http://localhost:8090',
+    'https://127.0.0.1:8090',
+    'https://0.0.0.0:8090',
+]);
+
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);

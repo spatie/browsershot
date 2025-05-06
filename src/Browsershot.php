@@ -273,8 +273,6 @@ class Browsershot
 
         $parsedUrl = parse_url($url);
 
-        $this->ensureUrlHasAllowedScheme($parsedUrl, $url);
-        $this->ensureUrlHasHost($parsedUrl, $url);
         $this->ensureHostResolvesToPublicIp($parsedUrl['host'], $url);
 
         $this->url = $url;
@@ -296,20 +294,6 @@ class Browsershot
             if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
                 throw FileUrlNotAllowed::make();
             }
-        }
-    }
-
-    protected function ensureUrlHasAllowedScheme(array $parsedUrl, string $url): void
-    {
-        if (! isset($parsedUrl['scheme']) || ! in_array(strtolower($parsedUrl['scheme']), ['http', 'https'], true)) {
-            throw FileUrlNotAllowed::make();
-        }
-    }
-
-    protected function ensureUrlHasHost(array $parsedUrl, string $url): void
-    {
-        if (! isset($parsedUrl['host'])) {
-            throw FileUrlNotAllowed::urlCannotBeParsed($url);
         }
     }
 
