@@ -270,10 +270,7 @@ class Browsershot
 
         $this->ensureUrlIsValid($url);
         $this->ensureUrlDoesNotUseUnsafeProtocol($url);
-
-        $parsedUrl = parse_url($url);
-
-        $this->ensureHostResolvesToPublicIp($parsedUrl['host'], $url);
+        $this->ensureHostResolvesToPublicIp($url);
 
         $this->url = $url;
         $this->html = '';
@@ -1244,8 +1241,11 @@ class Browsershot
         }
     }
 
-    protected function ensureHostResolvesToPublicIp(string $host, string $url): void
+    protected function ensureHostResolvesToPublicIp(string $url): void
     {
+        $parsedUrl = parse_url($url);
+        $host = $parsedUrl['host'];
+
         $ip = filter_var($host, FILTER_VALIDATE_IP);
         if ($ip === false) {
             $ip = gethostbyname($host);
