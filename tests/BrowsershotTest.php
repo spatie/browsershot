@@ -1075,6 +1075,22 @@ it('should be able to fetch page errors with pageErrors method', function () {
     expect($errors[0]['message'])->toBeString();
 });
 
+it('should be able to fetch page errors with pageErrors method when the page throws null', function () {
+    $errors = Browsershot::html('<!DOCTYPE html>
+    <html lang="en">
+      <body>
+        <script type="text/javascript">
+            throw null;
+        </script>
+      </body>
+    </html>')->pageErrors();
+
+    expect($errors)->toBeArray();
+    expect(count($errors))->toBe(1);
+    expect($errors[0]['name'])->toBeString();
+    expect($errors[0]['message'])->toBeString();
+});
+
 it('will apply manipulations when taking screenshots', function () {
     $screenShot = Browsershot::url('https://example.com')
         ->windowSize(1920, 1080)

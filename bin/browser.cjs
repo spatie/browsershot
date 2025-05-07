@@ -133,8 +133,8 @@ const callChrome = async pup => {
 
         page.on('pageerror', (msg) => {
             pageErrors.push({
-                name: msg.name || 'unknown error',
-                message: msg.message || msg.toString(),
+                name: msg?.name || 'unknown error',
+                message: msg?.message || msg?.toString() || 'null'
             });
         });
 
