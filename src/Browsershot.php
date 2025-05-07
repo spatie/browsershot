@@ -77,9 +77,9 @@ class Browsershot
         'view-source',
     ];
 
-    public static function url(string $url): static
+    public static function url(string $url, bool $allowInternalResources = false): static
     {
-        return (new static)->setUrl($url);
+        return (new static)->setUrl($url, $allowInternalResources);
     }
 
     public static function html(string $html): static
@@ -264,13 +264,16 @@ class Browsershot
         return $this;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(string $url, bool $allowInternalResources = false): static
     {
         $url = trim($url);
 
         $this->ensureUrlIsValid($url);
         $this->ensureUrlDoesNotUseUnsafeProtocol($url);
-        $this->ensureHostResolvesToPublicIp($url);
+
+        if(! $allowInternalResources) {
+            $this->ensureHostResolvesToPublicIp($url);
+        }
 
         $this->url = $url;
         $this->html = '';
