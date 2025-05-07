@@ -61,6 +61,14 @@ it('will not allow a file url that has leading spaces', function () {
     Browsershot::url('    file://test');
 })->throws(FileUrlNotAllowed::class);
 
+it('will not allow local URL access', function (string $url) {
+    Browsershot::url($url);
+})->throws(FileUrlNotAllowed::class)->with('internal-resources');
+
+it('will allow local URL access with explicit permission', function (string $url) {
+    Browsershot::url($url, allowInternalResources: true);
+})->throwsNoExceptions()->with('internal-resources');
+
 it('will not allow html to contain file://', function () {
     Browsershot::html('<h1><img src="file://" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
@@ -1089,3 +1097,12 @@ it('will apply manipulations when taking screenshots', function () {
     expect(getimagesize($targetPath)[0])->toEqual(200);
     expect(getimagesize($targetPath)[1])->toEqual(200);
 });
+
+dataset('internal-resources', [
+    'http://localhost:8090',
+    'https://127.0.0.1:8090',
+    'https://0.0.0.0:8090',
+    'https://something.local',
+    'http://192.168.1.1',
+    'http://169.254.169.254', // Cloud metadata service https://serverfault.com/questions/427018/what-is-this-ip-address-169-254-169-254
+]);
