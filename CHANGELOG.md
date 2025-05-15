@@ -1,3 +1,18 @@
+## 5.0.10 - 2025-05-15
+
+### What's Changed
+
+* Fix | Check that response().frame() is not null by @Dan-Hike in https://github.com/spatie/browsershot/pull/924
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot in https://github.com/spatie/browsershot/pull/936
+* Fix handling of page errors with value `null` by @rado-h in https://github.com/spatie/browsershot/pull/935
+
+### New Contributors
+
+* @Dan-Hike made their first contribution in https://github.com/spatie/browsershot/pull/924
+* @rado-h made their first contribution in https://github.com/spatie/browsershot/pull/935
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.9...5.0.10
+
 ## 5.0.9 - 2025-04-28
 
 ### What's Changed
