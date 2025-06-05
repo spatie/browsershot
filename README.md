@@ -2,7 +2,7 @@
     <a href="https://spatie.be/open-source?utm_source=github&utm_medium=banner&utm_campaign=browsershot">
       <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://spatie.be/packages/header/browsershot/html/dark.webp">
-        <img alt="Logo for Browsershot" src="https://spatie.be/packages/header/browsershot/html/light.webp" height="190">
+        <img alt="Logo for Browsershot" src="https://spatie.be/packages/header/browsershot/html/light.webp">
       </picture>
     </a>
 
