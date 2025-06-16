@@ -23,6 +23,6 @@ jobs:
         uses: aglipanci/laravel-pint-action@2.6
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: Fix styling
