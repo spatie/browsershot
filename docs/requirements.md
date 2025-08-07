@@ -43,7 +43,7 @@ sudo apt install libx11-xcb1 libxcomposite1 libasound2t64 libatk1.0-0 libatk-bri
 Depending on your setup, node or npm might be not directly available to Browsershot.
 If you need to manually set these binary paths, you can do this by calling the `setNodeBinary` and `setNpmBinary` method.
 
-```
+```php
 Browsershot::html('Foo')
     ->setNodeBinary('/usr/local/bin/node')
     ->setNpmBinary('/usr/local/bin/npm');
