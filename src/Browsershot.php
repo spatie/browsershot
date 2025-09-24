@@ -214,6 +214,17 @@ class Browsershot
         return $this;
     }
 
+    public function locatorClick(string $selector, string $button = 'left', int $clickCount = 1, int $delay = 0): static
+    {
+        $locatorClicks = $this->additionalOptions['locatorClicks'] ?? [];
+
+        $locatorClicks[] = compact('selector', 'button', 'clickCount', 'delay');
+
+        $this->setOption('locatorClicks', $locatorClicks);
+
+        return $this;
+    }
+
     public function selectOption(string $selector, string $value = ''): static
     {
         $dropdownSelects = $this->additionalOptions['selects'] ?? [];
