@@ -340,13 +340,17 @@ const callChrome = async pup => {
         if (request.options && request.options.locatorClicks) {
             for (let i = 0, len = request.options.locatorClicks.length; i < len; i++) {
                 let clickOptions = request.options.locatorClicks[i];
-                await page.locator(clickOptions.selector).click({
-                    'button': clickOptions.button,
-                    'clickCount': clickOptions.clickCount,
-                    'delay': clickOptions.delay,
-                });
+                try {
+                    await page.locator(clickOptions.selector).click({
+                        'button': clickOptions.button,
+                        'clickCount': clickOptions.clickCount,
+                        'delay': clickOptions.delay,
+                    });
+                } catch (error) {
+                    console.error('Timeout error:', error);
+                }
             }
-        }        
+        }
 
         if (request.options && request.options.addStyleTag) {
             await page.addStyleTag(JSON.parse(request.options.addStyleTag));
