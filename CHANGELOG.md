@@ -1,3 +1,21 @@
+## 5.0.11 - 2025-10-08
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/942
+* Docs: Highlight node/npm binary example correctly by @duncanmcclean in https://github.com/spatie/browsershot/pull/944
+* Update issue template by @AlexVanderbist in https://github.com/spatie/browsershot/pull/946
+* Enable click with non-CSS selectors by @bessone in https://github.com/spatie/browsershot/pull/948
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/945
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/939
+
+### New Contributors
+
+* @duncanmcclean made their first contribution in https://github.com/spatie/browsershot/pull/944
+* @AlexVanderbist made their first contribution in https://github.com/spatie/browsershot/pull/946
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.10...5.0.11
+
 ## 5.0.10 - 2025-05-15
 
 ### What's Changed
