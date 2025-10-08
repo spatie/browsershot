@@ -77,9 +77,9 @@ class Browsershot
         'view-source',
     ];
 
-    public static function url(string $url): static
+    public static function url(string $url, bool $allowInternalResources = false): static
     {
-        return (new static)->setUrl($url);
+        return (new static)->setUrl($url, $allowInternalResources);
     }
 
     public static function html(string $html): static
@@ -275,18 +275,15 @@ class Browsershot
         return $this;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(string $url, bool $allowInternalResources = false): static
     {
         $url = trim($url);
 
-        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw FileUrlNotAllowed::urlCannotBeParsed($url);
-        }
+        $this->ensureUrlIsValid($url);
+        $this->ensureUrlDoesNotUseUnsafeProtocol($url);
 
-        foreach ($this->unsafeProtocols as $unsupportedProtocol) {
-            if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
-                throw FileUrlNotAllowed::make();
-            }
+        if(! $allowInternalResources) {
+            $this->ensureHostResolvesToPublicIp($url);
         }
 
         $this->url = $url;
@@ -1240,5 +1237,39 @@ class Browsershot
         return $this->html
             ? $this->createTemporaryHtmlFile()
             : $this->url;
+    }
+
+    protected function ensureUrlIsValid(string $url): void
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
+            throw FileUrlNotAllowed::urlCannotBeParsed($url);
+        }
+    }
+
+    protected function ensureUrlDoesNotUseUnsafeProtocol(string $url): void
+    {
+        foreach ($this->unsafeProtocols as $unsupportedProtocol) {
+            if (str_starts_with(strtolower($url), $unsupportedProtocol)) {
+                throw FileUrlNotAllowed::make();
+            }
+        }
+    }
+
+    protected function ensureHostResolvesToPublicIp(string $url): void
+    {
+        $parsedUrl = parse_url($url);
+        $host = $parsedUrl['host'];
+
+        $ip = filter_var($host, FILTER_VALIDATE_IP);
+        if ($ip === false) {
+            $ip = gethostbyname($host);
+            if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
+                throw FileUrlNotAllowed::urlCannotBeParsed($url);
+            }
+        }
+
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            throw FileUrlNotAllowed::make();
+        }
     }
 }

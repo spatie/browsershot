@@ -1,6 +1,6 @@
 ---
 title: Read redirect history
-weight: 26
+weight: 27
 ---
 
 Sometimes it can happen that the screenshot made by Browsershot is different from the one displayed by your browser.
