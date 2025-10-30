@@ -2,6 +2,11 @@ const fs = require('fs');
 const URL = require('url').URL;
 const URLParse = require('url').parse;
 
+if (typeof global.ReadableStream === 'undefined') {
+    const {ReadableStream} = require("stream/web");
+    global.ReadableStream = ReadableStream;
+}
+
 const [, , ...args] = process.argv;
 
 /**
