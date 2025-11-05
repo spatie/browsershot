@@ -8,6 +8,7 @@ use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
+use Spatie\Browsershot\Exceptions\RemoteConnectionException;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -1004,6 +1005,13 @@ class Browsershot
         return $this;
     }
 
+    public function throwOnRemoteConnectionError(bool $throw = true): self
+    {
+        $this->setOption('throwOnRemoteConnectionError', $throw);
+
+        return $this;
+    }
+
     public function usePipe(): self
     {
         $this->setOption('pipe', true);
@@ -1114,6 +1122,10 @@ class Browsershot
         $process->clearOutput();
         $exitCode = $process->getExitCode();
         $errorOutput = $process->getErrorOutput();
+
+        if ($exitCode === 4) {
+            throw RemoteConnectionException::make(rtrim($errorOutput));
+        }
 
         if ($exitCode === 3) {
             throw UnsuccessfulResponse::make($this->url, $errorOutput ?? '');
