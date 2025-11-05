@@ -6,6 +6,7 @@ use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
 use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
 use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
+use Spatie\Browsershot\Exceptions\RemoteConnectionException;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Enums\Fit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -1104,4 +1105,12 @@ it('will apply manipulations when taking screenshots', function () {
     expect($targetPath)->toBeFile();
     expect(getimagesize($targetPath)[0])->toEqual(200);
     expect(getimagesize($targetPath)[1])->toEqual(200);
+});
+
+it('throws on remote connection error', function () {
+    expect(fn () => Browsershot::url('https://example.com/')
+        ->setRemoteInstance('example.com', 80)
+        ->throwOnRemoteConnectionError()
+        ->pdf())
+        ->toThrow(RemoteConnectionException::class, 'Failed to connect to remote browser instance: `Error: Failed to fetch browser webSocket URL from http://example.com/json/version: HTTP Not Found`');
 });

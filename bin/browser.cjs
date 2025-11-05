@@ -87,7 +87,15 @@ const callChrome = async pup => {
                 browser = await puppet.connect( options );
 
                 remoteInstance = true;
-            } catch (exception) { /** does nothing. fallbacks to launching a chromium instance */}
+            } catch (exception) {
+
+                if (request.options.throwOnRemoteConnectionError) {
+                    console.error(exception.toString());
+                    process.exit(4);
+                }
+
+                /** fallback to launching a chromium instance */
+            }
         }
 
         if (!browser) {
