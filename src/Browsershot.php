@@ -1172,7 +1172,7 @@ class Browsershot
             return "NODE_PATH=\"{$this->nodeModulePath}\"";
         }
         if ($this->npmBinary) {
-            return "NODE_PATH=\"{$nodeBinary} {$this->npmBinary} root -g\"";
+            return "NODE_PATH=$(\"{$nodeBinary}\" \"{$this->npmBinary}\" root -g)";
         }
 
         return 'NODE_PATH=`npm root -g`';
