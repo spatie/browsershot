@@ -1161,7 +1161,7 @@ class Browsershot
         return
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
-            .$nodeBinary.' '
+            .'"' .$nodeBinary .'" '
             .escapeshellarg($binPath).' '
             .$optionsCommand;
     }
@@ -1169,10 +1169,10 @@ class Browsershot
     protected function getNodePathCommand(string $nodeBinary): string
     {
         if ($this->nodeModulePath) {
-            return "NODE_PATH='{$this->nodeModulePath}'";
+            return "NODE_PATH=\"{$this->nodeModulePath}\"";
         }
         if ($this->npmBinary) {
-            return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
+            return "NODE_PATH=\"{$nodeBinary} {$this->npmBinary} root -g\"";
         }
 
         return 'NODE_PATH=`npm root -g`';
