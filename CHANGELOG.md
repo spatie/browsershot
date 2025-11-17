@@ -1,3 +1,20 @@
+## 5.1.0 - 2025-11-17
+
+### What's Changed
+
+* Fix: Properly escape Node and NPM binary paths (support paths containing spaces) by @salahhusa9 in https://github.com/spatie/browsershot/pull/958
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/949
+* feat: throwOnRemoteConnectionError  by @damiantw in https://github.com/spatie/browsershot/pull/956
+* tests: add tests for PHP 8.5 by @Chris53897 in https://github.com/spatie/browsershot/pull/957
+
+### New Contributors
+
+* @salahhusa9 made their first contribution in https://github.com/spatie/browsershot/pull/958
+* @damiantw made their first contribution in https://github.com/spatie/browsershot/pull/956
+* @Chris53897 made their first contribution in https://github.com/spatie/browsershot/pull/957
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.0.11...5.1.0
+
 ## 5.0.11 - 2025-10-08
 
 ### What's Changed
