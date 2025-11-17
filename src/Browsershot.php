@@ -1161,7 +1161,7 @@ class Browsershot
         return
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
-            .'"' .$nodeBinary .'" '
+            .'"'.$nodeBinary.'" '
             .escapeshellarg($binPath).' '
             .$optionsCommand;
     }
