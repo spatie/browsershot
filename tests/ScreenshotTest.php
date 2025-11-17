@@ -183,42 +183,6 @@ it('will connect to a custom remote instance and take screenshot', function () {
     */
 });
 
-it('will connect to a custom ws endpoint and take screenshot', function () {
-    $instance = Browsershot::url('https://example.com')
-        ->setWSEndpoint('wss://chrome.browserless.io/');
-
-    $this->assertEquals([
-        'url' => 'https://example.com',
-        'action' => 'screenshot',
-        'options' => [
-            'path' => 'screenshot.png',
-            'viewport' => [
-                'width' => 800,
-                'height' => 600,
-            ],
-            'args' => [],
-            'type' => 'png',
-            'browserWSEndpoint' => 'wss://chrome.browserless.io/',
-        ],
-    ], $instance->createScreenshotCommand('screenshot.png'));
-
-    // It should be online so mis-use the assetsContains because a 4xx error won't contain the word "browerless".
-    $html = Browsershot::url('https://chrome.browserless.io/')
-        ->bodyHtml();
-
-    // If it's offline then this will fail.
-    expect($html)->toContain('chrome.browserless.io');
-
-    /* Now that we now the domain is online, assert the screenshot.
-     * Although we can't be sure, because Browsershot itself falls back to launching a chromium instance in browser.js
-    */
-
-    $targetPath = __DIR__.'/temp/testScreenshot.png';
-
-    file_put_contents($targetPath, $instance->screenshot());
-    expect($targetPath)->toBeFile();
-});
-
 it('can take a scaled screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.pdf';
 
