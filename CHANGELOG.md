@@ -1,3 +1,12 @@
+## 5.1.1 - 2025-11-26
+
+### What's Changed
+
+* Added Symfony 8 support to all symfony/* packages. by @thecaliskan in https://github.com/spatie/browsershot/pull/959
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/960
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.1.0...5.1.1
+
 ## 5.1.0 - 2025-11-17
 
 ### What's Changed
