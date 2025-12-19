@@ -78,6 +78,9 @@ class Browsershot
         'view-source',
     ];
 
+    /** @var array<string,string> */
+    protected array $nodeEnvVars = [];
+
     public static function url(string $url): static
     {
         return (new static)->setUrl($url);
@@ -193,6 +196,13 @@ class Browsershot
     public function setExtraNavigationHttpHeaders(array $extraNavigationHTTPHeaders): static
     {
         $this->setOption('extraNavigationHTTPHeaders', $extraNavigationHTTPHeaders);
+
+        return $this;
+    }
+
+    public function setNodeEnv(array $envVars): static
+    {
+        $this->nodeEnvVars = $envVars;
 
         return $this;
     }
@@ -1170,9 +1180,12 @@ class Browsershot
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
 
+        $envVarsCommand = $this->buildEnvVarsCommand();
+
         return
             $setIncludePathCommand.' '
             .$setNodePathCommand.' '
+            .$envVarsCommand.' '
             .'"'.$nodeBinary.'" '
             .escapeshellarg($binPath).' '
             .$optionsCommand;
@@ -1228,6 +1241,20 @@ class Browsershot
         $array[array_shift($keys)] = $value;
 
         return $array;
+    }
+
+    protected function buildEnvVarsCommand(): string
+    {
+        if (empty($this->nodeEnvVars)) {
+            return '';
+        }
+
+        $parts = [];
+        foreach ($this->nodeEnvVars as $key => $value) {
+            $parts[] = $key.'='.escapeshellarg($value);
+        }
+
+        return implode(' ', $parts);
     }
 
     public function initialPageNumber(int $initialPage = 1): static
