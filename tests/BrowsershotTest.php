@@ -141,6 +141,16 @@ it('can set another node binary', function () {
         ->save($targetPath);
 });
 
+it('can set node environment variables and still works', function () {
+    $targetPath = __DIR__.'/temp/testScreenshot.png';
+
+    Browsershot::html('Foo')
+        ->setNodeEnv(['NODE_ENV' => 'production'])
+        ->save($targetPath);
+
+    expect($targetPath)->toBeFile();
+});
+
 it('can set another chrome executable path', function () {
     $this->expectException(ProcessFailedException::class);
 

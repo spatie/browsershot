@@ -64,6 +64,15 @@ Browsershot::html('Foo')
 
 Setting the include path can be useful in cases where `node` and `npm` can not be found automatically.
 
+### Custom node environment variables
+
+If you need to set custom environment variables `node` should run with, you can use the `setNodeEnv` method.
+
+```php
+Browsershot::html('Foo')
+    ->setNodeEnv(['NODE_ENV' => 'production'])
+```
+
 ### Custom node module path
 
 If you want to use an alternative `node_modules` source you can set it using the `setNodeModulePath` method.
