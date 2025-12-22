@@ -1,3 +1,20 @@
+## 5.2.0 - 2025-12-22
+
+### What's Changed
+
+* Fix installation command for Forge dependencies in requirements.md by @ndeblauw in https://github.com/spatie/browsershot/pull/962
+* Fix installation instructions in requirements by @ndeblauw in https://github.com/spatie/browsershot/pull/965
+* Ability to set node env variables by @fdemb in https://github.com/spatie/browsershot/pull/964
+* fix(bin/browser.cjs): polyfill global ReadableStream using stream/web by @SUXUMI in https://github.com/spatie/browsershot/pull/955
+
+### New Contributors
+
+* @ndeblauw made their first contribution in https://github.com/spatie/browsershot/pull/962
+* @fdemb made their first contribution in https://github.com/spatie/browsershot/pull/964
+* @SUXUMI made their first contribution in https://github.com/spatie/browsershot/pull/955
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.1.1...5.2.0
+
 ## 5.1.1 - 2025-11-26
 
 ### What's Changed
