@@ -76,6 +76,8 @@ class Browsershot
         'file:\\',
         'file:\\\\',
         'view-source',
+        '\\\\',
+        '//'
     ];
 
     /** @var array<string,string> */
