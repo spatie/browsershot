@@ -74,6 +74,29 @@ it('will not allow html to contain file:/', function () {
     Browsershot::html('<h1><img src="file:/" /></h1>');
 })->throws(HtmlIsNotAllowedToContainFile::class);
 
+it('will not allow html to contain UNC paths', function (string $html) {
+    Browsershot::html($html);
+})->throws(HtmlIsNotAllowedToContainFile::class)->with([
+    '<iframe src="\\\\localhost/etc/passwd">',
+    '<iframe src="\\\\127.0.0.1/etc/passwd">',
+]);
+
+it('will not allow html to contain protocol-relative urls to local addresses', function (string $html) {
+    Browsershot::html($html);
+})->throws(HtmlIsNotAllowedToContainFile::class)->with([
+    '<iframe src="//localhost/etc/passwd">',
+    '<iframe src="//127.0.0.1/etc/passwd">',
+    '<iframe src="//127.1.2.3/etc/passwd">',
+    '<iframe src="//0.0.0.0/etc/passwd">',
+    '<iframe src="//[::1]/etc/passwd">',
+]);
+
+it('will allow html with legitimate protocol-relative urls', function () {
+    $browsershot = Browsershot::html('<link href="//cdn.example.com/style.css">');
+
+    expect($browsershot)->toBeInstanceOf(Browsershot::class);
+});
+
 it('no redirects - will not follow redirects', function () {
     $targetPath = __DIR__.'/temp/redirect_fail.pdf';
 
