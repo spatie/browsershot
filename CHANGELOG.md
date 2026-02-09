@@ -1,3 +1,12 @@
+## 5.2.1 - 2026-02-09
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/968
+* Fix #970: Block local file read bypasses via UNC paths and protocol-relative URLs by @freekmurze in https://github.com/spatie/browsershot/pull/972
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.2.0...5.2.1
+
 ## 5.2.0 - 2025-12-22
 
 ### What's Changed
