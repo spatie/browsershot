@@ -1,3 +1,7 @@
+## 5.2.2 - 2026-02-10
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.2.1...5.2.2
+
 ## 5.2.1 - 2026-02-09
 
 ### What's Changed
