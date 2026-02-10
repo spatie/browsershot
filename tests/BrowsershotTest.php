@@ -79,6 +79,8 @@ it('will not allow html to contain UNC paths', function (string $html) {
 })->throws(HtmlIsNotAllowedToContainFile::class)->with([
     '<iframe src="\\\\localhost/etc/passwd">',
     '<iframe src="\\\\127.0.0.1/etc/passwd">',
+    '<iframe src="\\\\0.0.0.0/etc/passwd">',
+    '<iframe src="\\\\[::1]/etc/passwd">',
 ]);
 
 it('will not allow html to contain protocol-relative urls to local addresses', function (string $html) {
@@ -96,6 +98,16 @@ it('will allow html with legitimate protocol-relative urls', function () {
 
     expect($browsershot)->toBeInstanceOf(Browsershot::class);
 });
+
+it('will allow html containing backslashes in css', function (string $html) {
+    $browsershot = Browsershot::html($html);
+
+    expect($browsershot)->toBeInstanceOf(Browsershot::class);
+})->with([
+    '<style>.hover\:flex { display: flex; }</style>',
+    '<style>.md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }</style>',
+    '<style>.content::before { content: "\25B6"; }</style>',
+]);
 
 it('no redirects - will not follow redirects', function () {
     $targetPath = __DIR__.'/temp/redirect_fail.pdf';

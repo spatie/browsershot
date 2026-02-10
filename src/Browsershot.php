@@ -76,7 +76,6 @@ class Browsershot
         'file:\\',
         'file:\\\\',
         'view-source',
-        '\\\\',
     ];
 
     /** @var array<string,string> */
@@ -343,6 +342,10 @@ class Browsershot
             }
 
             if (preg_match('#//\s*(localhost[/:\s]|127\.|0\.0\.0\.0[/:\s]|\[::1][/:\s]|::1[/:\s])#i', $content)) {
+                throw HtmlIsNotAllowedToContainFile::make();
+            }
+
+            if (preg_match('#\\\\\\\\\s*(localhost[/\\\\\s]|127\.|0\.0\.0\.0[/\\\\\s]|\[::1][/\\\\\s]|::1[/\\\\\s])#i', $content)) {
                 throw HtmlIsNotAllowedToContainFile::make();
             }
         }
