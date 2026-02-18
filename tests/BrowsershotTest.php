@@ -99,6 +99,17 @@ it('will allow html with legitimate protocol-relative urls', function () {
     expect($browsershot)->toBeInstanceOf(Browsershot::class);
 });
 
+it('will allow html with http urls to localhost', function (string $html) {
+    $browsershot = Browsershot::html($html);
+
+    expect($browsershot)->toBeInstanceOf(Browsershot::class);
+})->with([
+    '<script type="module" src="http://[::1]:5173/@vite/client"></script>',
+    '<link rel="stylesheet" href="http://localhost:5173/resources/css/app.css">',
+    '<script type="module" src="http://127.0.0.1:5173/resources/js/app.js"></script>',
+    '<script type="module" src="https://localhost:5173/@vite/client"></script>',
+]);
+
 it('will allow html containing backslashes in css', function (string $html) {
     $browsershot = Browsershot::html($html);
 
