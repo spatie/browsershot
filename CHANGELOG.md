@@ -1,3 +1,9 @@
+## 5.2.3 - 2026-02-18
+
+- Allow http(s) URLs to localhost in HTML (fixes false positive with Vite dev server)
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.2.2...5.2.3
+
 ## 5.2.2 - 2026-02-10
 
 **Full Changelog**: https://github.com/spatie/browsershot/compare/5.2.1...5.2.2
