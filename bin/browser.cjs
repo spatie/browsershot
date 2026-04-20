@@ -133,9 +133,9 @@ const callChrome = async pup => {
             request.url = contentUrl;
         }
 
-        // Only enable request interception when features that require it are actually used.
-        // Unconditional interception routes every request through the CDP, which introduces
-        // detectable timing anomalies that anti-bot systems can fingerprint.
+        // Always register a passive listener to capture the URLs list (backing triggeredRequests()).
+        // setRequestInterception(true) is only enabled when needed — unconditional interception
+        // routes requests through the CDP, introducing timing anomalies anti-bot systems can detect.
         const needsInterception = !!(
             request.options?.disableImages ||
             request.options?.blockDomains ||
@@ -226,6 +226,15 @@ const callChrome = async pup => {
                 }
 
                 interceptedRequest.continue({ headers });
+            });
+        } else {
+            // No interception needed: register a passive listener only to capture URLs.
+            page.on('request', interceptedRequest => {
+                if (!request.options || !request.options.disableCaptureURLS) {
+                    requestsList.push({
+                        url: interceptedRequest.url(),
+                    });
+                }
             });
         }
 

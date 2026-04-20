@@ -27,6 +27,18 @@ it('can get the requests list', function () {
     );
 });
 
+it('can get the requests list even when interception options are active', function () {
+    // Block a non-existent URL so interception is enabled, but example.com still loads.
+    $list = Browsershot::url('https://example.com')
+        ->blockUrls(['https://example.com/favicon.ico'])
+        ->triggeredRequests();
+
+    expect($list)->not->toBeEmpty();
+
+    $urls = array_column($list, 'url');
+    expect($urls)->toContain('https://example.com/');
+});
+
 it('can get the redirect history', function () {
     $list = Browsershot::url('http://www.spatie.be')
         ->redirectHistory();
