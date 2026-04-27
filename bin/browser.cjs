@@ -136,12 +136,15 @@ const callChrome = async pup => {
         // Always register a passive listener to capture the URLs list (backing triggeredRequests()).
         // setRequestInterception(true) is only enabled when needed — unconditional interception
         // routes requests through the CDP, introducing timing anomalies anti-bot systems can detect.
+        const hasItems = (value) => Array.isArray(value) && value.length > 0;
+        const hasKeys = (value) => value && typeof value === 'object' && Object.keys(value).length > 0;
+
         const needsInterception = !!(
             request.options?.disableImages ||
-            request.options?.blockDomains ||
-            request.options?.blockUrls ||
+            hasItems(request.options?.blockDomains) ||
+            hasItems(request.options?.blockUrls) ||
             request.options?.disableRedirects ||
-            request.options?.extraNavigationHTTPHeaders ||
+            hasKeys(request.options?.extraNavigationHTTPHeaders) ||
             pageContent ||
             request.postParams
         );
