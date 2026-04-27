@@ -142,9 +142,11 @@ const callChrome = async pup => {
             request.url = contentUrl;
         }
 
-        // Always register a passive listener to capture the URLs list (backing triggeredRequests()).
-        // setRequestInterception(true) is only enabled when needed — unconditional interception
-        // routes requests through the CDP, introducing timing anomalies anti-bot systems can detect.
+        // The request listener captures URLs unconditionally (backing triggeredRequests()) and,
+        // when interception is enabled, walks a set of rules that may abort/respond/continue
+        // the request. setRequestInterception(true) is only enabled when needed. Unconditional
+        // interception routes every request through the CDP, introducing timing anomalies that
+        // anti-bot systems can detect.
         const hasItems = (value) => Array.isArray(value) && value.length > 0;
         const hasKeys = (value) => value && typeof value === 'object' && Object.keys(value).length > 0;
 
@@ -158,97 +160,97 @@ const callChrome = async pup => {
             request.postParams
         );
 
+        const captureUrl = (req) => {
+            if (!options.disableCaptureURLS) {
+                requestsList.push({ url: req.url() });
+            }
+        };
+
+        // Each rule below returns true if it terminated the request (via abort/respond/continue).
+        // The listener walks them top-to-bottom and stops at the first match.
+        const blockImage = (req) => {
+            if (!options.disableImages || req.resourceType() !== 'image') return false;
+            req.abort();
+            return true;
+        };
+
+        const blockDomain = (req) => {
+            if (!hasItems(options.blockDomains)) return false;
+            const hostname = URLParse(req.url()).hostname;
+            if (!options.blockDomains.includes(hostname)) return false;
+            req.abort();
+            return true;
+        };
+
+        const blockUrl = (req) => {
+            if (!hasItems(options.blockUrls)) return false;
+            const matches = options.blockUrls.some(fragment => req.url().indexOf(fragment) >= 0);
+            if (!matches) return false;
+            req.abort();
+            return true;
+        };
+
+        const blockRedirect = (req) => {
+            if (!options.disableRedirects) return false;
+            if (!req.isNavigationRequest() || !req.redirectChain().length) return false;
+            req.abort();
+            return true;
+        };
+
+        const buildHeaders = (req) => {
+            const headers = req.headers();
+            if (hasKeys(options.extraNavigationHTTPHeaders) && req.isNavigationRequest()) {
+                return { ...headers, ...options.extraNavigationHTTPHeaders };
+            }
+            return headers;
+        };
+
+        const respondWithPageContent = (req, headers) => {
+            if (!pageContent) return false;
+            if (req.url().replace(/\/$/, "") !== parsedContentUrl) return false;
+            req.respond({ headers, body: pageContent });
+            return true;
+        };
+
+        // Note: postParams intentionally uses raw req.headers() rather than the merged
+        // `headers`. extraNavigationHTTPHeaders does not apply to postParams (pre-existing).
+        const continueWithPostParams = (req) => {
+            if (!request.postParams) return false;
+            const queryString = Object.entries(request.postParams)
+                .map(([key, value]) => `${key}=${value}`)
+                .join('&');
+            req.continue({
+                method: "POST",
+                postData: queryString,
+                headers: {
+                    ...req.headers(),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+            return true;
+        };
+
         if (needsInterception) {
             await page.setRequestInterception(true);
-
-            page.on('request', interceptedRequest => {
-                var headers = interceptedRequest.headers();
-
-                if (!options.disableCaptureURLS) {
-                    requestsList.push({
-                        url: interceptedRequest.url(),
-                    });
-                }
-
-                if (options.disableImages) {
-                    if (interceptedRequest.resourceType() === 'image') {
-                        interceptedRequest.abort();
-                        return;
-                    }
-                }
-
-                if (options.blockDomains) {
-                    const hostname = URLParse(interceptedRequest.url()).hostname;
-                    if (options.blockDomains.includes(hostname)) {
-                        interceptedRequest.abort();
-                        return;
-                    }
-                }
-
-                if (options.blockUrls) {
-                    for (const element of options.blockUrls) {
-                        if (interceptedRequest.url().indexOf(element) >= 0) {
-                            interceptedRequest.abort();
-                            return;
-                        }
-                    }
-                }
-
-                if (options.disableRedirects) {
-                    if (interceptedRequest.isNavigationRequest() && interceptedRequest.redirectChain().length) {
-                        interceptedRequest.abort();
-                        return
-                    }
-                }
-
-                if (options.extraNavigationHTTPHeaders) {
-                    // Do nothing in case of non-navigation requests.
-                    if (interceptedRequest.isNavigationRequest()) {
-                        headers = Object.assign({}, headers, options.extraNavigationHTTPHeaders);
-                    }
-                }
-
-                if (pageContent) {
-                    const interceptedUrl = interceptedRequest.url().replace(/\/$/, "");
-
-                    // if content url matches the intercepted request url, will return the content fetched from the local file system
-                    if (interceptedUrl === parsedContentUrl) {
-                        interceptedRequest.respond({
-                            headers,
-                            body: pageContent,
-                        });
-                        return;
-                    }
-                }
-
-                if (request.postParams) {
-                    const postParamsArray = request.postParams;
-                    const queryString = Object.keys(postParamsArray)
-                        .map(key => `${key}=${postParamsArray[key]}`)
-                        .join('&');
-                    interceptedRequest.continue({
-                        method: "POST",
-                        postData: queryString,
-                        headers: {
-                            ...interceptedRequest.headers(),
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        }
-                    });
-                    return;
-                }
-
-                interceptedRequest.continue({ headers });
-            });
-        } else {
-            // No interception needed: register a passive listener only to capture URLs.
-            page.on('request', interceptedRequest => {
-                if (!options.disableCaptureURLS) {
-                    requestsList.push({
-                        url: interceptedRequest.url(),
-                    });
-                }
-            });
         }
+
+        page.on('request', (req) => {
+            captureUrl(req);
+
+            if (!needsInterception) return;
+
+            if (blockImage(req)) return;
+            if (blockDomain(req)) return;
+            if (blockUrl(req)) return;
+            if (blockRedirect(req)) return;
+
+            const headers = buildHeaders(req);
+
+            if (respondWithPageContent(req, headers)) return;
+            if (continueWithPostParams(req)) return;
+
+            req.continue({ headers });
+        });
 
         page.on('console', (message) =>
             consoleMessages.push({
