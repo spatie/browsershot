@@ -73,28 +73,37 @@ const callChrome = async pup => {
     let page;
     let remoteInstance;
     const puppet = (pup || require('puppeteer'));
+    const options = request.options ?? {};
+
+    const closeBrowser = async () => {
+        if (!browser) return;
+        if (remoteInstance && page) {
+            await page.close();
+        }
+        await (remoteInstance ? browser.disconnect() : browser.close());
+    };
 
     try {
-        if (request.options.remoteInstanceUrl || request.options.browserWSEndpoint ) {
+        if (options.remoteInstanceUrl || options.browserWSEndpoint) {
             // default options
-            let options = {
-                acceptInsecureCerts: request.options.acceptInsecureCerts
+            let connectOptions = {
+                acceptInsecureCerts: options.acceptInsecureCerts
             };
 
             // choose only one method to connect to the browser instance
-            if ( request.options.remoteInstanceUrl ) {
-                options.browserURL = request.options.remoteInstanceUrl;
-            } else if ( request.options.browserWSEndpoint ) {
-                options.browserWSEndpoint = request.options.browserWSEndpoint;
+            if (options.remoteInstanceUrl) {
+                connectOptions.browserURL = options.remoteInstanceUrl;
+            } else if (options.browserWSEndpoint) {
+                connectOptions.browserWSEndpoint = options.browserWSEndpoint;
             }
 
             try {
-                browser = await puppet.connect( options );
+                browser = await puppet.connect(connectOptions);
 
                 remoteInstance = true;
             } catch (exception) {
 
-                if (request.options.throwOnRemoteConnectionError) {
+                if (options.throwOnRemoteConnectionError) {
                     console.error(exception.toString());
                     process.exit(4);
                 }
@@ -105,26 +114,26 @@ const callChrome = async pup => {
 
         if (!browser) {
             browser = await puppet.launch({
-                headless: request.options.newHeadless ? true : 'shell',
-                acceptInsecureCerts: request.options.acceptInsecureCerts,
-                executablePath: request.options.executablePath,
-                args: request.options.args || [],
-                pipe: request.options.pipe || false,
+                headless: options.newHeadless ? true : 'shell',
+                acceptInsecureCerts: options.acceptInsecureCerts,
+                executablePath: options.executablePath,
+                args: options.args || [],
+                pipe: options.pipe || false,
                 env: {
-                    ...(request.options.env || {}),
+                    ...(options.env || {}),
                     ...process.env
                 },
-                protocolTimeout: request.options.protocolTimeout ?? 30000,
+                protocolTimeout: options.protocolTimeout ?? 30000,
             });
         }
 
         page = await browser.newPage();
 
-        if (request.options && request.options.disableJavascript) {
+        if (options.disableJavascript) {
             await page.setJavaScriptEnabled(false);
         }
 
-        const contentUrl = request.options.contentUrl;
+        const contentUrl = options.contentUrl;
         const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
         let pageContent;
 
@@ -140,11 +149,11 @@ const callChrome = async pup => {
         const hasKeys = (value) => value && typeof value === 'object' && Object.keys(value).length > 0;
 
         const needsInterception = !!(
-            request.options?.disableImages ||
-            hasItems(request.options?.blockDomains) ||
-            hasItems(request.options?.blockUrls) ||
-            request.options?.disableRedirects ||
-            hasKeys(request.options?.extraNavigationHTTPHeaders) ||
+            options.disableImages ||
+            hasItems(options.blockDomains) ||
+            hasItems(options.blockUrls) ||
+            options.disableRedirects ||
+            hasKeys(options.extraNavigationHTTPHeaders) ||
             pageContent ||
             request.postParams
         );
@@ -155,29 +164,29 @@ const callChrome = async pup => {
             page.on('request', interceptedRequest => {
                 var headers = interceptedRequest.headers();
 
-                if (!request.options || !request.options.disableCaptureURLS) {
+                if (!options.disableCaptureURLS) {
                     requestsList.push({
                         url: interceptedRequest.url(),
                     });
                 }
 
-                if (request.options && request.options.disableImages) {
+                if (options.disableImages) {
                     if (interceptedRequest.resourceType() === 'image') {
                         interceptedRequest.abort();
                         return;
                     }
                 }
 
-                if (request.options && request.options.blockDomains) {
+                if (options.blockDomains) {
                     const hostname = URLParse(interceptedRequest.url()).hostname;
-                    if (request.options.blockDomains.includes(hostname)) {
+                    if (options.blockDomains.includes(hostname)) {
                         interceptedRequest.abort();
                         return;
                     }
                 }
 
-                if (request.options && request.options.blockUrls) {
-                    for (const element of request.options.blockUrls) {
+                if (options.blockUrls) {
+                    for (const element of options.blockUrls) {
                         if (interceptedRequest.url().indexOf(element) >= 0) {
                             interceptedRequest.abort();
                             return;
@@ -185,17 +194,17 @@ const callChrome = async pup => {
                     }
                 }
 
-                if (request.options && request.options.disableRedirects) {
+                if (options.disableRedirects) {
                     if (interceptedRequest.isNavigationRequest() && interceptedRequest.redirectChain().length) {
                         interceptedRequest.abort();
                         return
                     }
                 }
 
-                if (request.options && request.options.extraNavigationHTTPHeaders) {
+                if (options.extraNavigationHTTPHeaders) {
                     // Do nothing in case of non-navigation requests.
                     if (interceptedRequest.isNavigationRequest()) {
-                        headers = Object.assign({}, headers, request.options.extraNavigationHTTPHeaders);
+                        headers = Object.assign({}, headers, options.extraNavigationHTTPHeaders);
                     }
                 }
 
@@ -233,7 +242,7 @@ const callChrome = async pup => {
         } else {
             // No interception needed: register a passive listener only to capture URLs.
             page.on('request', interceptedRequest => {
-                if (!request.options || !request.options.disableCaptureURLS) {
+                if (!options.disableCaptureURLS) {
                     requestsList.push({
                         url: interceptedRequest.url(),
                     });
@@ -278,62 +287,62 @@ const callChrome = async pup => {
             });
         });
 
-        if (request.options && request.options.dismissDialogs) {
+        if (options.dismissDialogs) {
             page.on('dialog', async dialog => {
                 await dialog.dismiss();
             });
         }
 
-        if (request.options && request.options.userAgent) {
-            await page.setUserAgent(request.options.userAgent);
+        if (options.userAgent) {
+            await page.setUserAgent(options.userAgent);
         }
 
-        if (request.options && request.options.device) {
+        if (options.device) {
             const devices = puppet.KnownDevices;
-            const device = devices[request.options.device];
+            const device = devices[options.device];
             await page.emulate(device);
         }
 
-        if (request.options && request.options.emulateMedia) {
-            await page.emulateMediaType(request.options.emulateMedia);
+        if (options.emulateMedia) {
+            await page.emulateMediaType(options.emulateMedia);
         }
 
-        if (request.options && request.options.emulateMediaFeatures) {
-            await page.emulateMediaFeatures(JSON.parse(request.options.emulateMediaFeatures));
+        if (options.emulateMediaFeatures) {
+            await page.emulateMediaFeatures(JSON.parse(options.emulateMediaFeatures));
         }
 
-        if (request.options && request.options.viewport) {
-            await page.setViewport(request.options.viewport);
+        if (options.viewport) {
+            await page.setViewport(options.viewport);
         }
 
-        if (request.options && request.options.extraHTTPHeaders) {
-            await page.setExtraHTTPHeaders(request.options.extraHTTPHeaders);
+        if (options.extraHTTPHeaders) {
+            await page.setExtraHTTPHeaders(options.extraHTTPHeaders);
         }
 
-        if (request.options && request.options.authentication) {
-            await page.authenticate(request.options.authentication);
+        if (options.authentication) {
+            await page.authenticate(options.authentication);
         }
 
-        if (request.options && request.options.cookies) {
-            await page.setCookie(...request.options.cookies);
+        if (options.cookies) {
+            await page.setCookie(...options.cookies);
         }
 
-        if (request.options && request.options.timeout) {
-            await page.setDefaultNavigationTimeout(request.options.timeout);
+        if (options.timeout) {
+            await page.setDefaultNavigationTimeout(options.timeout);
         }
 
         const requestOptions = {};
 
-        if (request.options && request.options.networkIdleTimeout) {
+        if (options.networkIdleTimeout) {
             requestOptions.waitUntil = 'networkidle';
-            requestOptions.networkIdleTimeout = request.options.networkIdleTimeout;
-        } else if (request.options && request.options.waitUntil) {
-            requestOptions.waitUntil = request.options.waitUntil;
+            requestOptions.networkIdleTimeout = options.networkIdleTimeout;
+        } else if (options.waitUntil) {
+            requestOptions.waitUntil = options.waitUntil;
         }
 
         const response = await page.goto(request.url, requestOptions);
 
-        if (request.options.preventUnsuccessfulResponse) {
+        if (options.preventUnsuccessfulResponse) {
             const status = response.status()
 
             if (status >= 400 && status < 600) {
@@ -341,7 +350,7 @@ const callChrome = async pup => {
             }
         }
 
-        if (request.options && request.options.disableImages) {
+        if (options.disableImages) {
             await page.evaluate(() => {
                 let images = document.getElementsByTagName('img');
                 while (images.length > 0) {
@@ -350,41 +359,37 @@ const callChrome = async pup => {
             });
         }
 
-        if (request.options && request.options.types) {
-            for (let i = 0, len = request.options.types.length; i < len; i++) {
-                let typeOptions = request.options.types[i];
+        if (options.types) {
+            for (const typeOptions of options.types) {
                 await page.type(typeOptions.selector, typeOptions.text, {
-                    'delay': typeOptions.delay,
+                    delay: typeOptions.delay,
                 });
             }
         }
 
-        if (request.options && request.options.selects) {
-            for (let i = 0, len = request.options.selects.length; i < len; i++) {
-                let selectOptions = request.options.selects[i];
+        if (options.selects) {
+            for (const selectOptions of options.selects) {
                 await page.select(selectOptions.selector, selectOptions.value);
             }
         }
 
-        if (request.options && request.options.clicks) {
-            for (let i = 0, len = request.options.clicks.length; i < len; i++) {
-                let clickOptions = request.options.clicks[i];
+        if (options.clicks) {
+            for (const clickOptions of options.clicks) {
                 await page.click(clickOptions.selector, {
-                    'button': clickOptions.button,
-                    'clickCount': clickOptions.clickCount,
-                    'delay': clickOptions.delay,
+                    button: clickOptions.button,
+                    clickCount: clickOptions.clickCount,
+                    delay: clickOptions.delay,
                 });
             }
         }
 
-        if (request.options && request.options.locatorClicks) {
-            for (let i = 0, len = request.options.locatorClicks.length; i < len; i++) {
-                let clickOptions = request.options.locatorClicks[i];
+        if (options.locatorClicks) {
+            for (const clickOptions of options.locatorClicks) {
                 try {
                     await page.locator(clickOptions.selector).click({
-                        'button': clickOptions.button,
-                        'clickCount': clickOptions.clickCount,
-                        'delay': clickOptions.delay,
+                        button: clickOptions.button,
+                        clickCount: clickOptions.clickCount,
+                        delay: clickOptions.delay,
                     });
                 } catch (error) {
                     console.error('Timeout error:', error);
@@ -392,19 +397,19 @@ const callChrome = async pup => {
             }
         }
 
-        if (request.options && request.options.addStyleTag) {
-            await page.addStyleTag(JSON.parse(request.options.addStyleTag));
+        if (options.addStyleTag) {
+            await page.addStyleTag(JSON.parse(options.addStyleTag));
         }
 
-        if (request.options && request.options.addScriptTag) {
-            await page.addScriptTag(JSON.parse(request.options.addScriptTag));
+        if (options.addScriptTag) {
+            await page.addScriptTag(JSON.parse(options.addScriptTag));
         }
 
-        if (request.options.delay) {
-            await new Promise(r => setTimeout(r, request.options.delay));
+        if (options.delay) {
+            await new Promise(r => setTimeout(r, options.delay));
         }
 
-        if (request.options.initialPageNumber) {
+        if (options.initialPageNumber) {
             await page.evaluate((initialPageNumber) => {
                 window.pageStart = initialPageNumber;
 
@@ -420,56 +425,46 @@ const callChrome = async pup => {
                     return emptyPage;
                 });
                 document.body.prepend(...emptyPages);
-            }, request.options.initialPageNumber);
+            }, options.initialPageNumber);
         }
 
-        if (request.options.function) {
-            let functionOptions = {
-                polling: request.options.functionPolling,
-                timeout: request.options.functionTimeout || request.options.timeout
+        if (options.function) {
+            const functionOptions = {
+                polling: options.functionPolling,
+                timeout: options.functionTimeout || options.timeout
             };
-            await page.waitForFunction(request.options.function, functionOptions);
+            await page.waitForFunction(options.function, functionOptions);
         }
 
-        if (request.options.waitForSelector) {
-            await page.waitForSelector(request.options.waitForSelector, (request.options.waitForSelectorOptions ? request.options.waitForSelectorOptions :  undefined));
+        if (options.waitForSelector) {
+            await page.waitForSelector(options.waitForSelector, options.waitForSelectorOptions ?? undefined);
         }
 
-        if (request.options.selector) {
-            var element;
-            const index = request.options.selectorIndex || 0;
-            if(index){
-                element = await page.$$(request.options.selector);
-                if(!element.length || typeof element[index] === 'undefined'){
+        if (options.selector) {
+            let element;
+            const index = options.selectorIndex || 0;
+            if (index) {
+                element = await page.$$(options.selector);
+                if (!element.length || typeof element[index] === 'undefined') {
                     element = null;
-                }else{
+                } else {
                     element = element[index];
                 }
-            }else{
-                element = await page.$(request.options.selector);
+            } else {
+                element = await page.$(options.selector);
             }
             if (element === null) {
                 throw {type: 'ElementNotFound'};
             }
 
-            request.options.clip = await element.boundingBox();
+            options.clip = await element.boundingBox();
         }
 
         console.log(await getOutput(request, page));
 
-        if (remoteInstance && page) {
-            await page.close();
-        }
-
-        await (remoteInstance ? browser.disconnect() : browser.close());
+        await closeBrowser();
     } catch (exception) {
-        if (browser) {
-            if (remoteInstance && page) {
-                await page.close();
-            }
-
-            await (remoteInstance ? browser.disconnect() : browser.close());
-        }
+        await closeBrowser();
 
         const output = await getOutput(request);
 
