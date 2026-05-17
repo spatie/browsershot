@@ -287,6 +287,11 @@ class Browsershot
         return $this;
     }
 
+    public function evaluateOnNewDocument(string $pageFunction): static
+    {
+        return $this->setOption('evaluateOnNewDocument', $pageFunction);
+    }
+
     public function setUrl(string $url): static
     {
         $url = trim($url);

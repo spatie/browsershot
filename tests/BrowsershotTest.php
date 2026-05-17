@@ -689,6 +689,35 @@ it('can evaluate page', function () {
     expect($result)->toEqual('2');
 });
 
+it('can evaluate script on new document before page loads', function () {
+    $result = Browsershot::url('https://example.com')
+        ->evaluateOnNewDocument('window.__injected = 42')
+        ->evaluate('window.__injected');
+
+    expect($result)->toEqual('42');
+});
+
+it('can set evaluateOnNewDocument option', function () {
+    $command = Browsershot::url('https://example.com')
+        ->evaluateOnNewDocument('() => { window.__testVar = true; }')
+        ->createScreenshotCommand('screenshot.png');
+
+    $this->assertEquals([
+        'url' => 'https://example.com',
+        'action' => 'screenshot',
+        'options' => [
+            'path' => 'screenshot.png',
+            'viewport' => [
+                'width' => 800,
+                'height' => 600,
+            ],
+            'args' => [],
+            'type' => 'png',
+            'evaluateOnNewDocument' => '() => { window.__testVar = true; }',
+        ],
+    ], $command);
+});
+
 it('can add a timeout to puppeteer', function () {
     $command = Browsershot::url('https://example.com')
         ->timeout(123)
