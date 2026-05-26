@@ -1,3 +1,15 @@
+## 5.4.0 - 2026-05-26
+
+### What's Changed
+
+* feat: Add evaluateOnNewDocument support by @vinitkadam03 in https://github.com/spatie/browsershot/pull/978
+
+### New Contributors
+
+* @vinitkadam03 made their first contribution in https://github.com/spatie/browsershot/pull/978
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.3.0...5.4.0
+
 ## 5.3.0 - 2026-04-27
 
 ### What's Changed
