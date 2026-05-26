@@ -333,6 +333,10 @@ const callChrome = async pup => {
             await page.setDefaultNavigationTimeout(options.timeout);
         }
 
+        if (options.evaluateOnNewDocument) {
+            await page.evaluateOnNewDocument(options.evaluateOnNewDocument);
+        }
+
         const requestOptions = {};
 
         if (options.networkIdleTimeout) {
