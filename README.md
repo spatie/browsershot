@@ -10,7 +10,7 @@
     
 [![Latest Version](https://img.shields.io/github/release/spatie/browsershot.svg?style=flat-square)](https://github.com/spatie/browsershot/releases)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![run-tests](https://img.shields.io/github/actions/workflow/status/spatie/browsershot/run-tests.yml?label=tests&style=flat-square)](https://github.com/spatie/browsershot/actions)
+[![run-tests](https://github.com/spatie/browsershot/actions/workflows/run-tests.yml/badge.svg)](https://github.com/spatie/browsershot/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/browsershot.svg?style=flat-square)](https://packagist.org/packages/spatie/browsershot)
     
 </div>
