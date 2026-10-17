@@ -10,6 +10,7 @@ use Spatie\Browsershot\Exceptions\RemoteConnectionException;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Enums\Fit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 beforeEach(function () {
     emptyTempDirectory();
@@ -1020,6 +1021,20 @@ it('will allow passing environment variables', function () {
         ],
     ], $instance->createScreenshotCommand('screenshot.png'));
 });
+
+it('removes temporary files and rethrows when the browser call fails', function (Closure $call, string $exception) {
+    $tempPath = sys_get_temp_dir().'/browsershot-'.uniqid();
+
+    expect(fn () => $call(Browsershot::html('<h1>Hello</h1>')->setCustomTempPath($tempPath)))->toThrow($exception);
+
+    expect(glob("{$tempPath}/*"))->toBeEmpty();
+
+    @rmdir($tempPath);
+})->with([
+    'element not found' => [fn (Browsershot $browsershot) => $browsershot->select('#missing')->bodyHtml(), ElementNotFound::class],
+    'process timeout' => [fn (Browsershot $browsershot) => $browsershot->writeOptionsToFile()->setDelay(5000)->timeout(1)->bodyHtml(), ProcessTimedOutException::class],
+    'chrome fails to start' => [fn (Browsershot $browsershot) => $browsershot->setChromePath('/nonexistent/chrome')->bodyHtml(), ProcessFailedException::class],
+]);
 
 it('can throw an error when response is unsuccessful', function () {
     $url = 'https://google.com/404';
