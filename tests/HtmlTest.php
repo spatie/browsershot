@@ -21,14 +21,14 @@ it('can not set html contents from a non-existent file', function () {
 })->throws(FileDoesNotExistException::class);
 
 it('can get the body html', function () {
-    $html = Browsershot::url('https://example.com')
+    $html = Browsershot::url(testUrl())
         ->bodyHtml();
 
     expect($html)->toContain('<h1>Example Domain</h1>');
 });
 
 it('can get the body html when using pipe', function () {
-    $html = Browsershot::url('https://example.com')
+    $html = Browsershot::url(testUrl())
         ->usePipe()
         ->bodyHtml();
 

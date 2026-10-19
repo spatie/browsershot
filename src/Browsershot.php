@@ -681,8 +681,6 @@ class Browsershot
 
         $output = $this->callBrowser($command);
 
-        $this->cleanupTemporaryHtmlFile();
-
         if (! file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output, $command);
         }
@@ -698,8 +696,6 @@ class Browsershot
 
         $html = $this->callBrowser($command);
 
-        $this->cleanupTemporaryHtmlFile();
-
         return $html;
     }
 
@@ -708,8 +704,6 @@ class Browsershot
         $command = $this->createScreenshotCommand();
 
         $encodedImage = $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         return $encodedImage;
     }
@@ -722,21 +716,18 @@ class Browsershot
 
             $encodedImage = $this->callBrowser($command);
 
-            $this->cleanupTemporaryHtmlFile();
-
             return base64_decode($encodedImage);
         }
 
         $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
-        $this->save($temporaryDirectory->path('screenshot.png'));
+        try {
+            $this->save($temporaryDirectory->path('screenshot.png'));
 
-        $screenshot = file_get_contents($temporaryDirectory->path('screenshot.png'));
-
-        $temporaryDirectory->delete();
-
-        return $screenshot;
-
+            return file_get_contents($temporaryDirectory->path('screenshot.png'));
+        } finally {
+            $temporaryDirectory->delete();
+        }
     }
 
     public function pdf(): string
@@ -744,8 +735,6 @@ class Browsershot
         $command = $this->createPdfCommand();
 
         $encodedPdf = $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         return base64_decode($encodedPdf);
     }
@@ -755,8 +744,6 @@ class Browsershot
         $command = $this->createPdfCommand($targetPath);
 
         $output = $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         if (! file_exists($targetPath)) {
             throw CouldNotTakeBrowsershot::chromeOutputEmpty($targetPath, $output);
@@ -769,8 +756,6 @@ class Browsershot
 
         $encodedPdf = $this->callBrowser($command);
 
-        $this->cleanupTemporaryHtmlFile();
-
         return $encodedPdf;
     }
 
@@ -779,8 +764,6 @@ class Browsershot
         $command = $this->createEvaluateCommand($pageFunction);
 
         $evaluation = $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         return $evaluation;
     }
@@ -799,8 +782,6 @@ class Browsershot
         $command = $this->createTriggeredRequestsListCommand();
 
         $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         return $this->chromiumResult?->getRequestsList();
     }
@@ -847,8 +828,6 @@ class Browsershot
 
         $this->callBrowser($command);
 
-        $this->cleanupTemporaryHtmlFile();
-
         return $this->chromiumResult?->getConsoleMessages();
     }
 
@@ -867,8 +846,6 @@ class Browsershot
 
         $this->callBrowser($command);
 
-        $this->cleanupTemporaryHtmlFile();
-
         return $this->chromiumResult?->getFailedRequests();
     }
 
@@ -886,8 +863,6 @@ class Browsershot
         $command = $this->createPageErrorsCommand();
 
         $this->callBrowser($command);
-
-        $this->cleanupTemporaryHtmlFile();
 
         return $this->chromiumResult?->getPageErrors();
     }
@@ -1098,6 +1073,8 @@ class Browsershot
     {
         if ($this->temporaryHtmlDirectory) {
             $this->temporaryHtmlDirectory->delete();
+
+            $this->temporaryHtmlDirectory = null;
         }
     }
 
@@ -1114,35 +1091,37 @@ class Browsershot
     {
         if ($this->temporaryOptionsDirectory) {
             $this->temporaryOptionsDirectory->delete();
+
+            $this->temporaryOptionsDirectory = null;
         }
     }
 
     protected function callBrowser(array $command): string
     {
-        $fullCommand = $this->getFullCommand($command);
-
-        $process = $this->isWindows() ? new Process($fullCommand, null, $this->getWindowsEnv()) : Process::fromShellCommandline($fullCommand);
-
-        $process->setTimeout($this->timeout);
-
         // clear additional output data fetched on last browser request
         $this->chromiumResult = null;
 
-        $process->run();
+        try {
+            $fullCommand = $this->getFullCommand($command);
+
+            $process = $this->isWindows() ? new Process($fullCommand, null, $this->getWindowsEnv()) : Process::fromShellCommandline($fullCommand);
+
+            $process->setTimeout($this->timeout);
+
+            $process->run();
+        } finally {
+            $this->cleanupTemporaryHtmlFile();
+            $this->cleanupTemporaryOptionsFile();
+        }
 
         $rawOutput = rtrim($process->getOutput());
 
         $this->chromiumResult = new ChromiumResult(json_decode($rawOutput, true));
 
         if ($process->isSuccessful()) {
-            $result = $this->chromiumResult?->getResult();
-
-            $this->cleanupTemporaryOptionsFile();
-
-            return $result;
+            return $this->chromiumResult?->getResult();
         }
 
-        $this->cleanupTemporaryOptionsFile();
         $process->clearOutput();
         $exitCode = $process->getExitCode();
         $errorOutput = $process->getErrorOutput();

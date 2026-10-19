@@ -9,38 +9,39 @@ use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\RemoteConnectionException;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Enums\Fit;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 beforeEach(function () {
     emptyTempDirectory();
 });
 
 it('can get the requests list', function () {
-    $list = Browsershot::url('https://example.com')
+    $list = Browsershot::url(testUrl())
         ->triggeredRequests();
 
     expect($list)->toHaveCount(1);
 
     $this->assertEquals(
-        [['url' => 'https://example.com/']],
+        [['url' => testUrl()]],
         $list
     );
 });
 
 it('can get the requests list even when interception options are active', function () {
-    // Block a non-existent URL so interception is enabled, but example.com still loads.
-    $list = Browsershot::url('https://example.com')
-        ->blockUrls(['https://example.com/favicon.ico'])
+    $list = Browsershot::url(testUrl())
+        ->blockUrls([testUrl('favicon.ico')])
         ->triggeredRequests();
 
     expect($list)->not->toBeEmpty();
 
     $urls = array_column($list, 'url');
-    expect($urls)->toContain('https://example.com/');
+    expect($urls)->toContain(testUrl());
 });
 
 it('can get the redirect history', function () {
-    $list = Browsershot::url('http://www.spatie.be')
+    $list = Browsershot::url(testUrl('redirect'))
         ->redirectHistory();
 
     $list = array_map(function ($item) {
@@ -49,7 +50,7 @@ it('can get the redirect history', function () {
         return $item;
     }, $list);
 
-    expect($list)->toBeGreaterThanOrEqual(2);
+    expect($list)->toHaveCount(2);
     expect($list)->each->toHaveKeys(['url', 'status', 'reason']);
 });
 
@@ -135,7 +136,7 @@ it('will allow html containing backslashes in css', function (string $html) {
 it('no redirects - will not follow redirects', function () {
     $targetPath = __DIR__.'/temp/redirect_fail.pdf';
 
-    Browsershot::url('http://www.spatie.be')
+    Browsershot::url(testUrl('redirect'))
         ->disableRedirects()
         ->save($targetPath);
 
@@ -145,7 +146,7 @@ it('no redirects - will not follow redirects', function () {
 it('no redirects - will still render direct 200 OKs', function () {
     $targetPath = __DIR__.'/temp/redirect_success.pdf';
 
-    Browsershot::url('https://spatie.be/')
+    Browsershot::url(testUrl())
         ->disableRedirects()
         ->save($targetPath);
 
@@ -155,7 +156,7 @@ it('no redirects - will still render direct 200 OKs', function () {
 it('can take a high density screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->deviceScaleFactor(2)
         ->save($targetPath);
 
@@ -167,7 +168,7 @@ it('cannot save without an extension', function () {
 
     $targetPath = __DIR__.'/temp/testScreenshot';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->save($targetPath);
 });
 
@@ -175,7 +176,7 @@ it('throws an exception if the selector does not match any elements', function (
     $this->expectException(ElementNotFound::class);
     $targetPath = __DIR__.'/temp/nodeScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->select('not-a-valid-selector')
         ->save($targetPath);
 });
@@ -185,7 +186,7 @@ it('can handle a permissions error', function () {
 
     $this->expectException(ProcessFailedException::class);
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->save($targetPath);
 });
 
@@ -467,7 +468,7 @@ it('can set arbitrary options', function () {
 });
 
 it('can get the output of a pdf', function () {
-    $output = Browsershot::url('https://example.com')
+    $output = Browsershot::url(testUrl())
         ->pdf();
 
     $finfo = finfo_open();
@@ -640,7 +641,7 @@ it('can send post request', function () {
 });
 
 it('can process post request', function () {
-    $html = Browsershot::url('https://httpbin.org/post')
+    $html = Browsershot::url(testUrl('post'))
         ->post(['foo' => 'bar'])
         ->bodyHtml();
 
@@ -683,14 +684,14 @@ it('can click on the page', function () {
 });
 
 it('can evaluate page', function () {
-    $result = Browsershot::url('https://example.com')
+    $result = Browsershot::url(testUrl())
         ->evaluate('1 + 1');
 
     expect($result)->toEqual('2');
 });
 
 it('can evaluate script on new document before page loads', function () {
-    $result = Browsershot::url('https://example.com')
+    $result = Browsershot::url(testUrl())
         ->evaluateOnNewDocument('window.__injected = 42')
         ->evaluate('window.__injected');
 
@@ -1021,8 +1022,45 @@ it('will allow passing environment variables', function () {
     ], $instance->createScreenshotCommand('screenshot.png'));
 });
 
+it('removes temporary files and rethrows when the browser call fails', function (Closure $call, string $exception) {
+    $temporaryDirectory = (new TemporaryDirectory)->create();
+    $tempPath = $temporaryDirectory->path();
+
+    try {
+        expect(fn () => $call(Browsershot::html('<h1>Hello</h1>')->setCustomTempPath($tempPath)->writeOptionsToFile()))->toThrow($exception);
+
+        expect(glob("{$tempPath}/*"))->toBeEmpty();
+    } finally {
+        $temporaryDirectory->delete();
+    }
+})->with([
+    'element not found' => [fn (Browsershot $browsershot) => $browsershot->select('#missing')->bodyHtml(), ElementNotFound::class],
+    'process timeout' => [fn (Browsershot $browsershot) => $browsershot->writeOptionsToFile()->setDelay(5000)->timeout(1)->bodyHtml(), ProcessTimedOutException::class],
+    'chrome fails to start' => [fn (Browsershot $browsershot) => $browsershot->setChromePath('/nonexistent/chrome')->bodyHtml(), ProcessFailedException::class],
+    'invalid process timeout' => [fn (Browsershot $browsershot) => $browsershot->timeout(-1)->bodyHtml(), InvalidArgumentException::class],
+    'manipulated screenshot fails' => [fn (Browsershot $browsershot) => $browsershot->fit(Fit::Fill, 200, 200)->setChromePath('/nonexistent/chrome')->screenshot(), ProcessFailedException::class],
+]);
+
+it('cleans temporary files without deleting other files and can be reused after failure', function () {
+    $temporaryDirectory = (new TemporaryDirectory)->create();
+    $tempPath = $temporaryDirectory->path();
+    file_put_contents($temporaryDirectory->path('keep.txt'), 'keep');
+
+    try {
+        $browsershot = Browsershot::html('<h1>Hello</h1>')->setCustomTempPath($tempPath)->writeOptionsToFile()->select('#missing');
+
+        expect(fn () => $browsershot->bodyHtml())->toThrow(ElementNotFound::class);
+        expect($browsershot->select('h1')->bodyHtml())->toContain('<h1>Hello</h1>');
+        expect($browsershot->bodyHtml())->toContain('<h1>Hello</h1>');
+        expect(glob("{$tempPath}/*"))->toBe([$temporaryDirectory->path('keep.txt')]);
+        expect(file_get_contents($temporaryDirectory->path('keep.txt')))->toBe('keep');
+    } finally {
+        $temporaryDirectory->delete();
+    }
+});
+
 it('can throw an error when response is unsuccessful', function () {
-    $url = 'https://google.com/404';
+    $url = testUrl('missing');
 
     $this->expectException(UnsuccessfulResponse::class);
     $this->expectExceptionMessage("The given url `{$url}` responds with code 404");
@@ -1034,7 +1072,7 @@ it('can throw an error when response is unsuccessful', function () {
         ->save($targetPath);
 
     $this->assertFileDoesNotExist($targetPath);
-})->skip();
+});
 
 it('will allow passing a content url', function () {
     $instance = Browsershot::html('<h1>Hello world!!</h1>')
@@ -1064,7 +1102,7 @@ it('will allow passing a content url', function () {
 });
 
 it('can get the console messages', function () {
-    $consoleMessages = Browsershot::url('https://bitsofco.de/styling-broken-images/')->consoleMessages();
+    $consoleMessages = Browsershot::url(testUrl('broken-image'))->consoleMessages();
 
     expect($consoleMessages)->toBeArray()
         ->and($consoleMessages[0]['type'])->toBeString()
@@ -1073,15 +1111,15 @@ it('can get the console messages', function () {
 });
 
 it('can get the failed requests', function () {
-    $failedRequests = Browsershot::url('https://bitsofco.de/styling-broken-images/')->failedRequests();
+    $failedRequests = Browsershot::url(testUrl('broken-image'))->failedRequests();
 
     expect($failedRequests)->toBeArray()
         ->and($failedRequests[0]['status'])->toBe(404)
-        ->and($failedRequests[0]['url'])->toBe('https://bitsofco.de/broken.jpg');
+        ->and($failedRequests[0]['url'])->toBe(testUrl('missing.jpg'));
 });
 
 it('can set the custom temp path', function () {
-    $output = Browsershot::url('https://example.com')
+    $output = Browsershot::url(testUrl())
         ->setCustomTempPath(__DIR__.'/temp/')
         ->pdf();
 
@@ -1112,7 +1150,7 @@ it('should set the new headless flag when using the new method', function () {
 });
 
 it('can get the body html and full output data', function () {
-    $instance = Browsershot::url('https://example.com');
+    $instance = Browsershot::url(testUrl());
     $html = $instance->bodyHtml();
 
     expect($html)->toContain($expectedContent = '<h1>Example Domain</h1>');
@@ -1124,7 +1162,7 @@ it('can get the body html and full output data', function () {
     expect($output->getResult())->toContain($expectedContent);
     expect($output->getConsoleMessages())->toBe([]);
     expect($output->getRequestsList())->toMatchArray([[
-        'url' => 'https://example.com/',
+        'url' => testUrl(),
     ]]);
     expect($output->getFailedRequests())->toBe([]);
     expect($output->getPageErrors())->toBe([]);
@@ -1135,9 +1173,7 @@ it('can handle a permissions error with full output', function () {
 
     $this->expectException(ProcessFailedException::class);
 
-    // Block the favicon request to prevent randomness in the output.
-    $instance = Browsershot::url('https://example.com')
-        ->blockUrls(['https://example.com/favicon.ico']);
+    $instance = Browsershot::url(testUrl());
 
     try {
         $instance->save($targetPath);
@@ -1148,7 +1184,7 @@ it('can handle a permissions error with full output', function () {
         expect($output)->toBeInstanceOf(ChromiumResult::class);
         expect($output->getException())->not()->toBeEmpty();
         expect($output->getRequestsList())->toMatchArray([[
-            'url' => 'https://example.com/',
+            'url' => testUrl(),
         ]]);
         expect($output->getFailedRequests())->toBe([]);
         expect($output->getPageErrors())->toBe([]);
@@ -1190,7 +1226,7 @@ it('should be able to fetch page errors with pageErrors method when the page thr
 });
 
 it('will apply manipulations when taking screenshots', function () {
-    $screenShot = Browsershot::url('https://example.com')
+    $screenShot = Browsershot::url(testUrl())
         ->windowSize(1920, 1080)
         ->fit(Fit::Fill, 200, 200)
         ->screenshot();
@@ -1205,9 +1241,11 @@ it('will apply manipulations when taking screenshots', function () {
 });
 
 it('throws on remote connection error', function () {
-    expect(fn () => Browsershot::url('https://example.com/')
-        ->setRemoteInstance('example.com', 80)
+    $port = parse_url(testUrl(), PHP_URL_PORT);
+
+    expect(fn () => Browsershot::url(testUrl())
+        ->setRemoteInstance('127.0.0.1', $port)
         ->throwOnRemoteConnectionError()
         ->pdf())
-        ->toThrow(RemoteConnectionException::class, 'Failed to connect to remote browser instance: `Error: Failed to fetch browser webSocket URL from http://example.com/json/version: HTTP Not Found`');
+        ->toThrow(RemoteConnectionException::class, "Failed to connect to remote browser instance: `Error: Failed to fetch browser webSocket URL from http://127.0.0.1:{$port}/json/version: HTTP Not Found`");
 });
