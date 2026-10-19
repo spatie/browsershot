@@ -9,14 +9,28 @@ jobs:
             fail-fast: false
             matrix:
                 os: [ubuntu-latest]
-                php: [8.5, 8.4, 8.3, 8.2]
+                php: ['8.5', '8.4', '8.3', '8.2']
                 stability: [prefer-lowest, prefer-stable]
+                include:
+                    - php: '8.5'
+                      pest: '^5.0'
+                    - php: '8.4'
+                      pest: '^5.0'
+                    - php: '8.3'
+                      pest: '^4.0'
+                    - php: '8.2'
+                      pest: '^3.0'
 
-        name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
+        name: PHP ${{ matrix.php }} - Pest ${{ matrix.pest }} - ${{ matrix.stability }}
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v7
+
+            - name: Setup Node
+              uses: actions/setup-node@v7
+              with:
+                  node-version: '24'
 
             - name: Install poppler-utils
               run: sudo apt-get install -y poppler-utils
@@ -27,6 +41,7 @@ jobs:
                   php-version: ${{ matrix.php }}
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                   coverage: none
+                  tools: composer:v2
 
             - name: Setup problem matchers
               run: |
@@ -34,7 +49,7 @@ jobs:
                   echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
             - name: Install dependencies
-              run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+              run: composer update --with="pestphp/pest:${{ matrix.pest }}" --${{ matrix.stability }} --prefer-dist --no-interaction
 
             - name: Disable AppArmor
               run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
