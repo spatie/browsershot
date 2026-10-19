@@ -5,14 +5,14 @@ use Spatie\Browsershot\Browsershot;
 it('can take a screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->save($targetPath);
 
     expect($targetPath)->toBeFile();
 });
 
 it('can return a screenshot as base 64', function () {
-    $base64 = Browsershot::url('https://example.com')
+    $base64 = Browsershot::url(testUrl())
         ->base64Screenshot();
 
     expect(is_string($base64))->toBeTrue();
@@ -21,7 +21,7 @@ it('can return a screenshot as base 64', function () {
 it('can take a screenshot when using pipe', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->usePipe()
         ->save($targetPath);
 
@@ -40,7 +40,7 @@ it('can take a screenshot of arbitrary html', function () {
 it('can take a full page screenshot', function () {
     $targetPath = __DIR__.'/temp/fullpageScreenshot.png';
 
-    Browsershot::url('https://github.com/spatie/browsershot')
+    Browsershot::url(testUrl())
         ->fullPage()
         ->save($targetPath);
 
@@ -50,7 +50,7 @@ it('can take a full page screenshot', function () {
 it('can take a highly customized screenshot', function () {
     $targetPath = __DIR__.'/temp/customScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->clip(290, 80, 700, 290)
         ->deviceScaleFactor(2)
         ->dismissDialogs()
@@ -65,7 +65,7 @@ it('can take a highly customized screenshot', function () {
 it('can take a screenshot of an element matching a selector', function () {
     $targetPath = __DIR__.'/temp/nodeScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->select('div')
         ->save($targetPath);
 
@@ -79,7 +79,7 @@ it('can add a delay before taking a screenshot', function () {
 
     $start = round(microtime(true) * 1000);
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->setDelay($delay)
         ->save($targetPath);
 
@@ -89,7 +89,7 @@ it('can add a delay before taking a screenshot', function () {
 });
 
 it('can get the output of a screenshot', function () {
-    $output = Browsershot::url('https://example.com')
+    $output = Browsershot::url(testUrl())
         ->screenshot();
 
     $finfo = finfo_open();
@@ -102,7 +102,7 @@ it('can get the output of a screenshot', function () {
 it('can set type of screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.jpg';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->setScreenshotType('jpeg')
         ->save($targetPath);
 
@@ -114,7 +114,7 @@ it('can set type of screenshot', function () {
 it('can write options to a file and generate a screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.png';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->writeOptionsToFile()
         ->save($targetPath);
 
@@ -186,7 +186,7 @@ it('will connect to a custom remote instance and take screenshot', function () {
 it('can take a scaled screenshot', function () {
     $targetPath = __DIR__.'/temp/testScreenshot.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->scale(0.5)
         ->save($targetPath);
 

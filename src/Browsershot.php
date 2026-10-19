@@ -721,14 +721,13 @@ class Browsershot
 
         $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
-        $this->save($temporaryDirectory->path('screenshot.png'));
+        try {
+            $this->save($temporaryDirectory->path('screenshot.png'));
 
-        $screenshot = file_get_contents($temporaryDirectory->path('screenshot.png'));
-
-        $temporaryDirectory->delete();
-
-        return $screenshot;
-
+            return file_get_contents($temporaryDirectory->path('screenshot.png'));
+        } finally {
+            $temporaryDirectory->delete();
+        }
     }
 
     public function pdf(): string
@@ -1099,16 +1098,16 @@ class Browsershot
 
     protected function callBrowser(array $command): string
     {
-        $fullCommand = $this->getFullCommand($command);
-
-        $process = $this->isWindows() ? new Process($fullCommand, null, $this->getWindowsEnv()) : Process::fromShellCommandline($fullCommand);
-
-        $process->setTimeout($this->timeout);
-
         // clear additional output data fetched on last browser request
         $this->chromiumResult = null;
 
         try {
+            $fullCommand = $this->getFullCommand($command);
+
+            $process = $this->isWindows() ? new Process($fullCommand, null, $this->getWindowsEnv()) : Process::fromShellCommandline($fullCommand);
+
+            $process->setTimeout($this->timeout);
+
             $process->run();
         } finally {
             $this->cleanupTemporaryHtmlFile();

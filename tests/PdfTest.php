@@ -6,7 +6,7 @@ use Spatie\PdfToText\Pdf;
 it('can save a pdf by using the pdf extension', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->save($targetPath);
 
     expect($targetPath)->toBeFile();
@@ -17,7 +17,7 @@ it('can save a pdf by using the pdf extension', function () {
 it('can save a highly customized pdf', function () {
     $targetPath = __DIR__.'/temp/customPdf.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->hideBrowserHeaderAndFooter()
         ->showBackground()
         ->landscape()
@@ -33,7 +33,7 @@ it('can save a highly customized pdf', function () {
 it('can save a highly customized pdf when using pipe', function () {
     $targetPath = __DIR__.'/temp/customPdf.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->usePipe()
         ->hideBrowserHeaderAndFooter()
         ->showBackground()
@@ -50,7 +50,7 @@ it('can save a highly customized pdf when using pipe', function () {
 it('can save a pdf with the taggedPdf option', function () {
     $targetPath = __DIR__.'/temp/customPdf.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->taggedPdf()
         ->pages('1')
         ->savePdf($targetPath);
@@ -61,7 +61,7 @@ it('can save a pdf with the taggedPdf option', function () {
 });
 
 it('can return a pdf as base 64', function () {
-    $base64 = Browsershot::url('https://example.com')
+    $base64 = Browsershot::url(testUrl())
         ->base64pdf();
 
     expect(is_string($base64))->toBeTrue();
@@ -71,7 +71,7 @@ it('can return a pdf', function () {
     $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
     $targetPath = __DIR__.'/temp/testPdf.pdf';
 
-    $pdf = Browsershot::url('https://example.com')
+    $pdf = Browsershot::url(testUrl())
         ->pdf();
     file_put_contents($targetPath, $pdf);
 
@@ -81,7 +81,7 @@ it('can return a pdf', function () {
 it('can write options to a file and generate a pdf', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
 
-    Browsershot::url('https://example.com')
+    Browsershot::url(testUrl())
         ->writeOptionsToFile()
         ->save($targetPath);
 
