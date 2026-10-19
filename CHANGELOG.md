@@ -1,3 +1,23 @@
+## 5.4.1 - 2026-10-19
+
+Fix temporary HTML and options cleanup when browser execution or process setup fails, and clean up intermediate screenshots after failed image manipulations.
+
+Browser integration tests now use deterministic local HTTP fixtures. CI adds Pest 5 on PHP 8.4–8.5 while retaining compatible test tooling for PHP 8.2–8.3; runtime PHP requirements are unchanged.
+
+### What's Changed
+
+* Fix typo in sysctl configuration instructions by @intrepidws in https://github.com/spatie/browsershot/pull/979
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/spatie/browsershot/pull/980
+* Remove duplicate packages from installation instructions by @stephensamra in https://github.com/spatie/browsershot/pull/981
+* Fix temporary file cleanup when browser execution fails by @MohannadElemary in https://github.com/spatie/browsershot/pull/985
+
+### New Contributors
+
+* @stephensamra made their first contribution in https://github.com/spatie/browsershot/pull/981
+* @MohannadElemary made their first contribution in https://github.com/spatie/browsershot/pull/985
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.4.0...5.4.1
+
 ## 5.4.0 - 2026-05-26
 
 ### What's Changed
