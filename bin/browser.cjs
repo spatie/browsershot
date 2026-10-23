@@ -68,11 +68,31 @@ const getOutput = async (request, page = null) => {
     return output;
 };
 
+/**
+ * Puppeteer 25+ is published as ESM only. Node 20.19+ and 22.12+ can require()
+ * it, but older versions (or --no-experimental-require-module) throw
+ * ERR_REQUIRE_ESM, so fall back to a dynamic import of the same resolved file.
+ * Resolving through require.resolve keeps NODE_PATH (global installs) working.
+ */
+const loadPuppeteer = async () => {
+    try {
+        return require('puppeteer');
+    } catch (error) {
+        if (error.code !== 'ERR_REQUIRE_ESM' && error.code !== 'ERR_REQUIRE_ASYNC_MODULE') {
+            throw error;
+        }
+
+        const { pathToFileURL } = require('url');
+
+        return import(pathToFileURL(require.resolve('puppeteer')).href);
+    }
+};
+
 const callChrome = async pup => {
     let browser;
     let page;
     let remoteInstance;
-    const puppet = (pup || require('puppeteer'));
+    const puppet = (pup || await loadPuppeteer());
     const options = request.options ?? {};
 
     const closeBrowser = async () => {
