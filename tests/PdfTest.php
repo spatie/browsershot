@@ -80,12 +80,17 @@ it('can return a pdf', function () {
 });
 
 it('can load puppeteer when require(esm) is disabled', function () {
-    $pdf = Browsershot::html('<p>ESM fallback</p>')
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+    $targetPath = __DIR__.'/temp/esmFallback.pdf';
+
+    Browsershot::html('<p>ESM fallback</p><script>document.body.append(navigator.userAgent)</script>')
         ->setNodeEnv(['NODE_OPTIONS' => '--no-experimental-require-module'])
         ->device('iPhone X')
-        ->pdf();
+        ->savePdf($targetPath);
 
-    expect($pdf)->toStartWith('%PDF-');
+    expect(Pdf::getText($targetPath, $binPath))
+        ->toContain('ESM fallback')
+        ->toContain('iPhone');
 })->skip(function () {
     $process = new Process(['node', '-e', ''], null, ['NODE_OPTIONS' => '--no-experimental-require-module']);
     $process->run();
