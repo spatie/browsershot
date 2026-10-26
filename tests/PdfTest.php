@@ -2,6 +2,7 @@
 
 use Spatie\Browsershot\Browsershot;
 use Spatie\PdfToText\Pdf;
+use Symfony\Component\Process\Process;
 
 it('can save a pdf by using the pdf extension', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
@@ -77,6 +78,25 @@ it('can return a pdf', function () {
 
     expect(Pdf::getText($targetPath, $binPath))->toContain('Example Domain');
 });
+
+it('can load puppeteer when require(esm) is disabled', function () {
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+    $targetPath = __DIR__.'/temp/esmFallback.pdf';
+
+    Browsershot::html('<p>ESM fallback</p><script>document.body.append(navigator.userAgent)</script>')
+        ->setNodeEnv(['NODE_OPTIONS' => '--no-experimental-require-module'])
+        ->device('iPhone X')
+        ->savePdf($targetPath);
+
+    expect(Pdf::getText($targetPath, $binPath))
+        ->toContain('ESM fallback')
+        ->toContain('iPhone');
+})->skip(function () {
+    $process = new Process(['node', '-e', ''], null, ['NODE_OPTIONS' => '--no-experimental-require-module']);
+    $process->run();
+
+    return ! $process->isSuccessful();
+}, 'This Node version does not accept --no-experimental-require-module in NODE_OPTIONS');
 
 it('can write options to a file and generate a pdf', function () {
     $targetPath = __DIR__.'/temp/testPdf.pdf';
