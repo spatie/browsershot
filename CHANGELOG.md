@@ -1,3 +1,18 @@
+## 5.4.2 - 2026-10-26
+
+Fix loading ESM-only Puppeteer when Node cannot load it with `require()`, including processes using `--no-experimental-require-module`.
+
+Browsershot still prefers CommonJS loading, preserves global installations resolved through `NODE_PATH`, and retains named exports used by device emulation. PHP and Node requirements are unchanged.
+
+The regression generates a real PDF and verifies its rendered text and emulated iPhone user agent. CI also refreshes apt package lists before installing `poppler-utils`.
+
+### What's Changed
+
+* Fall back to import() when Puppeteer can't be required by @MohannadElemary in https://github.com/spatie/browsershot/pull/986
+* Update apt package lists before installing poppler-utils by @MohannadElemary in https://github.com/spatie/browsershot/pull/987
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.4.1...5.4.2
+
 ## 5.4.1 - 2026-10-19
 
 Fix temporary HTML and options cleanup when browser execution or process setup fails, and clean up intermediate screenshots after failed image manipulations.
