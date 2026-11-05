@@ -40,6 +40,8 @@ jobs:
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
+              env:
+                  IMAGICK_PATH: .
               with:
                   php-version: ${{ matrix.php }}
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, ${{ matrix.imagick || 'imagick' }}, fileinfo
