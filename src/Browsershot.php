@@ -336,15 +336,9 @@ class Browsershot
     {
         $decodedHtml = html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
 
-        $protocols = array_filter($this->unsafeProtocols, function (string $protocol) {
-            return $protocol !== 'file:';
-        });
-
         foreach ([$html, $decodedHtml] as $content) {
-            foreach ($protocols as $protocol) {
-                if (str_contains(strtolower($content), $protocol)) {
-                    throw HtmlIsNotAllowedToContainFile::make();
-                }
+            if (str_contains(strtolower($content), 'view-source')) {
+                throw HtmlIsNotAllowedToContainFile::make();
             }
 
             if (preg_match('#(?<!:)//\s*(localhost[/:\s]|127\.|0\.0\.0\.0[/:\s]|\[::1][/:\s]|::1[/:\s])#i', $content)) {
@@ -362,6 +356,11 @@ class Browsershot
         $this->hideBrowserHeaderAndFooter();
 
         return $this;
+    }
+
+    public function allowLocalFileAccess(bool $allow = true): static
+    {
+        return $this->setOption('allowLocalFileAccess', $allow);
     }
 
     public function clip(int $x, int $y, int $width, int $height): static
@@ -1045,6 +1044,10 @@ class Browsershot
 
     protected function createCommand(string $url, string $action, array $options = []): array
     {
+        if ($this->html !== '') {
+            $options['blockLocalFileAccess'] = true;
+        }
+
         $command = compact('url', 'action', 'options');
 
         $command['options']['args'] = $this->getOptionArgs();

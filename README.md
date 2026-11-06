@@ -39,6 +39,8 @@ You can also use an arbitrary html input, simply replace the `url` method with `
 Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
 ```
 
+Local file requests from `html()` are blocked by default, including absolute filesystem paths and JavaScript-generated file URLs. If your trusted HTML needs local assets, opt in with `Browsershot::html($html)->allowLocalFileAccess()->save('example.pdf')`. This permits access to any local file readable by Chrome; only enable it for trusted HTML. Browsershot is not a sandbox for untrusted content.
+
 If your HTML input is already in a file locally use the :
 
 ```php

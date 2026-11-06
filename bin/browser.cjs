@@ -162,6 +162,11 @@ const callChrome = async pup => {
             request.url = contentUrl;
         }
 
+        const blockLocalFileAccess = options.blockLocalFileAccess && !options.allowLocalFileAccess;
+        let initialFileUrl = blockLocalFileAccess && request.url.startsWith('file:')
+            ? new URL(request.url).href
+            : null;
+
         // The request listener captures URLs unconditionally (backing triggeredRequests()) and,
         // when interception is enabled, walks a set of rules that may abort/respond/continue
         // the request. setRequestInterception(true) is only enabled when needed. Unconditional
@@ -171,6 +176,7 @@ const callChrome = async pup => {
         const hasKeys = (value) => value && typeof value === 'object' && Object.keys(value).length > 0;
 
         const needsInterception = !!(
+            blockLocalFileAccess ||
             options.disableImages ||
             hasItems(options.blockDomains) ||
             hasItems(options.blockUrls) ||
@@ -188,6 +194,19 @@ const callChrome = async pup => {
 
         // Each rule below returns true if it terminated the request (via abort/respond/continue).
         // The listener walks them top-to-bottom and stops at the first match.
+        const blockLocalFile = (req) => {
+            if (!blockLocalFileAccess || !req.url().startsWith('file:')) return false;
+
+            // Only the initial main-frame navigation may read the temporary HTML file.
+            if (initialFileUrl === req.url() && req.isNavigationRequest() && req.frame() === page.mainFrame()) {
+                initialFileUrl = null;
+                return false;
+            }
+
+            req.abort();
+            return true;
+        };
+
         const blockImage = (req) => {
             if (!options.disableImages || req.resourceType() !== 'image') return false;
             req.abort();
@@ -259,6 +278,7 @@ const callChrome = async pup => {
 
             if (!needsInterception) return;
 
+            if (blockLocalFile(req)) return;
             if (blockImage(req)) return;
             if (blockDomain(req)) return;
             if (blockUrl(req)) return;

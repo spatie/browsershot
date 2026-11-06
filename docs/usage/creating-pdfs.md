@@ -33,6 +33,8 @@ $base64Data = Browsershot::url('https://example.com')
 
 It is the responsibility of the user to validate the URLs and HTML passed to browsershot. Only pass URLs and HTML that you trust.
 
+Local file requests from `html()` are blocked by default. If your trusted HTML needs local assets, explicitly opt in with `allowLocalFileAccess()`. See [local file access](/docs/browsershot/v4/usage/introduction#local-file-access) for details and security considerations.
+
 ## Sizing the pdf
 
 You can specify the width and the height.

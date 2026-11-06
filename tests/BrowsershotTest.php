@@ -75,17 +75,17 @@ it('will not allow a file url that has leading spaces', function () {
     Browsershot::url('    file://test');
 })->throws(FileUrlNotAllowed::class);
 
-it('will not allow html to contain file://', function () {
-    Browsershot::html('<h1><img src="file://" /></h1>');
-})->throws(HtmlIsNotAllowedToContainFile::class);
+it('will not allow html to contain view-source urls even when local files are allowed', function (string $html) {
+    (new Browsershot)->allowLocalFileAccess()->setHtml($html);
+})->throws(HtmlIsNotAllowedToContainFile::class)->with([
+    '<iframe src="view-source:https://example.com">',
+    '<iframe src="VIEW-SOURCE:https://example.com">',
+    '<iframe src="&#118;iew-source:https://example.com">',
+]);
 
 it('will not allow a slightly malformed file url', function () {
     Browsershot::url('file:/test');
 })->throws(FileUrlNotAllowed::class);
-
-it('will not allow html to contain file:/', function () {
-    Browsershot::html('<h1><img src="file:/" /></h1>');
-})->throws(HtmlIsNotAllowedToContainFile::class);
 
 it('will not allow html to contain UNC paths', function (string $html) {
     Browsershot::html($html);
@@ -1095,6 +1095,7 @@ it('will allow passing a content url', function () {
             'type' => 'png',
             'displayHeaderFooter' => false,
             'contentUrl' => 'https://example.com',
+            'blockLocalFileAccess' => true,
         ],
     ], $response);
 
