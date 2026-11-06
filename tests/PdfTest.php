@@ -79,6 +79,75 @@ it('can return a pdf', function () {
     expect(Pdf::getText($targetPath, $binPath))->toContain('Example Domain');
 });
 
+it('renders file urls as plain text without allowing local file access', function () {
+    $targetPath = __DIR__.'/temp/plain-text-file-urls.pdf';
+
+    Browsershot::html('<p>file: invoice.pdf</p><p>file:/var/data/report.txt</p><p>file:///var/data/report.txt</p>')
+        ->savePdf($targetPath);
+
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+
+    expect(Pdf::getText($targetPath, $binPath))
+        ->toContain('file: invoice.pdf')
+        ->toContain('file:/var/data/report.txt')
+        ->toContain('file:///var/data/report.txt');
+});
+
+it('only renders local files in supplied html when explicitly allowed', function (string $reference, bool $javascript, bool $allow) {
+    $secretPath = __DIR__.'/temp/local-file-secret.txt';
+    $targetPath = __DIR__.'/temp/local-file-access.pdf';
+    $secret = 'LOCAL-FILE-SECRET-7731';
+
+    file_put_contents($secretPath, $secret);
+
+    $html = str_replace('{path}', $secretPath, $reference);
+    $browsershot = Browsershot::html('<p>Benign content</p>'.$html);
+
+    if (! $javascript) {
+        $browsershot->disableJavascript();
+    }
+
+    if ($allow) {
+        $browsershot->allowLocalFileAccess();
+    }
+
+    $browsershot->savePdf($targetPath);
+
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+    $text = Pdf::getText($targetPath, $binPath);
+
+    expect($text)->toContain('Benign content');
+    expect(str_contains($text, $secret))->toBe($allow);
+})->with([
+    'root-relative' => ['<iframe src="{path}"></iframe>', true],
+    'root-relative without javascript' => ['<iframe src="{path}"></iframe>', false],
+    'javascript-generated' => ['<iframe id="local"></iframe><script>document.getElementById("local").src = "fi" + "le://{path}";</script>', true],
+    'literal file url' => ['<iframe src="file://{path}"></iframe>', true],
+    'single-slash file url' => ['<iframe src="file:{path}"></iframe>', true],
+    'entity-encoded file url' => ['<iframe src="&#102;ile://{path}"></iframe>', true],
+])->with([false, true]);
+
+it('does not reuse the initial html document permission for subframes', function (bool $allow) {
+    $targetPath = __DIR__.'/temp/repeated-document.pdf';
+    $browsershot = Browsershot::html('<p>DOCUMENT-MARKER</p><script>
+        if (window === top) {
+            const frame = document.createElement("iframe");
+            frame.src = location.href;
+            document.body.append(frame);
+        }
+    </script>');
+
+    if ($allow) {
+        $browsershot->allowLocalFileAccess();
+    }
+
+    $browsershot->savePdf($targetPath);
+
+    $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
+
+    expect(substr_count(Pdf::getText($targetPath, $binPath), 'DOCUMENT-MARKER'))->toBe($allow ? 2 : 1);
+})->with([false, true]);
+
 it('can load puppeteer when require(esm) is disabled', function () {
     $binPath = PHP_OS === 'Linux' ? '/usr/bin/pdftotext' : '/opt/homebrew/bin/pdftotext';
     $targetPath = __DIR__.'/temp/esmFallback.pdf';
