@@ -1,3 +1,35 @@
+## 5.5.0 - 2026-11-06
+
+### Local file access controls for supplied HTML
+
+Browsershot now blocks local file requests by default when rendering HTML passed to `html()` or `setHtml()`. The restriction is enforced on resolved browser requests, covering absolute filesystem paths, literal file URLs and file URLs constructed by JavaScript.
+
+For trusted HTML that intentionally loads local assets, explicitly opt in:
+
+```php
+Browsershot::html($html)
+    ->allowLocalFileAccess()
+    ->savePdf("invoice.pdf");
+
+```
+Use `allowLocalFileAccess(false)` to restore the default restriction.
+
+#### Compatibility and security
+
+- Local images, stylesheets, scripts and iframes previously loaded through `html()` may now be missing from generated output unless local file access is explicitly enabled.
+- Literal file URLs are blocked during rendering instead of being rejected by `html()`, allowing the fluent opt-in and plain text mentioning file URLs.
+- `htmlFromFilePath()` retains its existing local-resource behavior. HTTP(S) resources and explicit content URLs retain their behavior.
+- Only enable local file access for trusted HTML: Chrome can read any local file its process has permission to access. Browsershot is not a sandbox for untrusted content, and these controls do not prevent SSRF.
+
+Includes regression tests for local-file disclosure payloads, plain-text file URLs, the one-time initial-document permission, local assets, opt-in revocation and HTTP resources. The local suite passed 157 tests with 228 assertions, and all PHP 8.2–8.6 CI matrix jobs passed before merge.
+
+### What Changed
+
+* Block local file access from supplied HTML by default in https://github.com/spatie/browsershot/pull/989
+* Test PHP 8.6 with compatible Imagick in https://github.com/spatie/browsershot/pull/988
+
+**Full Changelog**: https://github.com/spatie/browsershot/compare/5.4.2...5.5.0
+
 ## 5.4.2 - 2026-10-26
 
 Fix loading ESM-only Puppeteer when Node cannot load it with `require()`, including processes using `--no-experimental-require-module`.
