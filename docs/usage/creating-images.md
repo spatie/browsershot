@@ -63,7 +63,7 @@ To perform image manipulation on the screenshot, you need to install the optiona
 composer require spatie/image
 ```
 
-You can use all the methods [spatie/image](https://docs.spatie.be/image) provides. Here's an example where we create a greyscale image:
+You can use all the methods [spatie/image](https://spatie.be/docs/image) provides. Here's an example where we create a greyscale image:
 
 ```php
 Browsershot::url('https://example.com')
