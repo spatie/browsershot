@@ -1,3 +1,27 @@
+## 5.5.1 - 2026-11-23
+
+### Security fix: constructor URL validation bypass
+
+Non-empty URLs passed to `new Browsershot($url)` now use the same validation as `Browsershot::url($url)` and `setUrl()`. This rejects local-file URLs, `view-source:` URLs, and malformed URLs before browser navigation.
+
+Previously, the constructor assigned its URL without validation. Applications that passed attacker-controlled URLs to the constructor and returned rendered output could expose local files readable by the Chrome process.
+
+Applications using the validated `Browsershot::url()` entry point were not affected by this constructor bypass. Empty construction and valid HTTP(S) URLs remain supported. Intentional local rendering through `htmlFromFilePath()` is unchanged. Browsershot is not a sandbox for untrusted content; applications must still isolate browser filesystem and network access.
+
+Upgrade to 5.5.1 if your application accepts untrusted constructor URLs.
+
+Thanks to Dickson at SEAL & CertiK for privately reporting the issue and proposing the fix.
+
+### Verification
+
+The seven rejection cases fail on the previous implementation and pass with the fix. The local suite passes all 167 tests with 241 assertions, including browser-backed PDF and screenshot tests.
+
+### Changes
+
+* Fix constructor URL validation bypass in https://github.com/spatie/browsershot/pull/992
+
+**Full changelog**: https://github.com/spatie/browsershot/compare/5.5.0...5.5.1
+
 ## 5.5.0 - 2026-11-06
 
 ### Local file access controls for supplied HTML
@@ -10,6 +34,7 @@ For trusted HTML that intentionally loads local assets, explicitly opt in:
 Browsershot::html($html)
     ->allowLocalFileAccess()
     ->savePdf("invoice.pdf");
+
 
 ```
 Use `allowLocalFileAccess(false)` to restore the default restriction.
