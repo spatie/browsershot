@@ -99,7 +99,9 @@ class Browsershot
 
     public function __construct(string $url = '', bool $deviceEmulate = false)
     {
-        $this->url = $url;
+        if ($url !== '') {
+            $this->setUrl($url);
+        }
 
         if (! $deviceEmulate) {
             $this->windowSize(800, 600);
