@@ -67,6 +67,29 @@ it('will not allow a file url', function (string $url) {
     'View-Source',
 ]);
 
+it('will not allow unsafe constructor urls', function (string $url) {
+    new Browsershot($url);
+})->throws(FileUrlNotAllowed::class)->with([
+    'file:///etc/passwd',
+    'FiLe:///etc/passwd',
+    '    file:///etc/passwd',
+    'file:/etc/passwd',
+    'view-source:file:///etc/passwd',
+    'VIEW-SOURCE:https://example.com',
+    'not a valid url',
+]);
+
+it('preserves valid constructor urls and the empty default', function (string $url) {
+    $command = (new Browsershot($url))->createScreenshotCommand('screenshot.png');
+
+    expect($command['url'])->toBe($url);
+    expect($command['options']['viewport'])->toBe(['width' => 800, 'height' => 600]);
+})->with([
+    '',
+    'http://example.com/path?foo=bar',
+    'https://example.com/path?foo=bar',
+]);
+
 it('will not allow a malformed file url with too many slashes', function () {
     Browsershot::url('file:///test');
 })->throws(FileUrlNotAllowed::class);
